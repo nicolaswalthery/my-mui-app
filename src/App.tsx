@@ -19,7 +19,9 @@ import {
   Settings,
   Info,
 } from '@mui/icons-material';
-import Sidebar from './components/Sidebar';
+import Sidebar from './components/SidebarProps';
+import AppBarProps from './components/AppBarProps';
+import FooterProps from './components/FooterProps';
 
 const drawerWidth = 240;
 
@@ -69,44 +71,14 @@ export default function MUILayout() {
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       
-      {/* App Bar */}
-      <AppBar
-        position="fixed"
-        sx={{
-          width: { md: `calc(100% - ${drawerWidth}px)` },
-          ml: { md: `${drawerWidth}px` },
-        }}
-      >
-        <Toolbar>
-          <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            edge="start"
-            onClick={handleDrawerToggle}
-            sx={{ mr: 2, display: { md: 'none' } }}
-          >
-            <MenuIcon />
-          </IconButton>
-          <Typography 
-            variant="h6" 
-            noWrap 
-            component="div" 
-            sx={{ 
-              flexGrow: 1,
-              textAlign: 'center'
-            }}
-          >
-            Page Title
-          </Typography>
-          <Avatar sx={{ bgcolor: 'secondary.main' }}>
-            <Typography variant="h6" sx={{ color: 'text.secondary' }}>
-              JD
-            </Typography>
-          </Avatar>
-        </Toolbar>
-      </AppBar>
+      <AppBarProps 
+        drawerWidth={drawerWidth}
+        isMobile={isMobile}
+        onDrawerToggle={handleDrawerToggle}
+      />
+        
 
-      {/* Drawer */}
+      {/* Mobile Drawer */}
       <Box
         component="nav"
         sx={{ width: { md: drawerWidth }, flexShrink: { md: 0 } }}
@@ -162,24 +134,7 @@ export default function MUILayout() {
         
         {/* //PAGES */}
 
-        {/* Footer */}
-        <Box
-          component="footer"
-          sx={{
-            py: 2,
-            px: 2,
-            mt: 'auto',
-            borderTop: 1,
-            borderColor: 'divider',
-            bgcolor: 'background.paper',
-          }}
-        >
-          <Container maxWidth="lg">
-            <Typography variant="body2" color="text.secondary" align="center">
-              © 2025 Your MUI App. All rights reserved.
-            </Typography>
-          </Container>
-        </Box>
+       <FooterProps footerText="FOOTER TEXT" />
       </Box>
     </Box>
   );
