@@ -71,9 +71,10 @@ export default function MUILayout() {
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       
-      <AppBarProps 
+      <AppBarProps
         drawerWidth={drawerWidth}
-        isMobile={isMobile}
+        pageTitle="PAGE TITLE"
+        profileTitle="JD"
         onDrawerToggle={handleDrawerToggle}
       />
         
