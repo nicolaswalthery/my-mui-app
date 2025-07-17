@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import SideBarProps from './components/Sidebar';
 import {
   AppBar,
   Box,
@@ -27,6 +28,7 @@ import {
   Settings,
   Info,
 } from '@mui/icons-material';
+
 
 const drawerWidth = 240;
 
