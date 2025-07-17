@@ -21,7 +21,7 @@ interface SidebarProps {
   onItemClick?: (path: string) => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ menuItems, onItemClick }) => {
+const Sidebar: React.FC<SidebarProps> = ({ menuItems, appTitle, onItemClick }) => {
   return (
     <Box sx={{ bgcolor: 'background.paper', height: '100%' }}>
       <Box
@@ -36,7 +36,7 @@ const Sidebar: React.FC<SidebarProps> = ({ menuItems, onItemClick }) => {
         }}
       >
         <Typography variant="h6" component="h1">
-          appTitle
+          {appTitle}
         </Typography>
       </Box>
       <List>

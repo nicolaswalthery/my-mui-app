@@ -127,11 +127,7 @@ export default function MUILayout() {
             },
           }}
         >
-          <Sidebar 
-            menuItems={menuItems} 
-            appTitle={defaultAppTitle}
-            onItemClick={handleMenuItemClick}
-          />
+          {sideBarProps}
         </Drawer>
         
         {/* Desktop drawer */}
@@ -146,11 +142,7 @@ export default function MUILayout() {
           }}
           open
         >
-          <Sidebar 
-            menuItems={menuItems} 
-            appTitle={defaultAppTitle}
-            onItemClick={handleMenuItemClick}
-          />
+          {sideBarProps}
         </Drawer>
       </Box>
 
