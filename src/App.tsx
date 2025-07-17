@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import {
   AppBar,
   Box,
@@ -34,8 +35,7 @@ interface MenuItem {
 const menuItems: MenuItem[] = [
   { text: 'Dashboard', icon: Dashboard, path: '/' },
   { text: 'Home', icon: Home, path: '/home' },
-  { text: 'Settings', icon: Settings, path: '/settings' },
-  { text: 'About', icon: Info, path: '/about' },
+  { text: 'Auth', icon: Settings, path: '/auth' },
 ];
 
 const defaultAppTitle = 'MUI APP';
@@ -44,16 +44,21 @@ export default function MUILayout() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [mobileOpen, setMobileOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  // Get page title based on current route
+  const getPageTitle = () => {
+    const currentItem = menuItems.find(item => item.path === location.pathname);
+    return currentItem ? currentItem.text : 'Page';
+  };
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
   const handleMenuItemClick = (path: string) => {
-    console.log('Navigating to:', path);
-    // Here you can add your navigation logic
-    // For example, if using React Router:
-    // navigate(path);
+    navigate(path);
     
     // Close mobile drawer when item is clicked
     if (isMobile) {
@@ -133,7 +138,8 @@ export default function MUILayout() {
       >
         <Toolbar /> {/* This creates space for the fixed AppBar */}
         
-        {/* //PAGES */}
+        {/* Pages content rendered here */}
+        <Outlet />
 
        <FooterProps footerText="FOOTER TEXT" />
       </Box>
