@@ -2,9 +2,9 @@ import React from 'react';
 import { AppBar, Toolbar, IconButton, Typography, Avatar } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 
-interface AppBarProps {drawerWidth: number; isMobile: boolean; pageTitle: string, profileTitle: string, onDrawerToggle: () => void;}
+interface AppBarProps {drawerWidth: number; pageTitle: string, profileTitle: string, onDrawerToggle: () => void;}
   
-const AppBarProps: React.FC<AppBarProps> = ({ drawerWidth, isMobile, pageTitle, profileTitle, onDrawerToggle }) => {
+const AppBarProps: React.FC<AppBarProps> = ({ drawerWidth, pageTitle, profileTitle, onDrawerToggle }) => {
         return(
             <AppBar
                 position="fixed"
