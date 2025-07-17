@@ -8,12 +8,6 @@ import {
   ListItemText,
   Typography,
 } from '@mui/material';
-import {
-  Dashboard,
-  Home,
-  Settings,
-  Info,
-} from '@mui/icons-material';
 
 interface MenuItem {
   text: string;
@@ -22,39 +16,14 @@ interface MenuItem {
 }
 
 interface SidebarProps {
-  inputMenuItems?: MenuItem[];
-  appTitle?: string;
+  menuItems: MenuItem[];
+  appTitle: string;
   onItemClick?: (path: string) => void;
 }
 
-const defaultMenuItems: MenuItem[] = [
-  { text: 'Dashboard', icon: Dashboard, path: '/' },
-  { text: 'Home', icon: Home, path: '/home' },
-  { text: 'Settings', icon: Settings, path: '/settings' },
-  { text: 'About', icon: Info, path: '/about' },
-];
-
-const defaultAppTitle = "Material React App";
-
-const Sidebar: React.FC<SidebarProps> = ({
-  inputMenuItems,
-  appTitle = defaultAppTitle,
-  onItemClick
-}) => {
-
-  const menuItems = inputMenuItems ?? defaultMenuItems;
-
-  const handleItemClick = (path: string) => {
-    if (onItemClick) {
-      onItemClick(path);
-    }
-    // You can add routing logic here if needed
-    console.log(`Navigating to: ${path}`);
-  };
-
+const Sidebar: React.FC<SidebarProps> = ({ menuItems, onItemClick }) => {
   return (
     <Box sx={{ bgcolor: 'background.paper', height: '100%' }}>
-      {/* Header */}
       <Box
         sx={{
           display: 'flex',
@@ -67,16 +36,14 @@ const Sidebar: React.FC<SidebarProps> = ({
         }}
       >
         <Typography variant="h6" component="h1">
-          {appTitle}
+          appTitle
         </Typography>
       </Box>
-
-      {/* Menu Items */}
       <List>
         {menuItems.map((item) => (
           <ListItem key={item.text} disablePadding>
             <ListItemButton
-              onClick={() => handleItemClick(item.path)}
+              onClick={() => onItemClick?.(item.path)}
               sx={{
                 color: 'text.primary',
                 '&:hover': {

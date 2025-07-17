@@ -1,22 +1,13 @@
 import React, { useState } from 'react';
-import SideBarProps from './components/Sidebar';
 import {
   AppBar,
   Box,
   CssBaseline,
   Drawer,
   IconButton,
-  List,
-  ListItem,
-  ListItemButton,
-  ListItemIcon,
-  ListItemText,
   Toolbar,
   Typography,
   Avatar,
-  Card,
-  CardContent,
-  Grid,
   Container,
   useTheme,
   useMediaQuery,
@@ -28,7 +19,7 @@ import {
   Settings,
   Info,
 } from '@mui/icons-material';
-
+import Sidebar from './components/Sidebar';
 
 const drawerWidth = 240;
 
@@ -45,6 +36,8 @@ const menuItems: MenuItem[] = [
   { text: 'About', icon: Info, path: '/about' },
 ];
 
+const defaultAppTitle = 'MUI APP';
+
 export default function MUILayout() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
@@ -54,44 +47,23 @@ export default function MUILayout() {
     setMobileOpen(!mobileOpen);
   };
 
-  const drawer = (
-  <Box sx={{ bgcolor: 'background.paper', height: '100%' }}>
-    <Box
-      sx={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        p: 2,
-        bgcolor: 'secondary.main',
-        color: 'primary.contrastText',
-        minHeight: 64,
-      }}
-    >
-      <Typography variant="h6" component="h1">
-        Material React App
-      </Typography>
-    </Box>
-    <List>
-      {menuItems.map((item) => (
-        <ListItem key={item.text} disablePadding>
-          <ListItemButton
-            sx={{
-              color: 'text.primary',
-              '&:hover': {
-                bgcolor: 'action.hover',
-              },
-            }}
-          >
-            <ListItemIcon sx={{ color: 'text.primary' }}>
-              <item.icon />
-            </ListItemIcon>
-            <ListItemText primary={item.text} />
-          </ListItemButton>
-        </ListItem>
-      ))}
-    </List>
-  </Box>
-);
+  const handleMenuItemClick = (path: string) => {
+    console.log('Navigating to:', path);
+    // Here you can add your navigation logic
+    // For example, if using React Router:
+    // navigate(path);
+    
+    // Close mobile drawer when item is clicked
+    if (isMobile) {
+      setMobileOpen(false);
+    }
+  };
+
+  const sideBarProps = <Sidebar 
+            menuItems={menuItems} 
+            appTitle={defaultAppTitle}
+            onItemClick={handleMenuItemClick}
+          />
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -127,10 +99,10 @@ export default function MUILayout() {
             Page Title
           </Typography>
           <Avatar sx={{ bgcolor: 'secondary.main' }}>
-        <Typography variant="h6" sx={{ color: 'text.secondary' }}>
-          JD
-        </Typography>
-      </Avatar>
+            <Typography variant="h6" sx={{ color: 'text.secondary' }}>
+              JD
+            </Typography>
+          </Avatar>
         </Toolbar>
       </AppBar>
 
@@ -155,7 +127,11 @@ export default function MUILayout() {
             },
           }}
         >
-          {drawer}
+          <Sidebar 
+            menuItems={menuItems} 
+            appTitle={defaultAppTitle}
+            onItemClick={handleMenuItemClick}
+          />
         </Drawer>
         
         {/* Desktop drawer */}
@@ -170,7 +146,11 @@ export default function MUILayout() {
           }}
           open
         >
-          {drawer}
+          <Sidebar 
+            menuItems={menuItems} 
+            appTitle={defaultAppTitle}
+            onItemClick={handleMenuItemClick}
+          />
         </Drawer>
       </Box>
 
@@ -188,16 +168,7 @@ export default function MUILayout() {
       >
         <Toolbar /> {/* This creates space for the fixed AppBar */}
         
-
-
-
-
         {/* //PAGES */}
-
-
-
-
-
 
         {/* Footer */}
         <Box
