@@ -2,9 +2,9 @@ import React from 'react';
 import { AppBar, Toolbar, IconButton, Typography, Avatar } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 
-interface AppBarProps {drawerWidth: number; isMobile: boolean; onDrawerToggle: () => void;}
+interface AppBarProps {drawerWidth: number; isMobile: boolean; pageTitle: string, profileTitle: string, onDrawerToggle: () => void;}
   
-const AppBarProps: React.FC<AppBarProps> = ({ drawerWidth, isMobile, onDrawerToggle }) => {
+const AppBarProps: React.FC<AppBarProps> = ({ drawerWidth, isMobile, pageTitle, profileTitle, onDrawerToggle }) => {
         return(
             <AppBar
                 position="fixed"
@@ -32,11 +32,11 @@ const AppBarProps: React.FC<AppBarProps> = ({ drawerWidth, isMobile, onDrawerTog
                 textAlign: 'center'
                 }}
             >
-                Page Title
+                {pageTitle}
             </Typography>
             <Avatar sx={{ bgcolor: 'secondary.main' }}>
                 <Typography variant="h6" sx={{ color: 'text.secondary' }}>
-                JD
+                    {profileTitle}
                 </Typography>
             </Avatar>
             </Toolbar>
