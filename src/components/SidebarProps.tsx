@@ -42,7 +42,7 @@ const Sidebar: React.FC<SidebarProps> = ({ menuItems, appTitle, onItemClick }) =
           minHeight: 64,
         }}
       >
-        <Typography onClick={handleProfileClick} variant="h6" component="h1">
+        <Typography onClick={handleProfileClick} variant="h6" component="h1" sx={{ cursor: 'pointer' }}>
           {appTitle}
         </Typography>
       </Box>

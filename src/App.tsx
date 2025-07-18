@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import type { MenuItem } from './models/MenuItem';
 import { getMenuItems } from './config/routeConfig';
+import { createHandleNavClick } from './utils/handleNavClick';
 
 import {
   Box,
@@ -39,14 +40,7 @@ export default function MUILayout() {
     setMobileOpen(!mobileOpen);
   };
 
-  const handleMenuItemClick = (path: string) => {
-    navigate(path);
-    
-    // Close mobile drawer when item is clicked
-    if (isMobile) {
-      setMobileOpen(false);
-    }
-  };
+  const handleMenuItemClick = createHandleNavClick();
 
   const sideBarProps = <Sidebar 
             menuItems={menuItems} 

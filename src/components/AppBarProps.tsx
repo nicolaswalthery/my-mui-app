@@ -2,17 +2,13 @@ import React from 'react';
 import { AppBar, Toolbar, IconButton, Typography } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import AvatarWithCircleProps from './AvatarWithCircleProps';
-import { useNavigate } from 'react-router-dom';
+import { createHandleNavClick } from '../utils/handleNavClick';
 import { AppRouteEnum } from '../enums/AppRouteEnum';
 
 interface AppBarProps {drawerWidth: number; pageTitle: string, profileTitle: string, onDrawerToggle: () => void;}
 
-
 const AppBarProps: React.FC<AppBarProps> = ({ drawerWidth, pageTitle, profileTitle, onDrawerToggle }) => {
-    const navigate = useNavigate();
-    const handleProfileClick = () => {
-        navigate(AppRouteEnum.Profile);
-    };
+    const handleProfileClick = createHandleNavClick();
     return(
             <AppBar
                 position="fixed"
@@ -43,7 +39,7 @@ const AppBarProps: React.FC<AppBarProps> = ({ drawerWidth, pageTitle, profileTit
                     {pageTitle}
                 </Typography>
                 <IconButton
-                    onClick={handleProfileClick}
+                    onClick={() => handleProfileClick?.(AppRouteEnum.Profile)}
                     sx={{ 
                         p: 0,
                         '&:hover': {
