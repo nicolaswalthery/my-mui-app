@@ -19,7 +19,7 @@
     "strict": true,
     "noUnusedLocals": true,
     "noUnusedParameters": true,
-    // "erasableSyntaxOnly": true,  // This option prevent from coding regular enum, so it is commented out
+    "erasableSyntaxOnly": true,  // This option prevent from coding regular enum, so it is commented out
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true
   },
