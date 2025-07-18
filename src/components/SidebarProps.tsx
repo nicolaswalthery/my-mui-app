@@ -7,7 +7,11 @@ import {
   ListItemIcon,
   ListItemText,
   Typography,
+  IconButton
 } from '@mui/material';
+
+import { useNavigate } from 'react-router-dom';
+import { AppRouteEnum } from '../enums/AppRouteEnum';
 
 interface MenuItem {
   text: string;
@@ -22,6 +26,10 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ menuItems, appTitle, onItemClick }) => {
+  const navigate = useNavigate();
+    const handleProfileClick = () => {
+        navigate(AppRouteEnum.Home);
+    };
   return (
     <Box sx={{ bgcolor: 'background.paper', height: '100%' }}>
       <Box
@@ -35,9 +43,20 @@ const Sidebar: React.FC<SidebarProps> = ({ menuItems, appTitle, onItemClick }) =
           minHeight: 64,
         }}
       >
-        <Typography variant="h6" component="h1">
-          {appTitle}
-        </Typography>
+        <IconButton
+                    onClick={handleProfileClick}
+                    sx={{ 
+                        p: 0,
+                        '&:hover': {
+                            opacity: 0.8
+                        }
+                    }}
+                >
+          <Typography variant="h6" component="h1">
+            {appTitle}
+          </Typography>
+        </IconButton>
+        
       </Box>
       <List>
         {menuItems.map((item) => (
