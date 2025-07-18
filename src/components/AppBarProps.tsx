@@ -2,11 +2,18 @@ import React from 'react';
 import { AppBar, Toolbar, IconButton, Typography } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import AvatarWithCircleProps from './AvatarWithCircleProps';
+import { useNavigate } from 'react-router-dom';
+import { AppRouteEnum } from '../enums/AppRouteEnum';
 
 interface AppBarProps {drawerWidth: number; pageTitle: string, profileTitle: string, onDrawerToggle: () => void;}
-  
+
+
 const AppBarProps: React.FC<AppBarProps> = ({ drawerWidth, pageTitle, profileTitle, onDrawerToggle }) => {
-        return(
+    const navigate = useNavigate();
+    const handleProfileClick = () => {
+        navigate(AppRouteEnum.Profile);
+    };
+    return(
             <AppBar
                 position="fixed"
                 sx={{
@@ -15,28 +22,38 @@ const AppBarProps: React.FC<AppBarProps> = ({ drawerWidth, pageTitle, profileTit
                 }}
             >
             <Toolbar>
-            <IconButton
-                color="inherit"
-                aria-label="open drawer"
-                edge="start"
-                onClick={onDrawerToggle}
-                sx={{ mr: 2, display: { md: 'none' } }}
-            >
-                <MenuIcon />
-            </IconButton>
-            <Typography 
-                variant="h6" 
-                noWrap 
-                component="div" 
-                sx={{ 
-                flexGrow: 1,
-                textAlign: 'center'
-                }}
-            >
-                {pageTitle}
-            </Typography>
-            <AvatarWithCircleProps profileTitle={profileTitle} variant="border"/>
-        </Toolbar>
+                <IconButton
+                    color="inherit"
+                    aria-label="open drawer"
+                    edge="start"
+                    onClick={onDrawerToggle}
+                    sx={{ mr: 2, display: { md: 'none' } }}
+                >
+                    <MenuIcon />
+                </IconButton>
+                <Typography 
+                    variant="h6" 
+                    noWrap 
+                    component="div" 
+                    sx={{ 
+                    flexGrow: 1,
+                    textAlign: 'center'
+                    }}
+                >
+                    {pageTitle}
+                </Typography>
+                <IconButton
+                    onClick={handleProfileClick}
+                    sx={{ 
+                        p: 0,
+                        '&:hover': {
+                            opacity: 0.8
+                        }
+                    }}
+                >
+                    <AvatarWithCircleProps profileTitle={profileTitle} variant="border"/>
+                </IconButton>
+            </Toolbar>
         </AppBar>
         );
     };

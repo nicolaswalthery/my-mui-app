@@ -7,6 +7,7 @@ import { AppRouteEnum } from './enums/AppRouteEnum';
 import Dashboard from './pages/Dashboard';
 import Home from './pages/Home';
 import Settings from './pages/Settings';
+import Profile from './pages/Profile';
 
 const AppRouter: React.FC = () => {
   return (
@@ -16,6 +17,7 @@ const AppRouter: React.FC = () => {
           <Route index element={<Home />} />
           <Route path={AppRouteEnum.Settings} element={<Settings />} />
           <Route path={AppRouteEnum.Dashboard} element={<Dashboard />} />
+          <Route path={AppRouteEnum.Profile} element={<Profile />} />
         </Route>
       </Routes>
     </Router>
