@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import App from './App';
+import { AppRouteEnum } from './enums/AppRouteEnum';
 
 // Pages
 import Dashboard from './pages/Dashboard';
@@ -11,10 +12,10 @@ const AppRouter: React.FC = () => {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<App />}>
+        <Route path={AppRouteEnum.Dashboard} element={<App />}>
           <Route index element={<Dashboard />} />
-          <Route path="home" element={<Home />} />
-          <Route path="settings" element={<Settings />} />
+          <Route path={AppRouteEnum.Home} element={<Home />} />
+          <Route path={AppRouteEnum.Settings} element={<Settings />} />
         </Route>
       </Routes>
     </Router>
