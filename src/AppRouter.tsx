@@ -1,3 +1,5 @@
+// src/AppRouter.tsx
+
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import App from './App';
@@ -10,16 +12,28 @@ import Settings from './pages/Settings';
 import Profile from './pages/Profile';
 import Auth from './pages/Auth';
 
+import ProtectedRoute from './components/ProtectedRoute';
+
 const AppRouter: React.FC = () => {
   return (
     <Router>
       <Routes>
-        <Route path={AppRouteEnum.Home} element={<App />}>
+        {/* Public route */}
+        <Route path={AppRouteEnum.Auth} element={<Auth />} />
+
+        {/* Protected area */}
+        <Route
+          path={AppRouteEnum.Home}
+          element={
+            <ProtectedRoute>
+              <App />
+            </ProtectedRoute>
+          }
+        >
           <Route index element={<Home />} />
           <Route path={AppRouteEnum.Settings} element={<Settings />} />
           <Route path={AppRouteEnum.Dashboard} element={<Dashboard />} />
           <Route path={AppRouteEnum.Profile} element={<Profile />} />
-          <Route path={AppRouteEnum.Auth} element={<Auth />} />
         </Route>
       </Routes>
     </Router>

@@ -1,4 +1,8 @@
 import React, { useState } from 'react';
+import { UserStorageManager } from '../utils/UserStorageManager';
+import type { UserSessionModel } from '../models/UserSessionModel';
+import { UserRoleEnum } from '../enums/UserRoleEnum';
+
 import {
   Box,
   Button,
@@ -14,8 +18,16 @@ const Login: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Logging in with', { email, password });
-    // TODO: handle authentication logic
+    
+    const userData : UserSessionModel = {
+        email: email,
+        id : Date.now(),
+        firstName: 'Fake', 
+        lastName: 'User',
+        role: UserRoleEnum.Admin,
+    };
+
+    UserStorageManager.saveUser(userData);
   };
 
   return (
