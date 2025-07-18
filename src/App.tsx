@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
+import type { MenuItem } from './types/MenuItem';
+import { getMenuItems } from './config/routeConfig';
 
 import {
   Box,
@@ -9,29 +11,14 @@ import {
   useTheme,
   useMediaQuery,
 } from '@mui/material';
-import {
-  Menu as MenuIcon,
-  Dashboard,
-  Home,
-  Settings,
-} from '@mui/icons-material';
+
 import Sidebar from './components/SidebarProps';
 import AppBarProps from './components/AppBarProps';
 import FooterProps from './components/FooterProps';
 
 const drawerWidth = 240;
 
-interface MenuItem {
-  text: string;
-  icon: React.ComponentType;
-  path: string;
-}
-
-const menuItems: MenuItem[] = [
-  { text: 'Dashboard', icon: Dashboard, path: '/' },
-  { text: 'Home', icon: Home, path: '/home' },
-  { text: 'Auth', icon: Settings, path: '/auth' },
-];
+const menuItems: MenuItem[] = getMenuItems(['admin', 'user']);
 
 const defaultAppTitle = 'MUI APP';
 
