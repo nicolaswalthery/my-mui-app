@@ -1,3 +1,5 @@
+import type { UserRoleEnum } from "./UserRoleEnum";
+
 export const AppRouteEnum = {
   Dashboard: '/',
   Home: '/home',
