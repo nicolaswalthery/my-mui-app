@@ -38,7 +38,7 @@ export namespace AppRoute {
   }
 
   export function getAllRoutes(): AppRoute[] {
-    return Object.values(AppRoute);
+    return Object.values(AppRoute).filter(v => typeof v === 'string') as AppRoute[];
   }
 }
 
