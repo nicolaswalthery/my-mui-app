@@ -7,7 +7,6 @@ import {
   ListItemIcon,
   ListItemText,
   Typography,
-  IconButton
 } from '@mui/material';
 
 import { useNavigate } from 'react-router-dom';
@@ -43,20 +42,9 @@ const Sidebar: React.FC<SidebarProps> = ({ menuItems, appTitle, onItemClick }) =
           minHeight: 64,
         }}
       >
-        <IconButton
-                    onClick={handleProfileClick}
-                    sx={{ 
-                        p: 0,
-                        '&:hover': {
-                            opacity: 0.8
-                        }
-                    }}
-                >
-          <Typography variant="h6" component="h1">
-            {appTitle}
-          </Typography>
-        </IconButton>
-        
+        <Typography onClick={handleProfileClick} variant="h6" component="h1">
+          {appTitle}
+        </Typography>
       </Box>
       <List>
         {menuItems.map((item) => (
