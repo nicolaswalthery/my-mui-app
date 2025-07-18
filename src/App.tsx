@@ -25,9 +25,7 @@ const defaultAppTitle = 'MUI APP';
 
 export default function MUILayout() {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const [mobileOpen, setMobileOpen] = useState(false);
-  const navigate = useNavigate();
   const location = useLocation();
 
   // Get page title based on current route
