@@ -4,7 +4,8 @@ export const AppRouteEnum = {
   Auth: '/auth',
   Settings: '/settings',
   Profile: '/profile',
-  Users: '/users'
+  Users: '/users',
+  Error: '/error'
 } as const;
 
 export type AppRouteEnum = typeof AppRouteEnum[keyof typeof AppRouteEnum];

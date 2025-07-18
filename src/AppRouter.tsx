@@ -13,6 +13,7 @@ import Profile from './pages/Profile';
 import Auth from './pages/Auth';
 import NotFound from './pages/NotFound';
 import ProtectedRoute from './components/ProtectedRoute';
+import ErrorPage from './pages/Error';
 
 const AppRouter: React.FC = () => {
   return (
@@ -35,6 +36,7 @@ const AppRouter: React.FC = () => {
           <Route path={AppRouteEnum.Settings} element={<Settings />} />
           <Route path={AppRouteEnum.Dashboard} element={<Dashboard />} />
           <Route path={AppRouteEnum.Profile} element={<Profile />} />
+          <Route path={AppRouteEnum.Error} element={<ErrorPage />} />
         </Route>
       </Routes>
     </Router>
