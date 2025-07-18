@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
-import type { MenuItem } from './types/MenuItem';
+import type { MenuItem } from './models/MenuItem';
 import { getMenuItems } from './config/routeConfig';
 
 import {

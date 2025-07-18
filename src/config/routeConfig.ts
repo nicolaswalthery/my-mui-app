@@ -2,14 +2,17 @@ import {
   Dashboard,
   Home,
   Settings,
-  People
+  People,
+  VpnKey
 } from '@mui/icons-material';
-import type { RouteConfig } from '../types/RouteConfig';
+import type { RouteConfig } from '../models/RouteConfig';
 
 // Pages
 import DashboardPage from '../pages/Dashboard';
 import HomePage from '../pages/Home';
-import AuthPage from '../pages/Settings';
+import SettingsPage from '../pages/Settings';
+import AuthPage from '../pages/Auth';
+import ProfilePage from '../pages/Profile';
 
 export const routeConfig: RouteConfig[] = [
   {
@@ -36,7 +39,7 @@ export const routeConfig: RouteConfig[] = [
     path: '/settings',
     displayName: 'Settings',
     icon: Settings,
-    component: AuthPage,
+    component: SettingsPage,
     showInMenu: true,
     requiresAuth: false,
     description: 'Application settings and preferences',
@@ -48,10 +51,19 @@ export const routeConfig: RouteConfig[] = [
     path: '/profile',
     displayName: 'Profile',
     icon: People,
-    component: AuthPage, // Reusing component for demo
-    showInMenu: false, // Hidden from menu
+    component: ProfilePage,
+    showInMenu: false,
     requiresAuth: true,
     description: 'User profile settings',
+  },
+  {
+    path: '/auth',
+    displayName: 'Authentication',
+    icon: VpnKey,
+    component: AuthPage,
+    showInMenu: false,
+    requiresAuth: false,
+    description: 'Authentication Page',
   },
 ];
 
