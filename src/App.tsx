@@ -1,15 +1,11 @@
 import React, { useState } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
+import AppRouter from './AppRouter';
 import {
-  AppBar,
   Box,
   CssBaseline,
   Drawer,
-  IconButton,
   Toolbar,
-  Typography,
-  Avatar,
-  Container,
   useTheme,
   useMediaQuery,
 } from '@mui/material';
@@ -18,7 +14,6 @@ import {
   Dashboard,
   Home,
   Settings,
-  Info,
 } from '@mui/icons-material';
 import Sidebar from './components/SidebarProps';
 import AppBarProps from './components/AppBarProps';
