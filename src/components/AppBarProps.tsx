@@ -34,12 +34,19 @@ const AppBarProps: React.FC<AppBarProps> = ({ drawerWidth, pageTitle, profileTit
             >
                 {pageTitle}
             </Typography>
-            <Avatar sx={{ bgcolor: 'secondary.main' }}>
-                <Typography variant="h6" sx={{ color: 'text.secondary' }}>
-                    {profileTitle}
-                </Typography>
-            </Avatar>
-            </Toolbar>
+            <Avatar 
+            sx={{ 
+                bgcolor: 'secondary.main',
+                outline: '2px solid',
+                outlineColor: 'primary.main',
+                outlineOffset: '2px'
+            }}
+            >
+          <Typography variant="h6" sx={{ color: 'text.secondary' }}>
+            {profileTitle}
+          </Typography>
+        </Avatar>
+        </Toolbar>
         </AppBar>
         );
     };
