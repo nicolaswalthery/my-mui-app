@@ -1,4 +1,5 @@
 import React from 'react';
+import { createHandleNavClick } from '../utils/handleNavClick';
 import {
   Box,
   List,
@@ -25,10 +26,7 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ menuItems, appTitle, onItemClick }) => {
-  const navigate = useNavigate();
-    const handleProfileClick = () => {
-        navigate(AppRouteEnum.Home);
-    };
+  const handleNavClick = createHandleNavClick();
   return (
     <Box sx={{ bgcolor: 'background.paper', height: '100%' }}>
       <Box
@@ -42,7 +40,7 @@ const Sidebar: React.FC<SidebarProps> = ({ menuItems, appTitle, onItemClick }) =
           minHeight: 64,
         }}
       >
-        <Typography onClick={handleProfileClick} variant="h6" component="h1" sx={{ cursor: 'pointer' }}>
+        <Typography onClick={() => handleNavClick?.(AppRouteEnum.Home)} variant="h6" component="h1" sx={{ cursor: 'pointer' }}>
           {appTitle}
         </Typography>
       </Box>
@@ -50,7 +48,7 @@ const Sidebar: React.FC<SidebarProps> = ({ menuItems, appTitle, onItemClick }) =
         {menuItems.map((item) => (
           <ListItem key={item.text} disablePadding>
             <ListItemButton
-              onClick={() => onItemClick?.(item.path)}
+              onClick={() => handleNavClick?.(item.path)}
               sx={{
                 color: 'text.primary',
                 '&:hover': {
