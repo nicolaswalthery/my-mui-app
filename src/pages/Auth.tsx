@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { UserStorageManager } from '../utils/UserStorageManager';
 import type { UserSessionModel } from '../models/UserSessionModel';
 import { UserRoleEnum } from '../enums/UserRoleEnum';
+import { useNavigate } from 'react-router-dom';
 
 import {
   Box,
@@ -11,11 +12,12 @@ import {
   Paper,
   Stack,
 } from '@mui/material';
+import { AppRouteEnum } from '../enums/AppRouteEnum';
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
+  const navigate = useNavigate();
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     
@@ -27,7 +29,11 @@ const Login: React.FC = () => {
         role: UserRoleEnum.Admin,
     };
 
+    //TODO : Check if auth OK 
+
     UserStorageManager.saveUser(userData);
+
+    navigate(AppRouteEnum.Home);
   };
 
   return (
