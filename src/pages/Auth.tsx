@@ -3,7 +3,8 @@ import { UserStorageManager } from '../utils/UserStorageManager';
 import type { UserSessionModel } from '../models/UserSessionModel';
 import { UserRoleEnum } from '../enums/UserRoleEnum';
 import { useNavigate } from 'react-router-dom';
-
+import { AppRouteEnum } from '../enums/AppRouteEnum';
+import { LoginStepEnum } from '../enums/LoginStepEnum';
 import {
   Box,
   Button,
@@ -12,13 +13,13 @@ import {
   Paper,
   Stack,
 } from '@mui/material';
-import { AppRouteEnum } from '../enums/AppRouteEnum';
+
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [code, setCode] = useState('');
-  const [step, setStep] = useState<'login' | 'verify'>('login');
+  const [step, setStep] = useState<LoginStepEnum>(LoginStepEnum.Login);
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
   const handleLogin = (e: React.FormEvent) => {
