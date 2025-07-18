@@ -11,7 +11,7 @@ import Home from './pages/Home';
 import Settings from './pages/Settings';
 import Profile from './pages/Profile';
 import Auth from './pages/Auth';
-
+import NotFound from './pages/NotFound';
 import ProtectedRoute from './components/ProtectedRoute';
 
 const AppRouter: React.FC = () => {
@@ -20,6 +20,7 @@ const AppRouter: React.FC = () => {
       <Routes>
         {/* Public route */}
         <Route path={AppRouteEnum.Auth} element={<Auth />} />
+        <Route path="*" element={<NotFound />} />
 
         {/* Protected area */}
         <Route
