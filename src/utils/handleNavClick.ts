@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useMediaQuery } from '@mui/material';
 
 export function createHandleNavClick() {
-  const theme = useTheme();
+    const theme = useTheme();
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
     const [mobileOpen, setMobileOpen] = useState(false);
     const navigate = useNavigate();
