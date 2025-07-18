@@ -1,6 +1,6 @@
 export const AppRouteEnum = {
-  Dashboard: '/',
-  Home: '/home',
+  Dashboard: '/dashboard',
+  Home: '/',
   Auth: '/auth',
   Settings: '/settings',
   Profile: '/profile',

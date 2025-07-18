@@ -12,10 +12,10 @@ const AppRouter: React.FC = () => {
   return (
     <Router>
       <Routes>
-        <Route path={AppRouteEnum.Dashboard} element={<App />}>
-          <Route index element={<Dashboard />} />
-          <Route path={AppRouteEnum.Home} element={<Home />} />
+        <Route path={AppRouteEnum.Home} element={<App />}>
+          <Route index element={<Home />} />
           <Route path={AppRouteEnum.Settings} element={<Settings />} />
+          <Route path={AppRouteEnum.Dashboard} element={<Dashboard />} />
         </Route>
       </Routes>
     </Router>

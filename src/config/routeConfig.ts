@@ -13,7 +13,7 @@ import AuthPage from '../pages/Settings';
 
 export const routeConfig: RouteConfig[] = [
   {
-    path: '/',
+    path: '/dashboard',
     displayName: 'Dashboard',
     icon: Dashboard,
     component: DashboardPage,
@@ -23,7 +23,7 @@ export const routeConfig: RouteConfig[] = [
     order: 2,
   },
   {
-    path: '/home',
+    path: '/',
     displayName: 'Home',
     icon: Home,
     component: HomePage,
