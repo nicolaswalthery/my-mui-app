@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import type { MenuItem } from './models/MenuItem';
 import { getMenuItems } from './config/routeConfig';
-import { createHandleNavClick } from './utils/handleNavClick';
+import { useHandleNavClick } from './utils/HandleNavClick';
 
 import {
   Box,
@@ -31,14 +31,18 @@ export default function MUILayout() {
   // Get page title based on current route
   const getPageTitle = () => {
     const currentItem = menuItems.find(item => item.path === location.pathname);
-    return currentItem ? currentItem.text : 'Page';
+    return currentItem ? currentItem.text : ' ! Set a Page Title ! ';
   };
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
   };
 
-  const handleMenuItemClick = createHandleNavClick();
+  const handleDrawerClose = () => {
+    setMobileOpen(false);
+  };
+
+  const handleMenuItemClick = useHandleNavClick(handleDrawerClose);
 
   const sideBarProps = <Sidebar 
             menuItems={menuItems} 
