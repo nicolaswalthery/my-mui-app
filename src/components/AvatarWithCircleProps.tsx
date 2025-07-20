@@ -21,7 +21,7 @@ const AvatarWithCircle: React.FC<AvatarWithCircleProps> = ({
                 outlineOffset: '2px'
             }}
       >
-        <Typography variant="h6" sx={{ color: 'text.secondary' }}>
+        <Typography variant="h6" sx={{ color: 'primary.contrastText' }}>
           {profileTitle}
         </Typography>
       </Avatar>

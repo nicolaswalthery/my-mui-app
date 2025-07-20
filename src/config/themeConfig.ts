@@ -5,25 +5,77 @@ export const lightTheme = createTheme({
   palette: {
     mode: 'light',
     primary: {
-      main: '#049ac0ff', 
+      main: '#1976d2', // bleu doux
     },
     secondary: {
-      main: '#049ac0ff', 
+      main: '#1976d2',
     },
     background: {
-      default: '#f1f1f1ff', 
-      paper: '#f9fafbff',
+      default: '#f5f5f5', // fond clair standard
+      paper: '#ffffff',
     },
     text: {
-      primary: '#1f2937',
-      secondary: '#e6e6e6ff',
+      primary: '#1e1e1e',
+      secondary: '#424242',
     },
   },
   typography: {
     fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
+    fontSize: 14,
+    button: {
+      textTransform: 'none',
+      fontWeight: 500,
+    },
   },
   shape: {
     borderRadius: 8,
+  },
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          backgroundColor: '#f5f5f5',
+        },
+      },
+    },
+    MuiDrawer: {
+      styleOverrides: {
+        paper: {
+          backgroundColor: '#ffffff',
+          color: '#1e1e1e',
+        },
+      },
+    },
+    MuiListItemIcon: {
+      styleOverrides: {
+        root: {
+          color: '#1e1e1e',
+        },
+      },
+    },
+    MuiAppBar: {
+      styleOverrides: {
+        root: {
+          backgroundColor: '#ffffff',
+          color: '#1e1e1e',
+          borderBottom: '1px solid #e0e0e0',
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: 8,
+        },
+      },
+    },
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          backgroundImage: 'none',
+        },
+      },
+    },
   },
 });
 
@@ -32,47 +84,73 @@ export const darkTheme = createTheme({
   palette: {
     mode: 'dark',
     primary: {
-      main: '#049ac0ff',
+      main: '#1976d2', 
     },
     secondary: {
-      main: '#049ac0ff',
+      main: '#1976d2',
     },
     background: {
-      default: '#161616',
+      default: '#121212', // plus standard dans MUI
       paper: '#1e1e1e',
     },
     text: {
-      primary: '#c4c4c4ff',
-      secondary: '#f5f5f5ff',
+      primary: '#e0e0e0', 
+      secondary: '#bdbdbd',
     },
   },
   typography: {
     fontFamily: '"Inter", "Roboto", "Helvetica", "Arial", sans-serif',
+    fontSize: 14,
+    button: {
+      textTransform: 'none',
+      fontWeight: 500,
+    },
   },
   shape: {
     borderRadius: 8,
   },
   components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        body: {
+          backgroundColor: '#121212',
+        },
+      },
+    },
     MuiDrawer: {
       styleOverrides: {
         paper: {
-          backgroundColor: 'var(--mui-palette-background-paper)',
-          color: 'var(--mui-palette-text-primary)',
+          backgroundColor: '#1e1e1e',
+          color: '#e0e0e0',
         },
       },
     },
     MuiListItemIcon: {
       styleOverrides: {
         root: {
-          color: 'var(--mui-palette-text-primary)',
+          color: '#e0e0e0',
         },
       },
     },
     MuiAppBar: {
       styleOverrides: {
         root: {
-          backgroundColor: 'var(--mui-palette-background-paper)',
-          color: 'var(--mui-palette-text-primary)',
+          backgroundColor: '#1e1e1e',
+          color: '#e0e0e0',
+        },
+      },
+    },
+    MuiButton: {
+      styleOverrides: {
+        root: {
+          borderRadius: 8,
+        },
+      },
+    },
+    MuiPaper: {
+      styleOverrides: {
+        root: {
+          backgroundImage: 'none', // supprime le gradient par défaut
         },
       },
     },
