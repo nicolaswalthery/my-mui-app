@@ -14,6 +14,7 @@ import Auth from './pages/Auth';
 import NotFound from './pages/NotFound';
 import ProtectedRoute from './components/ProtectedRoute';
 import ErrorPage from './pages/Error';
+import KanbanBoard from './pages/KanbanBoard';
 
 const AppRouter: React.FC = () => {
   return (
@@ -37,6 +38,7 @@ const AppRouter: React.FC = () => {
           <Route path={AppRouteEnum.Dashboard} element={<Dashboard />} />
           <Route path={AppRouteEnum.Profile} element={<Profile />} />
           <Route path={AppRouteEnum.Error} element={<ErrorPage />} />
+          <Route path={AppRouteEnum.KanbanBoard} element={<KanbanBoard />} />
         </Route>
       </Routes>
     </Router>

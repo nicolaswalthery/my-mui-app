@@ -14,6 +14,7 @@ import HomePage from '../pages/Home';
 import SettingsPage from '../pages/Settings';
 import AuthPage from '../pages/Auth';
 import ProfilePage from '../pages/Profile';
+import KanbanBoard from '../pages/KanbanBoard';
 
 export const routeConfig: RouteConfig[] = [
   {
@@ -65,6 +66,15 @@ export const routeConfig: RouteConfig[] = [
     showInMenu: false,
     requiresAuth: false,
     description: 'Authentication Page',
+  },
+  {
+    path: '/kanban-board',
+    displayName: 'Kanban Board',
+    icon: Dashboard,
+    component: KanbanBoard,
+    showInMenu: true,
+    requiresAuth: false,
+    description: 'Kanban Board for task management',
   },
 ];
 
