@@ -318,7 +318,7 @@ const KanbanBoard: React.FC<KanbanBoardProps> = ({
 
               {/* Add Item Form */}
               {addingItem === column.id ? (
-                <Card sx={{ bgcolor: 'grey.50' }}>
+                <Card sx={{ bgcolor: 'background.paper' }}>
                   <CardContent sx={{ p: 2 }}>
                     <Stack spacing={2}>
                       <TextField
