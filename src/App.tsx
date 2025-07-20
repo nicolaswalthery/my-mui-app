@@ -9,8 +9,7 @@ import {
   CssBaseline,
   Drawer,
   Toolbar,
-  useTheme,
-  useMediaQuery,
+  useTheme
 } from '@mui/material';
 
 import Sidebar from './components/SidebarProps';
