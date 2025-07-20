@@ -2,13 +2,13 @@ import React from 'react';
 import { AppBar, Toolbar, IconButton, Typography } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
 import AvatarWithCircleProps from './AvatarWithCircleProps';
-import { createHandleNavClick } from '../utils/handleNavClick';
+import { useHandleNavClick } from '../utils/HandleNavClick';
 import { AppRouteEnum } from '../enums/AppRouteEnum';
 
 interface AppBarProps {drawerWidth: number; pageTitle: string, profileTitle: string, onDrawerToggle: () => void;}
 
 const AppBarProps: React.FC<AppBarProps> = ({ drawerWidth, pageTitle, profileTitle, onDrawerToggle }) => {
-    const handleProfileClick = createHandleNavClick();
+    const handleProfileClick = useHandleNavClick();
     return(
             <AppBar
                 position="fixed"

@@ -1,5 +1,5 @@
 import React from 'react';
-import { createHandleNavClick } from '../utils/handleNavClick';
+import { useHandleNavClick } from '../utils/HandleNavClick';
 import {
   Box,
   List,
@@ -10,7 +10,6 @@ import {
   Typography,
 } from '@mui/material';
 
-import { useNavigate } from 'react-router-dom';
 import { AppRouteEnum } from '../enums/AppRouteEnum';
 
 interface MenuItem {
@@ -26,7 +25,8 @@ interface SidebarProps {
 }
 
 const Sidebar: React.FC<SidebarProps> = ({ menuItems, appTitle, onItemClick }) => {
-  const handleNavClick = createHandleNavClick();
+  // Use the passed onItemClick function which already handles mobile closing
+  const handleNavClick = onItemClick || useHandleNavClick();
   return (
     <Box sx={{ bgcolor: 'background.paper', height: '100%' }}>
       <Box
