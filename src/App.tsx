@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import type { MenuItem } from './models/MenuItem';
-import { getMenuItems } from './config/routeConfig';
+import { getMenuItems, useCurrentPageTitle } from './config/routeConfig';
 import { useHandleNavClick } from './utils/HandleNavClick';
 
 import {
@@ -23,15 +23,7 @@ const menuItems: MenuItem[] = getMenuItems(['admin', 'user']);
 const defaultAppTitle = 'MUI APP';
 
 export default function MUILayout() {
-  const theme = useTheme();
   const [mobileOpen, setMobileOpen] = useState(false);
-  const location = useLocation();
-
-  // Get page title based on current route
-  const getPageTitle = () => {
-    const currentItem = menuItems.find(item => item.path === location.pathname);
-    return currentItem ? currentItem.text : ' ! Set a Page Title ! ';
-  };
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -55,7 +47,7 @@ export default function MUILayout() {
       
       <AppBarProps
         drawerWidth={drawerWidth}
-        pageTitle={getPageTitle()}
+        pageTitle={useCurrentPageTitle()}
         profileTitle="JD"
         onDrawerToggle={handleDrawerToggle}
       />

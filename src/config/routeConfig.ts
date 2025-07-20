@@ -6,6 +6,7 @@ import {
   VpnKey
 } from '@mui/icons-material';
 import type { RouteConfig } from '../models/RouteConfig';
+import { useLocation } from 'react-router-dom';
 
 // Pages
 import DashboardPage from '../pages/Dashboard';
@@ -71,6 +72,11 @@ export const routeConfig: RouteConfig[] = [
 // UTILITY FUNCTIONS
 // ========================================
 
+export const useCurrentPageTitle = () => {
+  const location = useLocation();
+  return getPageTitle(location.pathname);
+};
+
 export const getMenuItems = (userRoles?: string[]) => {
   return routeConfig
     .filter(route => {
@@ -100,12 +106,12 @@ export const getRouteByPath = (path: string): RouteConfig | undefined => {
 
 export const getPageTitle = (pathname: string): string => {
   const route = getRouteByPath(pathname);
-  return route ? route.displayName : 'Page';
+  return route ? route.displayName : ' ! Set a Page Title ! ';
 };
 
 export const getPageDescription = (pathname: string): string => {
   const route = getRouteByPath(pathname);
-  return route?.description || '';
+  return route?.description || ' ! Set a Page Description ! ';
 };
 
 export const isRouteAuthorized = (path: string, userRoles?: string[]): boolean => {
