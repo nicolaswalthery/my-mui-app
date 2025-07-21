@@ -8,8 +8,7 @@ import {
   Box,
   CssBaseline,
   Drawer,
-  Toolbar,
-  useTheme
+  Toolbar
 } from '@mui/material';
 
 import Sidebar from './components/Sidebar';

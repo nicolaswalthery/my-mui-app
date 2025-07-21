@@ -2,33 +2,33 @@ import React, { createContext, useContext, useState, type ReactNode } from 'reac
 import { ThemeProvider as MUIThemeProvider } from '@mui/material/styles';
 import CssBaseline from '@mui/material/CssBaseline';
 import { lightTheme, darkTheme } from '../config/themeConfig';
+import { ThemeModeEnum } from '../enums/ThemeModeEnum';
 
-type ThemeMode = 'light' | 'dark';
 
 interface ThemeContextType {
-  themeMode: ThemeMode;
+  themeMode: ThemeModeEnum;
   toggleTheme: () => void;
-  setThemeMode: (mode: ThemeMode) => void;
+  setThemeMode: (mode: ThemeModeEnum) => void;
 }
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
 interface ThemeProviderProps {
   children: React.ReactNode;
-  defaultMode?: ThemeMode;
+  defaultMode?: ThemeModeEnum;
 }
 
 export const ThemeProvider: React.FC<ThemeProviderProps> = ({ 
   children, 
-  defaultMode = 'dark' 
+  defaultMode = ThemeModeEnum.Dark 
 }) => {
-  const [themeMode, setThemeMode] = useState<ThemeMode>(defaultMode);
+  const [themeMode, setThemeMode] = useState<ThemeModeEnum>(defaultMode);
 
   const toggleTheme = () => {
-    setThemeMode(prev => prev === 'light' ? 'dark' : 'light');
+    setThemeMode(prev => prev === ThemeModeEnum.Light ? ThemeModeEnum.Dark : ThemeModeEnum.Light);
   };
 
-  const currentTheme = themeMode === 'light' ? lightTheme : darkTheme;
+  const currentTheme = themeMode === ThemeModeEnum.Light ? lightTheme : darkTheme;
 
   const value: ThemeContextType = {
     themeMode,

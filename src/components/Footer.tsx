@@ -20,7 +20,7 @@ const Footer: React.FC<Footer> = ({ footerText }) => {
     >
       <Container maxWidth="lg">
         <Typography variant="body2" color="text.secondary" align="center">
-          {footerText}
+          © {new Date().getFullYear()} My MUI App {footerText}
         </Typography>
       </Container>
     </Box>
