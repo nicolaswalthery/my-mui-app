@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { UserStorageManager } from '../utils/UserStorageManager';
+import { UserStorageManager } from '../helpers/userStorageManager';
 import type { UserSessionModel } from '../models/UserSessionModel';
 import { UserRoleEnum } from '../enums/UserRoleEnum';
 import { useNavigate } from 'react-router-dom';

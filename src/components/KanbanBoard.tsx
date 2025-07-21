@@ -34,7 +34,7 @@ export interface KanbanColumn {
   color?: string;
 }
 
-interface KanbanBoardProps {
+interface KanbanBoard {
   columns: KanbanColumn[];
   onColumnsChange: (columns: KanbanColumn[]) => void;
   onItemMove?: (itemId: string, fromColumnId: string, toColumnId: string) => void;
@@ -44,7 +44,7 @@ interface KanbanBoardProps {
   onColumnTitleChange?: (columnId: string, newTitle: string) => void;
 }
 
-const KanbanBoard: React.FC<KanbanBoardProps> = ({
+const KanbanBoard: React.FC<KanbanBoard> = ({
   columns,
   onColumnsChange,
   onItemMove,

@@ -1,5 +1,5 @@
 import React from 'react';
-import { useHandleNavClick } from '../utils/HandleNavClick';
+import { useHandleNavClick } from '../helpers/handleNavClick';
 import {
   Box,
   List,
@@ -18,13 +18,13 @@ interface MenuItem {
   path: string;
 }
 
-interface SidebarProps {
+interface Sidebar {
   menuItems: MenuItem[];
   appTitle: string;
   onItemClick?: (path: string) => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ menuItems, appTitle, onItemClick }) => {
+const Sidebar: React.FC<Sidebar> = ({ menuItems, appTitle, onItemClick }) => {
   // Use the passed onItemClick function which already handles mobile closing
   const handleNavClick = onItemClick || useHandleNavClick();
   return (

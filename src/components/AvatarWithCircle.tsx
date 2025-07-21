@@ -1,12 +1,12 @@
 import React from 'react';
 import { Avatar, Box, Typography } from '@mui/material';
 
-interface AvatarWithCircleProps {
+interface AvatarWithCircle {
   profileTitle: string;
   variant?: 'border' | 'shadow' | 'outline' | 'wrapped' | 'animated';
 }
 
-const AvatarWithCircle: React.FC<AvatarWithCircleProps> = ({ 
+const AvatarWithCircle: React.FC<AvatarWithCircle> = ({ 
   profileTitle, 
   variant = 'border' 
 }) => {

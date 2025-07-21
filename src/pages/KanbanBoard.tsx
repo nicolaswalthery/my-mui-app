@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
 import { Box, Typography, Button, Stack } from '@mui/material';
 import { Refresh as RefreshIcon } from '@mui/icons-material';
-import KanbanBoard from '../components/KanbanBoardProps';
-import type { KanbanColumn, KanbanItem } from '../components/KanbanBoardProps';
+import KanbanBoard from '../components/KanbanBoard';
+import type { KanbanColumn, KanbanItem } from '../components/KanbanBoard';
 
 const KanbanPage: React.FC = () => {
   // Initial data

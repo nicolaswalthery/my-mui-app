@@ -1,13 +1,13 @@
 import React from 'react';
 import { AppBar, Toolbar, IconButton, Typography } from '@mui/material';
 import MenuIcon from '@mui/icons-material/Menu';
-import AvatarWithCircleProps from './AvatarWithCircleProps';
-import { useHandleNavClick } from '../utils/HandleNavClick';
+import AvatarWithCircleProps from './AvatarWithCircle';
+import { useHandleNavClick } from '../helpers/handleNavClick';
 import { AppRouteEnum } from '../enums/AppRouteEnum';
 
-interface AppBarProps {drawerWidth: number; pageTitle: string, profileTitle: string, onDrawerToggle: () => void;}
+interface CustomAppBar {drawerWidth: number; pageTitle: string, profileTitle: string, onDrawerToggle: () => void;}
 
-const AppBarProps: React.FC<AppBarProps> = ({ drawerWidth, pageTitle, profileTitle, onDrawerToggle }) => {
+const CustomAppBar: React.FC<CustomAppBar> = ({ drawerWidth, pageTitle, profileTitle, onDrawerToggle }) => {
     const handleProfileClick = useHandleNavClick();
     return(
             <AppBar
@@ -54,4 +54,4 @@ const AppBarProps: React.FC<AppBarProps> = ({ drawerWidth, pageTitle, profileTit
         );
     };
 
-export default AppBarProps;
+export default CustomAppBar;

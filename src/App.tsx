@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Outlet, useNavigate, useLocation } from 'react-router-dom';
 import type { MenuItem } from './models/MenuItem';
 import { getMenuItems, useCurrentPageTitle } from './config/routeConfig';
-import { useHandleNavClick } from './utils/HandleNavClick';
+import { useHandleNavClick } from './helpers/handleNavClick';
 
 import {
   Box,
@@ -12,9 +12,9 @@ import {
   useTheme
 } from '@mui/material';
 
-import Sidebar from './components/SidebarProps';
-import AppBarProps from './components/AppBarProps';
-import FooterProps from './components/FooterProps';
+import Sidebar from './components/Sidebar';
+import AppBarProps from './components/CustomAppBar';
+import FooterProps from './components/Footer';
 
 const drawerWidth = 240;
 
@@ -33,12 +33,10 @@ export default function MUILayout() {
     setMobileOpen(false);
   };
 
-  const handleMenuItemClick = useHandleNavClick(handleDrawerClose);
-
   const sideBarProps = <Sidebar 
             menuItems={menuItems} 
             appTitle={defaultAppTitle}
-            onItemClick={handleMenuItemClick}
+            onItemClick={useHandleNavClick(handleDrawerClose)}
           />
 
   return (

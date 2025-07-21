@@ -1,11 +1,11 @@
 import React from 'react';
 import { Box, Typography, Container } from '@mui/material';
 
-interface FooterProps {
+interface Footer {
   footerText: string;
 }
 
-const Footer: React.FC<FooterProps> = ({ footerText }) => {
+const Footer: React.FC<Footer> = ({ footerText }) => {
   return (
     <Box
       component="footer"
