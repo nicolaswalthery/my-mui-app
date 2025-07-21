@@ -6,7 +6,9 @@ export const AppRouteEnum = {
   Profile: '/profile',
   Users: '/users',
   Error: '/error',
-  KanbanBoard: '/kanban-board'
+  KanbanBoard: '/kanban-board',
+  EditProfile: '/edit-profile',
+
 } as const;
 
 export type AppRouteEnum = typeof AppRouteEnum[keyof typeof AppRouteEnum];

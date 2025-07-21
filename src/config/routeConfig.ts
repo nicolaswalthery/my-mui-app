@@ -15,6 +15,7 @@ import SettingsPage from '../pages/Settings';
 import AuthPage from '../pages/Auth';
 import ProfilePage from '../pages/Profile';
 import KanbanBoard from '../pages/KanbanBoard';
+import EditProfile from '../pages/EditProfile';
 
 export const routeConfig: RouteConfig[] = [
   {
@@ -75,6 +76,15 @@ export const routeConfig: RouteConfig[] = [
     showInMenu: true,
     requiresAuth: false,
     description: 'Kanban Board for task management',
+  },
+  {
+    path: '/edit-profile',
+    displayName: 'Edit Profile',
+    icon: People,
+    component: EditProfile,
+    showInMenu: false,
+    requiresAuth: true,
+    description: 'Edit user profile',
   },
 ];
 

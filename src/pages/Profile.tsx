@@ -9,6 +9,8 @@ import {
   Button,
 } from '@mui/material';
 import { UserStorageManager } from '../helpers/userStorageManager';
+import { useNavigate } from 'react-router-dom';
+import { AppRouteEnum } from '../enums/AppRouteEnum';
 
 const Profile: React.FC = () => {
   const user = {
@@ -17,8 +19,7 @@ const Profile: React.FC = () => {
     role: UserStorageManager.getUser()?.role,
     avatarUrl: '', // fallback to initials if empty
   };
-   UserStorageManager.getUser() || user;
-
+  const navigate = useNavigate();
 
   return (
     <Paper elevation={3} sx={{ p: 4, maxWidth: 600, margin: 'auto' }}>
@@ -42,7 +43,7 @@ const Profile: React.FC = () => {
 
         <Divider sx={{ width: '100%' }} />
 
-        <Button variant="contained" color="primary">
+        <Button variant="contained" color="primary" onClick={() => navigate(AppRouteEnum.EditProfile)}>
           Edit Profile
         </Button>
       </Stack>

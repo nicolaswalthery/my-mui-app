@@ -10,6 +10,7 @@ import Dashboard from './pages/Dashboard';
 import Home from './pages/Home';
 import Settings from './pages/Settings';
 import Profile from './pages/Profile';
+import EditProfile from './pages/EditProfile';
 import Auth from './pages/Auth';
 import NotFound from './pages/NotFound';
 import ProtectedRoute from './components/ProtectedRoute';
@@ -39,6 +40,7 @@ const AppRouter: React.FC = () => {
           <Route path={AppRouteEnum.Profile} element={<Profile />} />
           <Route path={AppRouteEnum.Error} element={<ErrorPage />} />
           <Route path={AppRouteEnum.KanbanBoard} element={<KanbanBoard />} />
+          <Route path={AppRouteEnum.EditProfile} element={<EditProfile />} />
         </Route>
       </Routes>
     </Router>
