@@ -45,7 +45,6 @@ export default function MUILayout() {
       <AppBarProps
         drawerWidth={drawerWidth}
         pageTitle={useCurrentPageTitle()}
-        profileTitle="JD"
         onDrawerToggle={handleDrawerToggle}
       />
         

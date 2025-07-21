@@ -4,10 +4,11 @@ import MenuIcon from '@mui/icons-material/Menu';
 import AvatarWithCircleProps from './AvatarWithCircle';
 import { useHandleNavClick } from '../helpers/handleNavClick';
 import { AppRouteEnum } from '../enums/AppRouteEnum';
+import { UserStorageManager } from '../helpers/userStorageManager';
 
-interface CustomAppBar {drawerWidth: number; pageTitle: string, profileTitle: string, onDrawerToggle: () => void;}
+interface CustomAppBar {drawerWidth: number; pageTitle: string, onDrawerToggle: () => void;}
 
-const CustomAppBar: React.FC<CustomAppBar> = ({ drawerWidth, pageTitle, profileTitle, onDrawerToggle }) => {
+const CustomAppBar: React.FC<CustomAppBar> = ({ drawerWidth, pageTitle, onDrawerToggle }) => {
     const handleProfileClick = useHandleNavClick();
     return(
             <AppBar
@@ -47,7 +48,7 @@ const CustomAppBar: React.FC<CustomAppBar> = ({ drawerWidth, pageTitle, profileT
                         }
                     }}
                 >
-                    <AvatarWithCircleProps profileTitle={profileTitle} variant="border"/>
+                    <AvatarWithCircleProps profileTitle={`${UserStorageManager.getUser()?.firstName.charAt(0)} ${UserStorageManager.getUser()?.lastName.charAt(0)}`} variant="border"/>
                 </IconButton>
             </Toolbar>
         </AppBar>

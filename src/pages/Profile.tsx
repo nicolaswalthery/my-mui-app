@@ -8,14 +8,17 @@ import {
   Stack,
   Button,
 } from '@mui/material';
+import { UserStorageManager } from '../helpers/userStorageManager';
 
 const Profile: React.FC = () => {
   const user = {
-    name: 'John Doe',
-    email: 'john.doe@example.com',
-    role: 'Admin',
+    name: `${UserStorageManager.getUser()?.firstName} ${UserStorageManager.getUser()?.lastName}`,
+    email: UserStorageManager.getUser()?.email,
+    role: UserStorageManager.getUser()?.role,
     avatarUrl: '', // fallback to initials if empty
   };
+   UserStorageManager.getUser() || user;
+
 
   return (
     <Paper elevation={3} sx={{ p: 4, maxWidth: 600, margin: 'auto' }}>
