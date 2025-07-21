@@ -12,7 +12,7 @@ import {
 } from '@mui/material';
 
 import Sidebar from './components/Sidebar';
-import AppBarProps from './components/CustomAppBar';
+import CustomAppBar from './components/CustomAppBar';
 import FooterProps from './components/Footer';
 
 const drawerWidth = 240;
@@ -42,7 +42,7 @@ export default function MUILayout() {
     <Box sx={{ display: 'flex' }}>
       <CssBaseline />
       
-      <AppBarProps
+      <CustomAppBar
         drawerWidth={drawerWidth}
         pageTitle={useCurrentPageTitle()}
         onDrawerToggle={handleDrawerToggle}
