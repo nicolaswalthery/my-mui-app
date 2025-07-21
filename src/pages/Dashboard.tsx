@@ -1,4 +1,5 @@
 import React from 'react';
+import FakeClientsDataTableModel from '../Mocks/FakeClientData.ts';
 import {
   Box,
   Typography,
@@ -24,15 +25,6 @@ const Dashboard: React.FC = () => {
     { title: 'Growth', value: '+23%', icon: TrendingUp, color: '#7c3aed' },
   ];
 
-const clients = [
-  { name: 'Jean', age: 30 },
-  { name: 'Lucie', age: 25 },
-];
-
-const columnsConfig = [
-  { key: 'name', label: 'Nom' },
-  { key: 'age', label: 'Âge' },
-];
 
   return (
     <Box>
@@ -80,7 +72,7 @@ const columnsConfig = [
         </Card>
       </Box>
     <Box sx={{ mt: 4 }}>
-      <DataTableGeneric data={clients} title="Utilisateurs" columnsConfig={columnsConfig} />
+      <DataTableGeneric data={FakeClientsDataTableModel.data} title="Clients" columnsConfig={FakeClientsDataTableModel.columns} />
     </Box>
     </Box>
   );
