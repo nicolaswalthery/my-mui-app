@@ -59,6 +59,7 @@ export const lightTheme = createTheme({
           backgroundColor: '#ffffff',
           color: '#1e1e1e',
           borderBottom: '1px solid #e0e0e0',
+          boxShadow: 'none'
         },
       },
     },
@@ -137,6 +138,7 @@ export const darkTheme = createTheme({
         root: {
           backgroundColor: '#1e1e1e',
           color: '#e0e0e0',
+          boxShadow: 'none'
         },
       },
     },

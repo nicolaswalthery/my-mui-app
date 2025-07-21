@@ -50,7 +50,7 @@ const Sidebar: React.FC<Sidebar> = ({ menuItems, appTitle, onItemClick }) => {
           p: 2,
           bgcolor: 'secondary.main',
           color: 'primary.contrastText',
-          minHeight: 64,
+          minHeight: 64
         }}>
           <Typography
             onClick={() => handleNavClick?.(AppRouteEnum.Home)}
