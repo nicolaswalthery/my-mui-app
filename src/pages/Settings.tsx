@@ -1,3 +1,4 @@
+// src/pages/Settings.tsx - Updated with i18n
 import React, { useState } from 'react';
 import {
   Box,
@@ -18,12 +19,15 @@ import {
 } from '@mui/material';
 import { Save, Restore } from '@mui/icons-material';
 import { useThemeMode } from '../theme/ThemeProvider';
+import { useI18n } from '../contexts/i18nContext';
+import { TranslationKeyEnum } from '../enums/TranslationKeyEnum';
+import LanguageSwitcher from '../components/LanguageSwitcher';
 
 const Settings: React.FC = () => {
-  const { themeMode, setThemeMode, toggleTheme } = useThemeMode();
+  const { themeMode, setThemeMode } = useThemeMode();
+  const { t } = useI18n();
   const [notifications, setNotifications] = useState(true);
   const [autoSave, setAutoSave] = useState(false);
-  const [language, setLanguage] = useState('fr');
   const [showAlert, setShowAlert] = useState(false);
 
   const handleSave = () => {
@@ -34,7 +38,7 @@ const Settings: React.FC = () => {
   return (
     <Box>
       <Typography variant="h4" gutterBottom>
-        Paramètres
+        {t(TranslationKeyEnum.Settings)}
       </Typography>
       <Typography variant="body1" color="text.secondary" paragraph>
         Configurez votre application selon vos préférences
@@ -42,7 +46,7 @@ const Settings: React.FC = () => {
 
       {showAlert && (
         <Alert severity="success" sx={{ mb: 3 }}>
-          Paramètres sauvegardés avec succès !
+          {t(TranslationKeyEnum.SettingsSaved)}
         </Alert>
       )}
 
@@ -51,31 +55,34 @@ const Settings: React.FC = () => {
           <Card>
             <CardContent>
               <Typography variant="h6" gutterBottom>
-                Apparence
+                {t(TranslationKeyEnum.Appearance)}
               </Typography>
               
               <FormControl component="fieldset" sx={{ mb: 3 }}>
-                <FormLabel component="legend">Thème</FormLabel>
+                <FormLabel component="legend">
+                  {t(TranslationKeyEnum.Theme)}
+                </FormLabel>
                 <RadioGroup
                   value={themeMode}
                   onChange={(e) => setThemeMode(e.target.value as 'light' | 'dark')}
                 >
-                  <FormControlLabel value="light" control={<Radio />} label="Clair" />
-                  <FormControlLabel value="dark" control={<Radio />} label="Sombre" />
+                  <FormControlLabel 
+                    value="light" 
+                    control={<Radio />} 
+                    label={t(TranslationKeyEnum.LightTheme)} 
+                  />
+                  <FormControlLabel 
+                    value="dark" 
+                    control={<Radio />} 
+                    label={t(TranslationKeyEnum.DarkTheme)} 
+                  />
                 </RadioGroup>
               </FormControl>
 
-              <FormControl component="fieldset">
-                <FormLabel component="legend">Langue</FormLabel>
-                <RadioGroup
-                  value={language}
-                  onChange={(e) => setLanguage(e.target.value)}
-                >
-                  <FormControlLabel value="fr" control={<Radio />} label="Français" />
-                  <FormControlLabel value="en" control={<Radio />} label="English" />
-                  <FormControlLabel value="es" control={<Radio />} label="Español" />
-                </RadioGroup>
-              </FormControl>
+              {/* Language Switcher */}
+              <Box sx={{ mt: 3 }}>
+                <LanguageSwitcher />
+              </Box>
             </CardContent>
           </Card>
         </Grid>
@@ -84,7 +91,7 @@ const Settings: React.FC = () => {
           <Card>
             <CardContent>
               <Typography variant="h6" gutterBottom>
-                Préférences
+                {t(TranslationKeyEnum.UserPreferences)}
               </Typography>
               
               <Box sx={{ mb: 2 }}>
@@ -95,7 +102,7 @@ const Settings: React.FC = () => {
                       onChange={(e) => setNotifications(e.target.checked)}
                     />
                   }
-                  label="Notifications"
+                  label={t(TranslationKeyEnum.Notifications)}
                 />
               </Box>
 
@@ -107,7 +114,7 @@ const Settings: React.FC = () => {
                       onChange={(e) => setAutoSave(e.target.checked)}
                     />
                   }
-                  label="Sauvegarde automatique"
+                  label={t(TranslationKeyEnum.AutoSave)}
                 />
               </Box>
 
@@ -119,15 +126,15 @@ const Settings: React.FC = () => {
               
               <TextField
                 fullWidth
-                label="Nom d'utilisateur"
-                defaultValue="John Doe"
+                label={t(TranslationKeyEnum.FirstName)}
+                defaultValue="John"
                 margin="normal"
                 size="small"
               />
               
               <TextField
                 fullWidth
-                label="Email"
+                label={t(TranslationKeyEnum.Email)}
                 defaultValue="john.doe@example.com"
                 margin="normal"
                 size="small"
@@ -143,7 +150,7 @@ const Settings: React.FC = () => {
           startIcon={<Save />}
           onClick={handleSave}
         >
-          Sauvegarder
+          {t(TranslationKeyEnum.Save)}
         </Button>
         <Button
           variant="outlined"
