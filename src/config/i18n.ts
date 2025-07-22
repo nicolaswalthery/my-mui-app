@@ -1,3 +1,4 @@
+// src/config/i18n.ts - Enhanced version
 import { SupportedLangEnum, TranslationKeyEnum } from '../enums/TranslationKeyEnum';
 
 const translations: Record<SupportedLangEnum, Record<TranslationKeyEnum, string>> = {
@@ -31,8 +32,8 @@ const translations: Record<SupportedLangEnum, Record<TranslationKeyEnum, string>
     [TranslationKeyEnum.VerificationCode]: 'Verification Code',
     [TranslationKeyEnum.EnterCode]: 'Enter Verification Code',
     [TranslationKeyEnum.VerifyCode]: 'Verify Code',
-    [TranslationKeyEnum.InvalidCredentials]: ' Invalid email or password',
-    [TranslationKeyEnum.InvalidCode]: ' Invalid or expired code',
+    [TranslationKeyEnum.InvalidCredentials]: '❌ Invalid email or password',
+    [TranslationKeyEnum.InvalidCode]: '❌ Invalid or expired code',
     
     // Profile
     [TranslationKeyEnum.FirstName]: 'First Name',
@@ -79,6 +80,11 @@ const translations: Record<SupportedLangEnum, Record<TranslationKeyEnum, string>
     [TranslationKeyEnum.GoHome]: 'Go Home',
     [TranslationKeyEnum.ReloadApp]: 'Reload the App',
     
+    // Additional Auth
+    [TranslationKeyEnum.BackToLogin]: 'Back to Login',
+    [TranslationKeyEnum.DemoVersion]: 'Demo Version',
+    [TranslationKeyEnum.AnyCredentialsWork]: 'Any email/password combination will work',
+    
     // Footer
     [TranslationKeyEnum.FooterText]: 'My MUI App',
   },
@@ -113,8 +119,8 @@ const translations: Record<SupportedLangEnum, Record<TranslationKeyEnum, string>
     [TranslationKeyEnum.VerificationCode]: 'Code de vérification',
     [TranslationKeyEnum.EnterCode]: 'Entrer le code de vérification',
     [TranslationKeyEnum.VerifyCode]: 'Vérifier le code',
-    [TranslationKeyEnum.InvalidCredentials]: 'Email ou mot de passe invalide',
-    [TranslationKeyEnum.InvalidCode]: 'Code invalide ou expiré',
+    [TranslationKeyEnum.InvalidCredentials]: '❌ Email ou mot de passe invalide',
+    [TranslationKeyEnum.InvalidCode]: '❌ Code invalide ou expiré',
     
     // Profile
     [TranslationKeyEnum.FirstName]: 'Prénom',
@@ -161,6 +167,11 @@ const translations: Record<SupportedLangEnum, Record<TranslationKeyEnum, string>
     [TranslationKeyEnum.GoHome]: 'Retour à l\'accueil',
     [TranslationKeyEnum.ReloadApp]: 'Recharger l\'application',
     
+    // Additional Auth
+    [TranslationKeyEnum.BackToLogin]: 'Retour à la connexion',
+    [TranslationKeyEnum.DemoVersion]: 'Version de démonstration',
+    [TranslationKeyEnum.AnyCredentialsWork]: 'N\'importe quelle combinaison email/mot de passe fonctionnera',
+    
     // Footer
     [TranslationKeyEnum.FooterText]: 'Mon App MUI',
   },
@@ -195,8 +206,8 @@ const translations: Record<SupportedLangEnum, Record<TranslationKeyEnum, string>
     [TranslationKeyEnum.VerificationCode]: 'Código de verificación',
     [TranslationKeyEnum.EnterCode]: 'Ingresa el código de verificación',
     [TranslationKeyEnum.VerifyCode]: 'Verificar código',
-    [TranslationKeyEnum.InvalidCredentials]: ' Email o contraseña inválidos',
-    [TranslationKeyEnum.InvalidCode]: 'Código inválido o expirado',
+    [TranslationKeyEnum.InvalidCredentials]: '❌ Email o contraseña inválidos',
+    [TranslationKeyEnum.InvalidCode]: '❌ Código inválido o expirado',
     
     // Profile
     [TranslationKeyEnum.FirstName]: 'Nombre',
@@ -243,6 +254,11 @@ const translations: Record<SupportedLangEnum, Record<TranslationKeyEnum, string>
     [TranslationKeyEnum.GoHome]: 'Ir al inicio',
     [TranslationKeyEnum.ReloadApp]: 'Recargar la aplicación',
     
+    // Additional Auth
+    [TranslationKeyEnum.BackToLogin]: 'Volver al inicio de sesión',
+    [TranslationKeyEnum.DemoVersion]: 'Versión de demostración',
+    [TranslationKeyEnum.AnyCredentialsWork]: 'Cualquier combinación de email/contraseña funcionará',
+    
     // Footer
     [TranslationKeyEnum.FooterText]: 'Mi App MUI',
   },
@@ -277,8 +293,8 @@ const translations: Record<SupportedLangEnum, Record<TranslationKeyEnum, string>
     [TranslationKeyEnum.VerificationCode]: 'Verifikationscode',
     [TranslationKeyEnum.EnterCode]: 'Verifikationscode eingeben',
     [TranslationKeyEnum.VerifyCode]: 'Code verifizieren',
-    [TranslationKeyEnum.InvalidCredentials]: ' Ungültige E-Mail oder Passwort',
-    [TranslationKeyEnum.InvalidCode]: ' Ungültiger oder abgelaufener Code',
+    [TranslationKeyEnum.InvalidCredentials]: '❌ Ungültige E-Mail oder Passwort',
+    [TranslationKeyEnum.InvalidCode]: '❌ Ungültiger oder abgelaufener Code',
     
     // Profile
     [TranslationKeyEnum.FirstName]: 'Vorname',
@@ -325,6 +341,11 @@ const translations: Record<SupportedLangEnum, Record<TranslationKeyEnum, string>
     [TranslationKeyEnum.GoHome]: 'Zur Startseite',
     [TranslationKeyEnum.ReloadApp]: 'App neu laden',
     
+    // Additional Auth
+    [TranslationKeyEnum.BackToLogin]: 'Zurück zur Anmeldung',
+    [TranslationKeyEnum.DemoVersion]: 'Demo-Version',
+    [TranslationKeyEnum.AnyCredentialsWork]: 'Jede E-Mail/Passwort-Kombination funktioniert',
+    
     // Footer
     [TranslationKeyEnum.FooterText]: 'Meine MUI App',
   },
@@ -357,8 +378,6 @@ export const getLanguageDisplayName = (lang: SupportedLangEnum): string => {
     [SupportedLangEnum.French]: 'Français',
     [SupportedLangEnum.Spanish]: 'Español',
     [SupportedLangEnum.German]: 'Deutsch',
-    [SupportedLangEnum.Arabic]: 'العربية',
-    [SupportedLangEnum.Hebrew]: 'עברית',
   };
   return displayNames[lang] || lang;
 };

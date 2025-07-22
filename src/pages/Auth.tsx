@@ -1,3 +1,4 @@
+// src/pages/Auth.tsx - Updated with i18n support
 import React, { useState } from 'react';
 import { UserStorageManager } from '../helpers/userStorageManager';
 import type { UserSessionModel } from '../models/UserSessionModel';
@@ -5,6 +6,9 @@ import { UserRoleEnum } from '../enums/UserRoleEnum';
 import { useNavigate } from 'react-router-dom';
 import { AppRouteEnum } from '../enums/AppRouteEnum';
 import { LoginStepEnum } from '../enums/LoginStepEnum';
+import { useI18n } from '../contexts/i18nContext';
+import { TranslationKeyEnum } from '../enums/TranslationKeyEnum';
+import LanguageSwitcher from '../components/LanguageSwitcher';
 import {
   Box,
   Button,
@@ -14,41 +18,43 @@ import {
   Stack,
 } from '@mui/material';
 
-
-const Login: React.FC = () => {
+const Auth: React.FC = () => {
+  const { t } = useI18n();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [code, setCode] = useState('');
   const [step, setStep] = useState<LoginStepEnum>(LoginStepEnum.Login);
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
+
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     
-    const userData : UserSessionModel = {
-        email: email,
-        id : Date.now(),
-        firstName: 'Fake', 
-        lastName: 'User',
-        role: UserRoleEnum.Admin,
+    const userData: UserSessionModel = {
+      email: email,
+      id: Date.now(),
+      firstName: 'Fake', 
+      lastName: 'User',
+      role: UserRoleEnum.Admin,
     };
 
-    //TODO : Check if auth OK 
+    // TODO: Check if auth OK 
     const isAuth = true; // Simulate authentication check
     if (isAuth) {
-      setStep('verify');
-    }
-    else {
-      setMessage('❌ Invalid email or password');
+      setStep(LoginStepEnum.Verify);
+      setMessage(''); // Clear any previous messages
+    } else {
+      setMessage(t(TranslationKeyEnum.InvalidCredentials));
     }
   };
 
   const handleCodeVerify = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    //Call to backend to verify code
+    // Call to backend to verify code
+    const isCodeValid = true; // Simulate code verification
 
-    if (true) { // Simulate code verification
+    if (isCodeValid) {
       const userData: UserSessionModel = {
         email,
         id: Date.now(),
@@ -60,12 +66,23 @@ const Login: React.FC = () => {
       UserStorageManager.saveUser(userData);
       navigate(AppRouteEnum.Home);
     } else {
-      setMessage('❌ Invalid or expired code');
+      setMessage(t(TranslationKeyEnum.InvalidCode));
     } 
   };
 
+  const getPageTitle = () => {
+    return step === LoginStepEnum.Login 
+      ? t(TranslationKeyEnum.Login) 
+      : t(TranslationKeyEnum.EnterCode);
+  };
 
-return (
+  const getSubmitButtonText = () => {
+    return step === LoginStepEnum.Login 
+      ? t(TranslationKeyEnum.SignIn) 
+      : t(TranslationKeyEnum.VerifyCode);
+  };
+
+  return (
     <Box
       display="flex"
       justifyContent="center"
@@ -75,16 +92,21 @@ return (
       px={2}
     >
       <Paper elevation={4} sx={{ p: 4, width: '100%', maxWidth: 400 }}>
+        {/* Language switcher at the top */}
+        <Box sx={{ mb: 3, display: 'flex', justifyContent: 'flex-end' }}>
+          <LanguageSwitcher variant="compact" showLabel={false} />
+        </Box>
+
         <Typography variant="h5" mb={3} textAlign="center">
-          {step === 'login' ? 'Login' : 'Enter Verification Code'}
+          {getPageTitle()}
         </Typography>
 
-        <form onSubmit={step === 'login' ? handleLogin : handleCodeVerify}>
+        <form onSubmit={step === LoginStepEnum.Login ? handleLogin : handleCodeVerify}>
           <Stack spacing={2}>
-            {step === 'login' ? (
+            {step === LoginStepEnum.Login ? (
               <>
                 <TextField
-                  label="Email"
+                  label={t(TranslationKeyEnum.Email)}
                   type="email"
                   variant="outlined"
                   value={email}
@@ -93,7 +115,7 @@ return (
                   fullWidth
                 />
                 <TextField
-                  label="Password"
+                  label={t(TranslationKeyEnum.Password)}
                   type="password"
                   variant="outlined"
                   value={password}
@@ -105,30 +127,66 @@ return (
             ) : (
               <>
                 <TextField
-                  label="Secret Code"
+                  label={t(TranslationKeyEnum.VerificationCode)}
                   type="text"
                   variant="outlined"
                   value={code}
                   onChange={(e) => setCode(e.target.value)}
                   required
                   fullWidth
+                  helperText={step === LoginStepEnum.Verify ? `${t(TranslationKeyEnum.EnterCode)}` : undefined}
                 />
               </>
             )}
             <Button type="submit" variant="contained" fullWidth>
-              {step === 'login' ? 'Sign In' : 'Verify Code'}
+              {getSubmitButtonText()}
             </Button>
           </Stack>
         </form>
 
+        {/* Back button for verification step */}
+        {step === LoginStepEnum.Verify && (
+          <Button
+            fullWidth
+            sx={{ mt: 1 }}
+            onClick={() => {
+              setStep(LoginStepEnum.Login);
+              setMessage('');
+              setCode('');
+            }}
+          >
+            {t(TranslationKeyEnum.Cancel)}
+          </Button>
+        )}
+
         {message && (
-          <Typography mt={2} textAlign="center" color="text.secondary">
+          <Typography 
+            mt={2} 
+            textAlign="center" 
+            color={message.includes('❌') ? 'error.main' : 'text.secondary'}
+            sx={{ 
+              p: 1, 
+              borderRadius: 1, 
+              bgcolor: message.includes('❌') ? 'error.light' : 'transparent',
+              color: message.includes('❌') ? 'error.contrastText' : 'text.secondary'
+            }}
+          >
             {message}
           </Typography>
         )}
+
+        {/* Welcome message for demo purposes */}
+        <Box sx={{ mt: 3, p: 2, bgcolor: 'background.paper', borderRadius: 1, border: 1, borderColor: 'divider' }}>
+          <Typography variant="caption" color="text.secondary" textAlign="center" display="block">
+            {t(TranslationKeyEnum.DemoVersion)}
+          </Typography>
+          <Typography variant="caption" color="text.secondary" textAlign="center" display="block">
+            {t(TranslationKeyEnum.AnyCredentialsWork)}
+          </Typography>
+        </Box>
       </Paper>
     </Box>
   );
 };
 
-export default Login;
+export default Auth;

@@ -1,3 +1,4 @@
+// src/enums/TranslationKeyEnum.ts - Enhanced version
 export const TranslationKeyEnum = {
   // Common UI
   Welcome: 'welcome',
@@ -76,19 +77,23 @@ export const TranslationKeyEnum = {
   GoHome: 'goHome',
   ReloadApp: 'reloadApp',
   
+  // Additional Auth
+  BackToLogin: 'backToLogin',
+  DemoVersion: 'demoVersion',
+  AnyCredentialsWork: 'anyCredentialsWork',
+  
   // Footer
   FooterText: 'footerText',
 } as const;
 
 export type TranslationKeyEnum = typeof TranslationKeyEnum[keyof typeof TranslationKeyEnum];
 
+// Supported languages Enum - Enhanced
 export const SupportedLangEnum = {
   English: 'en',
   French: 'fr',
   Spanish: 'es',
   German: 'de',
-  Arabic: 'ar',
-  Hebrew: 'he',
 } as const;
 
 export type SupportedLangEnum = typeof SupportedLangEnum[keyof typeof SupportedLangEnum];
@@ -99,6 +104,4 @@ export const LanguageDisplayNames: Record<SupportedLangEnum, string> = {
   [SupportedLangEnum.French]: 'Français',
   [SupportedLangEnum.Spanish]: 'Español',
   [SupportedLangEnum.German]: 'Deutsch',
-  [SupportedLangEnum.Arabic]: 'العربية',
-  [SupportedLangEnum.Hebrew]: 'עברית',
 };
