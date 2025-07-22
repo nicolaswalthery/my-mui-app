@@ -1,5 +1,10 @@
+// src/pages/Dashboard.tsx - Updated with i18n support
 import React from 'react';
 import FakeClientsDataTableModel from '../Mocks/FakeClientData.ts';
+import { useI18n } from '../contexts/i18nContext';
+import { TranslationKeyEnum } from '../enums/TranslationKeyEnum';
+import { useTranslation } from '../hooks/useTranslation';
+import LanguageSwitcher from '../components/LanguageSwitcher';
 import {
   Box,
   Typography,
@@ -18,26 +23,67 @@ import {
 import DataTableGeneric from '../components/generics/DataTableGeneric.tsx';
 
 const Dashboard: React.FC = () => {
+  const { t, formatCurrency } = useTranslation();
+
+  // Translated stats with proper currency formatting
   const stats = [
-    { title: 'Total Users', value: '1,234', icon: People, color: '#2563eb' },
-    { title: 'Sales', value: '$12,345', icon: AttachMoney, color: '#dc2626' },
-    { title: 'Orders', value: '567', icon: ShoppingCart, color: '#059669' },
-    { title: 'Growth', value: '+23%', icon: TrendingUp, color: '#7c3aed' },
+    { 
+      titleKey: TranslationKeyEnum.TotalUsers, 
+      value: '1,234', 
+      icon: People, 
+      color: '#2563eb' 
+    },
+    { 
+      titleKey: TranslationKeyEnum.Sales, 
+      value: formatCurrency(12345), // Use proper currency formatting
+      icon: AttachMoney, 
+      color: '#dc2626' 
+    },
+    { 
+      titleKey: TranslationKeyEnum.Orders, 
+      value: '567', 
+      icon: ShoppingCart, 
+      color: '#059669' 
+    },
+    { 
+      titleKey: TranslationKeyEnum.Growth, 
+      value: '+23%', 
+      icon: TrendingUp, 
+      color: '#7c3aed' 
+    },
   ];
 
+  // Create translated columns configuration for the data table
+  const translatedColumnsConfig = [
+    { key: 'name' as const, label: TranslationKeyEnum.Name },
+    { key: 'age' as const, label: TranslationKeyEnum.Age },
+    { key: 'email' as const, label: TranslationKeyEnum.Email },
+    { key: 'phone' as const, label: TranslationKeyEnum.Phone },
+    { key: 'city' as const, label: TranslationKeyEnum.City },
+    { key: 'createdAt' as const, label: TranslationKeyEnum.CreatedAt },
+    { key: 'status' as const, label: TranslationKeyEnum.Status },
+  ];
 
   return (
     <Box>
-      <Typography variant="h4" gutterBottom>
-        Dashboard
-      </Typography>
-      <Typography variant="body1" color="text.secondary" paragraph>
-        Bienvenue sur votre tableau de bord
-      </Typography>
+      {/* Header with language switcher */}
+      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 3 }}>
+        <Box>
+          <Typography variant="h4" gutterBottom>
+            {t(TranslationKeyEnum.Dashboard)}
+          </Typography>
+          <Typography variant="body1" color="text.secondary">
+            {t(TranslationKeyEnum.WelcomeToDashboard)}
+          </Typography>
+        </Box>
+        <Box sx={{ minWidth: 120 }}>
+          <LanguageSwitcher variant="compact" showLabel={false} />
+        </Box>
+      </Box>
 
       <Grid container spacing={3}>
-        {stats.map((stat) => (
-          <Grid item xs={12} sm={6} md={3} key={stat.title}>
+        {stats.map((stat, index) => (
+          <Grid item xs={12} sm={6} md={3} key={index}>
             <Card>
               <CardContent>
                 <Stack direction="row" alignItems="center" spacing={2}>
@@ -49,7 +95,7 @@ const Dashboard: React.FC = () => {
                       {stat.value}
                     </Typography>
                     <Typography variant="body2" color="text.secondary">
-                      {stat.title}
+                      {t(stat.titleKey)}
                     </Typography>
                   </Box>
                 </Stack>
@@ -63,17 +109,31 @@ const Dashboard: React.FC = () => {
         <Card>
           <CardContent>
             <Typography variant="h6" gutterBottom>
-              Activité récente
+              {t(TranslationKeyEnum.RecentActivity)}
             </Typography>
             <Typography variant="body2" color="text.secondary">
-              Aucune activité récente à afficher pour le moment.
+              {t(TranslationKeyEnum.NoRecentActivity)}
             </Typography>
           </CardContent>
         </Card>
       </Box>
-    <Box sx={{ mt: 4 }}>
-      <DataTableGeneric data={FakeClientsDataTableModel.data} title="Clients" columnsConfig={FakeClientsDataTableModel.columns} />
-    </Box>
+
+      <Box sx={{ mt: 4 }}>
+        <Card>
+          <CardContent>
+            <Typography variant="h6" gutterBottom>
+              {t(TranslationKeyEnum.Clients)}
+            </Typography>
+            <DataTableGeneric
+              data={FakeClientsDataTableModel.data}
+              columnsConfig={translatedColumnsConfig.map(col => ({
+                key: col.key,
+                label: t(col.label) // Translate the column labels
+              }))}
+            />
+          </CardContent>
+        </Card>
+      </Box>
     </Box>
   );
 };

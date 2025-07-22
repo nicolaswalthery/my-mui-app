@@ -1,3 +1,4 @@
+// src/config/routeConfig.ts - Example of how to make routes translatable
 import {
   Dashboard,
   Home,
@@ -6,6 +7,7 @@ import {
   VpnKey
 } from '@mui/icons-material';
 import type { RouteConfig } from '../models/RouteConfig';
+import { TranslationKeyEnum } from '../enums/TranslationKeyEnum';
 import { useLocation } from 'react-router-dom';
 
 // Pages
@@ -17,20 +19,31 @@ import ProfilePage from '../pages/Profile';
 import KanbanBoard from '../pages/KanbanBoard';
 import EditProfile from '../pages/EditProfile';
 
-export const routeConfig: RouteConfig[] = [
+// Enhanced RouteConfig with translation keys
+interface TranslatableRouteConfig extends Omit<RouteConfig, 'displayName' | 'description'> {
+  displayNameKey: TranslationKeyEnum;
+  descriptionKey?: TranslationKeyEnum;
+  displayName: string; // Fallback for non-translated usage
+  description?: string; // Fallback for non-translated usage
+}
+
+export const routeConfig: TranslatableRouteConfig[] = [
   {
     path: '/dashboard',
-    displayName: 'Dashboard',
+    displayNameKey: TranslationKeyEnum.Dashboard,
+    displayName: 'Dashboard', // Fallback
     icon: Dashboard,
     component: DashboardPage,
     showInMenu: true,
     requiresAuth: false,
+    descriptionKey: TranslationKeyEnum.WelcomeToDashboard,
     description: 'Main dashboard with overview',
     order: 2,
   },
   {
     path: '/',
-    displayName: 'Home',
+    displayNameKey: TranslationKeyEnum.Home,
+    displayName: 'Home', // Fallback
     icon: Home,
     component: HomePage,
     showInMenu: true,
@@ -40,19 +53,20 @@ export const routeConfig: RouteConfig[] = [
   },
   {
     path: '/settings',
-    displayName: 'Settings',
+    displayNameKey: TranslationKeyEnum.Settings,
+    displayName: 'Settings', // Fallback
     icon: Settings,
     component: SettingsPage,
     showInMenu: true,
     requiresAuth: false,
     description: 'Application settings and preferences',
     order: 3,
-    badge: 'New', // Example badge
+    badge: 'New',
   },
-  // Example of routes that don't show in menu
   {
     path: '/profile',
-    displayName: 'Profile',
+    displayNameKey: TranslationKeyEnum.Profile,
+    displayName: 'Profile', // Fallback
     icon: People,
     component: ProfilePage,
     showInMenu: false,
@@ -61,7 +75,8 @@ export const routeConfig: RouteConfig[] = [
   },
   {
     path: '/auth',
-    displayName: 'Authentication',
+    displayNameKey: TranslationKeyEnum.Login,
+    displayName: 'Authentication', // Fallback
     icon: VpnKey,
     component: AuthPage,
     showInMenu: false,
@@ -70,7 +85,8 @@ export const routeConfig: RouteConfig[] = [
   },
   {
     path: '/kanban-board',
-    displayName: 'Kanban Board',
+    displayNameKey: TranslationKeyEnum.KanbanBoard,
+    displayName: 'Kanban Board', // Fallback
     icon: Dashboard,
     component: KanbanBoard,
     showInMenu: true,
@@ -79,7 +95,8 @@ export const routeConfig: RouteConfig[] = [
   },
   {
     path: '/edit-profile',
-    displayName: 'Edit Profile',
+    displayNameKey: TranslationKeyEnum.EditProfile,
+    displayName: 'Edit Profile', // Fallback
     icon: People,
     component: EditProfile,
     showInMenu: false,
@@ -88,31 +105,26 @@ export const routeConfig: RouteConfig[] = [
   },
 ];
 
-// ========================================
-// UTILITY FUNCTIONS
-// ========================================
-
+// Hook to get translated page title
 export const useCurrentPageTitle = () => {
   const location = useLocation();
+  // This would need to be enhanced to use translation context
   return getPageTitle(location.pathname);
 };
 
-export const getMenuItems = (userRoles?: string[]) => {
+// Helper function that could be enhanced to use translations
+export const getTranslatedMenuItems = (userRoles?: string[], t?: (key: TranslationKeyEnum) => string) => {
   return routeConfig
     .filter(route => {
-      // Filter by showInMenu
       if (!route.showInMenu) return false;
-      
-      // Filter by user roles if specified
       if (route.roles && userRoles) {
         return route.roles.some(role => userRoles.includes(role));
       }
-      
       return true;
     })
-    .sort((a, b) => (a.order || 999) - (b.order || 999)) // Sort by order
+    .sort((a, b) => (a.order || 999) - (b.order || 999))
     .map(route => ({
-      text: route.displayName,
+      text: t ? t(route.displayNameKey) : route.displayName, // Use translation if available
       icon: route.icon,
       path: route.path,
       badge: route.badge,
@@ -120,18 +132,48 @@ export const getMenuItems = (userRoles?: string[]) => {
     }));
 };
 
-export const getRouteByPath = (path: string): RouteConfig | undefined => {
+// Keep existing functions for backward compatibility
+export const getMenuItems = (userRoles?: string[]) => {
+  return routeConfig
+    .filter(route => {
+      if (!route.showInMenu) return false;
+      if (route.roles && userRoles) {
+        return route.roles.some(role => userRoles.includes(role));
+      }
+      return true;
+    })
+    .sort((a, b) => (a.order || 999) - (b.order || 999))
+    .map(route => ({
+      text: route.displayName, // Using fallback display name
+      icon: route.icon,
+      path: route.path,
+      badge: route.badge,
+      order: route.order,
+    }));
+};
+
+export const getRouteByPath = (path: string): TranslatableRouteConfig | undefined => {
   return routeConfig.find(route => route.path === path);
 };
 
 export const getPageTitle = (pathname: string): string => {
   const route = getRouteByPath(pathname);
-  return route ? route.displayName : ' ! Set a Page Title ! ';
+  return route ? route.displayName : 'Set a Page Title';
+};
+
+export const getTranslatedPageTitle = (pathname: string, t: (key: TranslationKeyEnum) => string): string => {
+  const route = getRouteByPath(pathname);
+  return route ? t(route.displayNameKey) : 'Set a Page Title';
 };
 
 export const getPageDescription = (pathname: string): string => {
   const route = getRouteByPath(pathname);
-  return route?.description || ' ! Set a Page Description ! ';
+  return route?.description || 'Set a Page Description';
+};
+
+export const getTranslatedPageDescription = (pathname: string, t: (key: TranslationKeyEnum) => string): string => {
+  const route = getRouteByPath(pathname);
+  return route?.descriptionKey ? t(route.descriptionKey) : (route?.description || 'Set a Page Description');
 };
 
 export const isRouteAuthorized = (path: string, userRoles?: string[]): boolean => {
@@ -145,14 +187,14 @@ export const isRouteAuthorized = (path: string, userRoles?: string[]): boolean =
   return route.roles.some(role => userRoles.includes(role));
 };
 
-export const getAllRoutes = (): RouteConfig[] => {
+export const getAllRoutes = (): TranslatableRouteConfig[] => {
   return routeConfig;
 };
 
-export const getPublicRoutes = (): RouteConfig[] => {
+export const getPublicRoutes = (): TranslatableRouteConfig[] => {
   return routeConfig.filter(route => !route.requiresAuth);
 };
 
-export const getProtectedRoutes = (): RouteConfig[] => {
+export const getProtectedRoutes = (): TranslatableRouteConfig[] => {
   return routeConfig.filter(route => route.requiresAuth);
 };

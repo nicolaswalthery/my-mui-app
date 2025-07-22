@@ -82,6 +82,15 @@ export const TranslationKeyEnum = {
   DemoVersion: 'demoVersion',
   AnyCredentialsWork: 'anyCredentialsWork',
   
+  // Dashboard Stats
+  TotalUsers: 'totalUsers',
+  Sales: 'sales',
+  Orders: 'orders',
+  Growth: 'growth',
+  RecentActivity: 'recentActivity',
+  WelcomeToDashboard: 'welcomeToDashboard',
+  NoRecentActivity: 'noRecentActivity',
+  
   // Footer
   FooterText: 'footerText',
 } as const;

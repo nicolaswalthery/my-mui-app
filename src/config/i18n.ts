@@ -85,6 +85,15 @@ const translations: Record<SupportedLangEnum, Record<TranslationKeyEnum, string>
     [TranslationKeyEnum.DemoVersion]: 'Demo Version',
     [TranslationKeyEnum.AnyCredentialsWork]: 'Any email/password combination will work',
     
+    // Dashboard Stats
+    [TranslationKeyEnum.TotalUsers]: 'Total Users',
+    [TranslationKeyEnum.Sales]: 'Sales',
+    [TranslationKeyEnum.Orders]: 'Orders',
+    [TranslationKeyEnum.Growth]: 'Growth',
+    [TranslationKeyEnum.RecentActivity]: 'Recent Activity',
+    [TranslationKeyEnum.WelcomeToDashboard]: 'Welcome to your dashboard',
+    [TranslationKeyEnum.NoRecentActivity]: 'No recent activity to display at the moment.',
+    
     // Footer
     [TranslationKeyEnum.FooterText]: 'My MUI App',
   },
@@ -171,6 +180,15 @@ const translations: Record<SupportedLangEnum, Record<TranslationKeyEnum, string>
     [TranslationKeyEnum.BackToLogin]: 'Retour à la connexion',
     [TranslationKeyEnum.DemoVersion]: 'Version de démonstration',
     [TranslationKeyEnum.AnyCredentialsWork]: 'N\'importe quelle combinaison email/mot de passe fonctionnera',
+    
+    // Dashboard Stats
+    [TranslationKeyEnum.TotalUsers]: 'Total Utilisateurs',
+    [TranslationKeyEnum.Sales]: 'Ventes',
+    [TranslationKeyEnum.Orders]: 'Commandes',
+    [TranslationKeyEnum.Growth]: 'Croissance',
+    [TranslationKeyEnum.RecentActivity]: 'Activité récente',
+    [TranslationKeyEnum.WelcomeToDashboard]: 'Bienvenue sur votre tableau de bord',
+    [TranslationKeyEnum.NoRecentActivity]: 'Aucune activité récente à afficher pour le moment.',
     
     // Footer
     [TranslationKeyEnum.FooterText]: 'Mon App MUI',
@@ -259,6 +277,15 @@ const translations: Record<SupportedLangEnum, Record<TranslationKeyEnum, string>
     [TranslationKeyEnum.DemoVersion]: 'Versión de demostración',
     [TranslationKeyEnum.AnyCredentialsWork]: 'Cualquier combinación de email/contraseña funcionará',
     
+    // Dashboard Stats
+    [TranslationKeyEnum.TotalUsers]: 'Total Usuarios',
+    [TranslationKeyEnum.Sales]: 'Ventas',
+    [TranslationKeyEnum.Orders]: 'Pedidos',
+    [TranslationKeyEnum.Growth]: 'Crecimiento',
+    [TranslationKeyEnum.RecentActivity]: 'Actividad reciente',
+    [TranslationKeyEnum.WelcomeToDashboard]: 'Bienvenido a tu panel de control',
+    [TranslationKeyEnum.NoRecentActivity]: 'No hay actividad reciente para mostrar en este momento.',
+    
     // Footer
     [TranslationKeyEnum.FooterText]: 'Mi App MUI',
   },
@@ -345,6 +372,15 @@ const translations: Record<SupportedLangEnum, Record<TranslationKeyEnum, string>
     [TranslationKeyEnum.BackToLogin]: 'Zurück zur Anmeldung',
     [TranslationKeyEnum.DemoVersion]: 'Demo-Version',
     [TranslationKeyEnum.AnyCredentialsWork]: 'Jede E-Mail/Passwort-Kombination funktioniert',
+    
+    // Dashboard Stats
+    [TranslationKeyEnum.TotalUsers]: 'Benutzer Gesamt',
+    [TranslationKeyEnum.Sales]: 'Verkäufe',
+    [TranslationKeyEnum.Orders]: 'Bestellungen',
+    [TranslationKeyEnum.Growth]: 'Wachstum',
+    [TranslationKeyEnum.RecentActivity]: 'Kürzliche Aktivität',
+    [TranslationKeyEnum.WelcomeToDashboard]: 'Willkommen zu Ihrem Dashboard',
+    [TranslationKeyEnum.NoRecentActivity]: 'Momentan keine kürzlichen Aktivitäten anzuzeigen.',
     
     // Footer
     [TranslationKeyEnum.FooterText]: 'Meine MUI App',
