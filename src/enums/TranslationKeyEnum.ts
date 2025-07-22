@@ -91,6 +91,12 @@ export const TranslationKeyEnum = {
   WelcomeToDashboard: 'welcomeToDashboard',
   NoRecentActivity: 'noRecentActivity',
   
+  // Form Validation
+  Required: 'required',
+  ValidEmailRequired: 'validEmailRequired',
+  FieldRequired: 'fieldRequired',
+  ChangesSavedLocally: 'changesSavedLocally',
+  
   // Footer
   FooterText: 'footerText',
 } as const;

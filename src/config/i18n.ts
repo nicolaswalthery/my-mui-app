@@ -94,6 +94,12 @@ const translations: Record<SupportedLangEnum, Record<TranslationKeyEnum, string>
     [TranslationKeyEnum.WelcomeToDashboard]: 'Welcome to your dashboard',
     [TranslationKeyEnum.NoRecentActivity]: 'No recent activity to display at the moment.',
     
+    // Form Validation
+    [TranslationKeyEnum.Required]: 'Required',
+    [TranslationKeyEnum.ValidEmailRequired]: 'Please enter a valid email address',
+    [TranslationKeyEnum.FieldRequired]: 'This field is required',
+    [TranslationKeyEnum.ChangesSavedLocally]: 'Your changes will be saved locally in this demo.',
+    
     // Footer
     [TranslationKeyEnum.FooterText]: 'My MUI App',
   },
@@ -189,6 +195,12 @@ const translations: Record<SupportedLangEnum, Record<TranslationKeyEnum, string>
     [TranslationKeyEnum.RecentActivity]: 'Activité récente',
     [TranslationKeyEnum.WelcomeToDashboard]: 'Bienvenue sur votre tableau de bord',
     [TranslationKeyEnum.NoRecentActivity]: 'Aucune activité récente à afficher pour le moment.',
+    
+    // Form Validation
+    [TranslationKeyEnum.Required]: 'Requis',
+    [TranslationKeyEnum.ValidEmailRequired]: 'Veuillez entrer une adresse e-mail valide',
+    [TranslationKeyEnum.FieldRequired]: 'Ce champ est requis',
+    [TranslationKeyEnum.ChangesSavedLocally]: 'Vos modifications seront sauvegardées localement dans cette démo.',
     
     // Footer
     [TranslationKeyEnum.FooterText]: 'Mon App MUI',
@@ -286,6 +298,12 @@ const translations: Record<SupportedLangEnum, Record<TranslationKeyEnum, string>
     [TranslationKeyEnum.WelcomeToDashboard]: 'Bienvenido a tu panel de control',
     [TranslationKeyEnum.NoRecentActivity]: 'No hay actividad reciente para mostrar en este momento.',
     
+    // Form Validation
+    [TranslationKeyEnum.Required]: 'Requerido',
+    [TranslationKeyEnum.ValidEmailRequired]: 'Por favor ingresa una dirección de correo válida',
+    [TranslationKeyEnum.FieldRequired]: 'Este campo es requerido',
+    [TranslationKeyEnum.ChangesSavedLocally]: 'Tus cambios se guardarán localmente en esta demo.',
+    
     // Footer
     [TranslationKeyEnum.FooterText]: 'Mi App MUI',
   },
@@ -381,6 +399,12 @@ const translations: Record<SupportedLangEnum, Record<TranslationKeyEnum, string>
     [TranslationKeyEnum.RecentActivity]: 'Kürzliche Aktivität',
     [TranslationKeyEnum.WelcomeToDashboard]: 'Willkommen zu Ihrem Dashboard',
     [TranslationKeyEnum.NoRecentActivity]: 'Momentan keine kürzlichen Aktivitäten anzuzeigen.',
+    
+    // Form Validation
+    [TranslationKeyEnum.Required]: 'Erforderlich',
+    [TranslationKeyEnum.ValidEmailRequired]: 'Bitte geben Sie eine gültige E-Mail-Adresse ein',
+    [TranslationKeyEnum.FieldRequired]: 'Dieses Feld ist erforderlich',
+    [TranslationKeyEnum.ChangesSavedLocally]: 'Ihre Änderungen werden lokal in dieser Demo gespeichert.',
     
     // Footer
     [TranslationKeyEnum.FooterText]: 'Meine MUI App',
