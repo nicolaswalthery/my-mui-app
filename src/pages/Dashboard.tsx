@@ -1,7 +1,5 @@
-// src/pages/Dashboard.tsx - Updated with i18n support
 import React from 'react';
 import FakeClientsDataTableModel from '../mocks/FakeClientData.ts';
-import { useI18n } from '../contexts/i18nContext';
 import { TranslationKeyEnum } from '../enums/TranslationKeyEnum';
 import { useTranslation } from '../hooks/useTranslation';
 import LanguageSwitcher from '../components/LanguageSwitcher';
