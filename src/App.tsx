@@ -1,8 +1,11 @@
+// src/App.tsx - Updated with i18n support for Sidebar integration
 import { useState } from 'react';
-import { Outlet, useNavigate, useLocation } from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import type { MenuItem } from './models/MenuItem';
 import { getMenuItems, useCurrentPageTitle } from './config/routeConfig';
 import { useHandleNavClick } from './helpers/handleNavClick';
+import { useI18n } from './contexts/i18nContext';
+import { TranslationKeyEnum } from './enums/TranslationKeyEnum';
 
 import {
   Box,
@@ -17,12 +20,15 @@ import FooterProps from './components/Footer';
 
 const drawerWidth = 240;
 
-const menuItems: MenuItem[] = getMenuItems(['admin', 'user']);
-
-const defaultAppTitle = 'MUI APP';
-
 export default function MUILayout() {
+  const { t } = useI18n();
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  // Get menu items (these will be overridden by translated items in Sidebar)
+  const menuItems: MenuItem[] = getMenuItems(['admin', 'user']);
+  
+  // Get translated app title
+  const appTitle = t(TranslationKeyEnum.FooterText); // Using FooterText as app title, or you can add a specific AppTitle key
 
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen);
@@ -32,11 +38,13 @@ export default function MUILayout() {
     setMobileOpen(false);
   };
 
-  const sideBarProps = <Sidebar 
-            menuItems={menuItems} 
-            appTitle={defaultAppTitle}
-            onItemClick={useHandleNavClick(handleDrawerClose)}
-          />
+  const sideBarProps = (
+    <Sidebar 
+      menuItems={menuItems} 
+      appTitle={appTitle}
+      onItemClick={useHandleNavClick(handleDrawerClose)}
+    />
+  );
 
   return (
     <Box sx={{ display: 'flex' }}>
@@ -48,7 +56,6 @@ export default function MUILayout() {
         onDrawerToggle={handleDrawerToggle}
       />
         
-
       {/* Mobile Drawer */}
       <Box
         component="nav"
@@ -106,7 +113,7 @@ export default function MUILayout() {
         {/* Pages content rendered here */}
         <Outlet />
 
-       <FooterProps footerText="FOOTER TEXT" />
+        <FooterProps footerText={t(TranslationKeyEnum.FooterText)} />
       </Box>
     </Box>
   );
