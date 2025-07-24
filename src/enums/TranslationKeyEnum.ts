@@ -115,6 +115,37 @@ export const TranslationKeyEnum = {
   OptimizedPerformanceDesc: 'optimizedPerformanceDesc',
   Image: 'image',
   
+  // Kanban Page
+  ManageTasksWithDragDrop: 'manageTasksWithDragDrop',
+  Reset: 'reset',
+  UsageInstructions: 'usageInstructions',
+  DragAndDrop: 'dragAndDrop',
+  DragAndDropDesc: 'dragAndDropDesc',
+  EditTitles: 'editTitles',
+  EditTitlesDesc: 'editTitlesDesc',
+  AddTasks: 'addTasks',
+  AddTasksDesc: 'addTasksDesc',
+  DeleteTasks: 'deleteTasks',
+  DeleteTasksDesc: 'deleteTasksDesc',
+  Priorities: 'priorities',
+  PrioritiesDesc: 'prioritiesDesc',
+  
+  // Sample Kanban Tasks
+  AnalyzeClientNeeds: 'analyzeClientNeeds',
+  AnalyzeClientNeedsDesc: 'analyzeClientNeedsDesc',
+  CreateWireframes: 'createWireframes',
+  CreateWireframesDesc: 'createWireframesDesc',
+  WriteDocumentation: 'writeDocumentation',
+  WriteDocumentationDesc: 'writeDocumentationDesc',
+  ApiDevelopment: 'apiDevelopment',
+  ApiDevelopmentDesc: 'apiDevelopmentDesc',
+  UnitTesting: 'unitTesting',
+  UnitTestingDesc: 'unitTestingDesc',
+  ProjectSetup: 'projectSetup',
+  ProjectSetupDesc: 'projectSetupDesc',
+  TechStackSelection: 'techStackSelection',
+  TechStackSelectionDesc: 'techStackSelectionDesc',
+  
   // Footer
   FooterText: 'footerText',
 } as const;

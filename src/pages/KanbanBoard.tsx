@@ -1,222 +1,397 @@
+// src/components/KanbanBoard.tsx - Updated with i18n support
 import React, { useState } from 'react';
-import { Box, Typography, Button, Stack } from '@mui/material';
-import { Refresh as RefreshIcon } from '@mui/icons-material';
-import KanbanBoard from '../components/KanbanBoard';
-import type { KanbanColumn, KanbanItem } from '../components/KanbanBoard';
+import {
+  Box,
+  Paper,
+  Typography,
+  Card,
+  CardContent,
+  IconButton,
+  Chip,
+  Stack,
+  TextField,
+  Button,
+} from '@mui/material';
+import {
+  Add as AddIcon,
+  Edit as EditIcon,
+  Delete as DeleteIcon,
+  DragIndicator as DragIcon,
+} from '@mui/icons-material';
+import { useI18n } from '../contexts/i18nContext';
+import { TranslationKeyEnum } from '../enums/TranslationKeyEnum';
 
-const KanbanPage: React.FC = () => {
-  // Initial data
-  const [columns, setColumns] = useState<KanbanColumn[]>([
-    {
-      id: 'todo',
-      title: 'À faire',
-      color: '#1976d2',
-      items: [
-        {
-          id: '1',
-          title: 'Analyser les besoins client',
-          description: 'Rencontrer le client pour comprendre ses besoins spécifiques',
-          priority: 'high',
-          assignee: 'Marie'
-        },
-        {
-          id: '2',
-          title: 'Créer les wireframes',
-          description: 'Dessiner les maquettes principales de l\'application',
-          priority: 'medium',
-          assignee: 'Pierre'
-        },
-        {
-          id: '3',
-          title: 'Rédiger la documentation',
-          description: 'Documentation technique du projet',
-          priority: 'low'
-        }
-      ]
-    },
-    {
-      id: 'in-progress',
-      title: 'En cours',
-      color: '#ed6c02',
-      items: [
-        {
-          id: '4',
-          title: 'Développement de l\'API',
-          description: 'Implémenter les endpoints REST',
-          priority: 'high',
-          assignee: 'Thomas'
-        },
-        {
-          id: '5',
-          title: 'Tests unitaires',
-          description: 'Écrire les tests pour les composants',
-          priority: 'medium',
-          assignee: 'Sarah'
-        }
-      ]
-    },
-    {
-      id: 'done',
-      title: 'Terminé',
-      color: '#2e7d32',
-      items: [
-        {
-          id: '6',
-          title: 'Configuration du projet',
-          description: 'Mise en place de l\'environnement de développement',
-          priority: 'medium',
-          assignee: 'Alex'
-        },
-        {
-          id: '7',
-          title: 'Choix des technologies',
-          description: 'Sélection du stack technique',
-          priority: 'high'
-        }
-      ]
+// Types (keeping the same as before)
+export interface KanbanItem {
+  id: string;
+  title: string;
+  description?: string;
+  priority?: 'low' | 'medium' | 'high';
+  assignee?: string;
+}
+
+export interface KanbanColumn {
+  id: string;
+  title: string;
+  items: KanbanItem[];
+  color?: string;
+}
+
+interface KanbanBoardProps {
+  columns: KanbanColumn[];
+  onColumnsChange: (columns: KanbanColumn[]) => void;
+  onItemMove?: (itemId: string, fromColumnId: string, toColumnId: string) => void;
+  onItemAdd?: (columnId: string, item: Omit<KanbanItem, 'id'>) => void;
+  onItemEdit?: (itemId: string, item: Partial<KanbanItem>) => void;
+  onItemDelete?: (itemId: string, columnId: string) => void;
+  onColumnTitleChange?: (columnId: string, newTitle: string) => void;
+}
+
+const KanbanBoard: React.FC<KanbanBoardProps> = ({
+  columns,
+  onColumnsChange,
+  onItemMove,
+  onItemAdd,
+  onItemEdit,
+  onItemDelete,
+  onColumnTitleChange,
+}) => {
+  const { t } = useI18n();
+  const [draggedItem, setDraggedItem] = useState<{ item: KanbanItem; columnId: string } | null>(null);
+  const [editingColumn, setEditingColumn] = useState<string | null>(null);
+  const [newColumnTitle, setNewColumnTitle] = useState('');
+  const [addingItem, setAddingItem] = useState<string | null>(null);
+  const [newItemTitle, setNewItemTitle] = useState('');
+  const [newItemDescription, setNewItemDescription] = useState('');
+
+  // Drag and Drop handlers (keeping the same logic)
+  const handleDragStart = (e: React.DragEvent, item: KanbanItem, columnId: string) => {
+    setDraggedItem({ item, columnId });
+    e.dataTransfer.effectAllowed = 'move';
+  };
+
+  const handleDragOver = (e: React.DragEvent) => {
+    e.preventDefault();
+    e.dataTransfer.dropEffect = 'move';
+  };
+
+  const handleDrop = (e: React.DragEvent, targetColumnId: string) => {
+    e.preventDefault();
+    
+    if (!draggedItem || draggedItem.columnId === targetColumnId) {
+      setDraggedItem(null);
+      return;
     }
-  ]);
 
-  // Event handlers
-  const handleColumnsChange = (newColumns: KanbanColumn[]) => {
-    setColumns(newColumns);
-    console.log('Columns updated:', newColumns);
-  };
-
-  const handleItemMove = (itemId: string, fromColumnId: string, toColumnId: string) => {
-    console.log(`Item ${itemId} moved from ${fromColumnId} to ${toColumnId}`);
-    // Here you could make an API call to update the backend
-  };
-
-  const handleItemAdd = (columnId: string, item: Omit<KanbanItem, 'id'>) => {
-    console.log(`New item added to column ${columnId}:`, item);
-    // Here you could make an API call to save the new item
-  };
-
-  const handleItemEdit = (itemId: string, item: Partial<KanbanItem>) => {
-    console.log(`Item ${itemId} edited:`, item);
-    // Here you could make an API call to update the item
-  };
-
-  const handleItemDelete = (itemId: string, columnId: string) => {
-    console.log(`Item ${itemId} deleted from column ${columnId}`);
-    // Here you could make an API call to delete the item
-  };
-
-  const handleColumnTitleChange = (columnId: string, newTitle: string) => {
-    console.log(`Column ${columnId} title changed to: ${newTitle}`);
-    // Here you could make an API call to update the column title
-  };
-
-  const resetBoard = () => {
-    setColumns([
-      {
-        id: 'todo',
-        title: 'À faire',
-        color: '#1976d2',
-        items: [
-          {
-            id: `${Date.now()}-1`,
-            title: 'Analyser les besoins client',
-            description: 'Rencontrer le client pour comprendre ses besoins spécifiques',
-            priority: 'high',
-            assignee: 'Marie'
-          },
-          {
-            id: `${Date.now()}-2`,
-            title: 'Créer les wireframes',
-            description: 'Dessiner les maquettes principales de l\'application',
-            priority: 'medium',
-            assignee: 'Pierre'
-          }
-        ]
-      },
-      {
-        id: 'in-progress',
-        title: 'En cours',
-        color: '#ed6c02',
-        items: [
-          {
-            id: `${Date.now()}-3`,
-            title: 'Développement de l\'API',
-            description: 'Implémenter les endpoints REST',
-            priority: 'high',
-            assignee: 'Thomas'
-          }
-        ]
-      },
-      {
-        id: 'done',
-        title: 'Terminé',
-        color: '#2e7d32',
-        items: [
-          {
-            id: `${Date.now()}-4`,
-            title: 'Configuration du projet',
-            description: 'Mise en place de l\'environnement de développement',
-            priority: 'medium',
-            assignee: 'Alex'
-          }
-        ]
+    const newColumns = columns.map(column => {
+      if (column.id === draggedItem.columnId) {
+        return {
+          ...column,
+          items: column.items.filter(item => item.id !== draggedItem.item.id)
+        };
+      } else if (column.id === targetColumnId) {
+        return {
+          ...column,
+          items: [...column.items, draggedItem.item]
+        };
       }
-    ]);
+      return column;
+    });
+
+    onColumnsChange(newColumns);
+    onItemMove?.(draggedItem.item.id, draggedItem.columnId, targetColumnId);
+    setDraggedItem(null);
+  };
+
+  // Column title editing
+  const handleColumnTitleEdit = (columnId: string) => {
+    const column = columns.find(col => col.id === columnId);
+    if (column) {
+      setEditingColumn(columnId);
+      setNewColumnTitle(column.title);
+    }
+  };
+
+  const handleColumnTitleSave = (columnId: string) => {
+    if (newColumnTitle.trim()) {
+      const newColumns = columns.map(column =>
+        column.id === columnId
+          ? { ...column, title: newColumnTitle.trim() }
+          : column
+      );
+      onColumnsChange(newColumns);
+      onColumnTitleChange?.(columnId, newColumnTitle.trim());
+    }
+    setEditingColumn(null);
+    setNewColumnTitle('');
+  };
+
+  const handleColumnTitleCancel = () => {
+    setEditingColumn(null);
+    setNewColumnTitle('');
+  };
+
+  // Item management
+  const handleAddItem = (columnId: string) => {
+    if (newItemTitle.trim()) {
+      const newItem: KanbanItem = {
+        id: `item-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+        title: newItemTitle.trim(),
+        description: newItemDescription.trim() || undefined,
+        priority: 'medium'
+      };
+
+      const newColumns = columns.map(column =>
+        column.id === columnId
+          ? { ...column, items: [...column.items, newItem] }
+          : column
+      );
+
+      onColumnsChange(newColumns);
+      onItemAdd?.(columnId, {
+        title: newItem.title,
+        description: newItem.description,
+        priority: newItem.priority
+      });
+    }
+    
+    setAddingItem(null);
+    setNewItemTitle('');
+    setNewItemDescription('');
+  };
+
+  const handleDeleteItem = (itemId: string, columnId: string) => {
+    const newColumns = columns.map(column =>
+      column.id === columnId
+        ? { ...column, items: column.items.filter(item => item.id !== itemId) }
+        : column
+    );
+    
+    onColumnsChange(newColumns);
+    onItemDelete?.(itemId, columnId);
+  };
+
+  const getPriorityColor = (priority?: string) => {
+    switch (priority) {
+      case 'high': return 'error';
+      case 'medium': return 'warning';
+      case 'low': return 'success';
+      default: return 'default';
+    }
+  };
+
+  // Translate priority labels
+  const getPriorityLabel = (priority?: string) => {
+    switch (priority) {
+      case 'high': return t(TranslationKeyEnum.High);
+      case 'medium': return t(TranslationKeyEnum.Medium);
+      case 'low': return t(TranslationKeyEnum.Low);
+      default: return priority;
+    }
   };
 
   return (
-    <Box>
-      <Stack direction="row" justifyContent="space-between" alignItems="center" sx={{ mb: 3 }}>
-        <Box>
-          <Typography variant="h4" gutterBottom>
-            Tableau Kanban
-          </Typography>
-          <Typography variant="body1" color="text.secondary">
-            Gérez vos tâches avec un système de glisser-déposer intuitif
-          </Typography>
-        </Box>
-        <Button
-          variant="outlined"
-          startIcon={<RefreshIcon />}
-          onClick={resetBoard}
+    <Box sx={{ display: 'flex', gap: 3, p: 2, overflowX: 'auto', minHeight: '500px' }}>
+      {columns.map((column) => (
+        <Paper
+          key={column.id}
+          sx={{
+            minWidth: 300,
+            maxWidth: 300,
+            bgcolor: 'background.paper',
+            borderRadius: 2,
+            overflow: 'hidden',
+          }}
+          onDragOver={handleDragOver}
+          onDrop={(e) => handleDrop(e, column.id)}
         >
-          Réinitialiser
-        </Button>
-      </Stack>
+          {/* Column Header */}
+          <Box
+            sx={{
+              p: 2,
+              bgcolor: column.color || 'primary.main',
+              color: 'primary.contrastText',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+            }}
+          >
+            {editingColumn === column.id ? (
+              <Stack direction="row" spacing={1} sx={{ flexGrow: 1 }}>
+                <TextField
+                  size="small"
+                  value={newColumnTitle}
+                  onChange={(e) => setNewColumnTitle(e.target.value)}
+                  onKeyPress={(e) => e.key === 'Enter' && handleColumnTitleSave(column.id)}
+                  sx={{
+                    flexGrow: 1,
+                    '& .MuiOutlinedInput-root': {
+                      color: 'white',
+                      '& fieldset': { borderColor: 'rgba(255,255,255,0.5)' },
+                      '&:hover fieldset': { borderColor: 'white' },
+                      '&.Mui-focused fieldset': { borderColor: 'white' },
+                    },
+                  }}
+                  autoFocus
+                />
+                <Button
+                  size="small"
+                  onClick={() => handleColumnTitleSave(column.id)}
+                  sx={{ color: 'white', minWidth: 'auto' }}
+                >
+                  ✓
+                </Button>
+                <Button
+                  size="small"
+                  onClick={handleColumnTitleCancel}
+                  sx={{ color: 'white', minWidth: 'auto' }}
+                >
+                  ✕
+                </Button>
+              </Stack>
+            ) : (
+              <>
+                <Typography variant="h6" sx={{ flexGrow: 1 }}>
+                  {column.title} ({column.items.length})
+                </Typography>
+                <IconButton
+                  size="small"
+                  onClick={() => handleColumnTitleEdit(column.id)}
+                  sx={{ color: 'inherit' }}
+                >
+                  <EditIcon fontSize="small" />
+                </IconButton>
+              </>
+            )}
+          </Box>
 
-      <KanbanBoard
-        columns={columns}
-        onColumnsChange={handleColumnsChange}
-        onItemMove={handleItemMove}
-        onItemAdd={handleItemAdd}
-        onItemEdit={handleItemEdit}
-        onItemDelete={handleItemDelete}
-        onColumnTitleChange={handleColumnTitleChange}
-      />
+          {/* Column Content */}
+          <Box sx={{ p: 2, minHeight: 400, maxHeight: 600, overflowY: 'auto' }}>
+            <Stack spacing={2}>
+              {/* Items */}
+              {column.items.map((item) => (
+                <Card
+                  key={item.id}
+                  draggable
+                  onDragStart={(e) => handleDragStart(e, item, column.id)}
+                  sx={{
+                    cursor: 'grab',
+                    '&:hover': {
+                      boxShadow: 2,
+                      transform: 'translateY(-1px)',
+                    },
+                    '&:active': {
+                      cursor: 'grabbing',
+                    },
+                    transition: 'all 0.2s ease',
+                  }}
+                >
+                  <CardContent sx={{ p: 2, '&:last-child': { pb: 2 } }}>
+                    <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1 }}>
+                      <DragIcon sx={{ color: 'text.secondary', mt: 0.5 }} />
+                      <Box sx={{ flexGrow: 1 }}>
+                        <Typography variant="subtitle2" sx={{ fontWeight: 'bold', mb: 1 }}>
+                          {item.title}
+                        </Typography>
+                        {item.description && (
+                          <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+                            {item.description}
+                          </Typography>
+                        )}
+                        <Stack direction="row" spacing={1} sx={{ alignItems: 'center' }}>
+                          {item.priority && (
+                            <Chip
+                              label={getPriorityLabel(item.priority)}
+                              size="small"
+                              color={getPriorityColor(item.priority) as any}
+                              sx={{ textTransform: 'capitalize' }}
+                            />
+                          )}
+                          {item.assignee && (
+                            <Chip
+                              label={item.assignee}
+                              size="small"
+                              variant="outlined"
+                            />
+                          )}
+                        </Stack>
+                      </Box>
+                      <IconButton
+                        size="small"
+                        onClick={() => handleDeleteItem(item.id, column.id)}
+                        sx={{ color: 'error.main' }}
+                      >
+                        <DeleteIcon fontSize="small" />
+                      </IconButton>
+                    </Box>
+                  </CardContent>
+                </Card>
+              ))}
 
-      {/* Instructions */}
-      <Box sx={{ mt: 4, p: 3, bgcolor: 'background.paper', borderRadius: 2 }}>
-        <Typography variant="h6" gutterBottom>
-          Instructions d'utilisation :
-        </Typography>
-        <Box component="ul" sx={{ pl: 2 }}>
-          <Typography component="li" variant="body2" sx={{ mb: 1 }}>
-            <strong>Glisser-déposer :</strong> Cliquez et faites glisser les cartes entre les colonnes
-          </Typography>
-          <Typography component="li" variant="body2" sx={{ mb: 1 }}>
-            <strong>Modifier les titres :</strong> Cliquez sur l'icône d'édition dans l'en-tête des colonnes
-          </Typography>
-          <Typography component="li" variant="body2" sx={{ mb: 1 }}>
-            <strong>Ajouter des tâches :</strong> Utilisez le bouton "Ajouter une tâche" dans chaque colonne
-          </Typography>
-          <Typography component="li" variant="body2" sx={{ mb: 1 }}>
-            <strong>Supprimer des tâches :</strong> Cliquez sur l'icône de suppression sur chaque carte
-          </Typography>
-          <Typography component="li" variant="body2">
-            <strong>Priorités :</strong> Les tâches sont marquées avec des couleurs (rouge: haute, orange: moyenne, vert: basse)
-          </Typography>
-        </Box>
-      </Box>
+              {/* Add Item Form */}
+              {addingItem === column.id ? (
+                <Card sx={{ bgcolor: 'background.paper' }}>
+                  <CardContent sx={{ p: 2 }}>
+                    <Stack spacing={2}>
+                      <TextField
+                        size="small"
+                        placeholder={t(TranslationKeyEnum.TaskTitle)}
+                        value={newItemTitle}
+                        onChange={(e) => setNewItemTitle(e.target.value)}
+                        autoFocus
+                      />
+                      <TextField
+                        size="small"
+                        placeholder={t(TranslationKeyEnum.TaskDescription)}
+                        value={newItemDescription}
+                        onChange={(e) => setNewItemDescription(e.target.value)}
+                        multiline
+                        rows={2}
+                      />
+                      <Stack direction="row" spacing={1}>
+                        <Button
+                          size="small"
+                          variant="contained"
+                          onClick={() => handleAddItem(column.id)}
+                          disabled={!newItemTitle.trim()}
+                        >
+                          {t(TranslationKeyEnum.Add)}
+                        </Button>
+                        <Button
+                          size="small"
+                          onClick={() => setAddingItem(null)}
+                        >
+                          {t(TranslationKeyEnum.Cancel)}
+                        </Button>
+                      </Stack>
+                    </Stack>
+                  </CardContent>
+                </Card>
+              ) : (
+                /* Add Item Button */
+                <Button
+                  variant="outlined"
+                  startIcon={<AddIcon />}
+                  onClick={() => setAddingItem(column.id)}
+                  sx={{
+                    borderStyle: 'dashed',
+                    color: 'text.secondary',
+                    borderColor: 'text.secondary',
+                    '&:hover': {
+                      borderStyle: 'solid',
+                      bgcolor: 'action.hover',
+                    },
+                  }}
+                >
+                  {t(TranslationKeyEnum.AddTask)}
+                </Button>
+              )}
+            </Stack>
+          </Box>
+        </Paper>
+      ))}
     </Box>
   );
 };
 
-export default KanbanPage;
+export default KanbanBoard;
