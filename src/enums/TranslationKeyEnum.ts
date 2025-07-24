@@ -1,4 +1,4 @@
-// src/enums/TranslationKeyEnum.ts - Enhanced version
+// src/enums/TranslationKeyEnum.ts - Enhanced version with NotFound page support
 export const TranslationKeyEnum = {
   // Common UI
   Welcome: 'welcome',
@@ -100,6 +100,11 @@ export const TranslationKeyEnum = {
   // Error Page
   CriticalError: 'criticalError',
   ErrorDescription: 'errorDescription',
+  
+  // NotFound Page
+  NotFoundTitle: 'notFoundTitle',
+  NotFoundSubtitle: 'notFoundSubtitle',
+  NotFoundDescription: 'notFoundDescription',
   
   // Home Page
   WelcomeToApp: 'welcomeToApp',

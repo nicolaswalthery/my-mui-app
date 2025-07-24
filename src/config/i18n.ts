@@ -1,4 +1,4 @@
-// src/config/i18n.ts - Enhanced version
+// src/config/i18n.ts - Enhanced version with NotFound page support
 import { SupportedLangEnum, TranslationKeyEnum } from '../enums/TranslationKeyEnum';
 
 const translations: Record<SupportedLangEnum, Record<TranslationKeyEnum, string>> = {
@@ -103,6 +103,11 @@ const translations: Record<SupportedLangEnum, Record<TranslationKeyEnum, string>
     // Error Page
     [TranslationKeyEnum.CriticalError]: 'Critical Error',
     [TranslationKeyEnum.ErrorDescription]: 'The application has encountered a critical error. This might be due to a server issue or an unexpected failure.',
+    
+    // NotFound Page
+    [TranslationKeyEnum.NotFoundTitle]: '404',
+    [TranslationKeyEnum.NotFoundSubtitle]: 'Page Not Found',
+    [TranslationKeyEnum.NotFoundDescription]: 'The page you\'re looking for doesn\'t exist or has been moved.',
     
     // Home Page
     [TranslationKeyEnum.WelcomeToApp]: 'Welcome to your application',
@@ -255,6 +260,11 @@ const translations: Record<SupportedLangEnum, Record<TranslationKeyEnum, string>
     [TranslationKeyEnum.CriticalError]: 'Erreur Critique',
     [TranslationKeyEnum.ErrorDescription]: 'L\'application a rencontré une erreur critique. Cela peut être dû à un problème de serveur ou à une défaillance inattendue.',
     
+    // NotFound Page
+    [TranslationKeyEnum.NotFoundTitle]: '404',
+    [TranslationKeyEnum.NotFoundSubtitle]: 'Page non trouvée',
+    [TranslationKeyEnum.NotFoundDescription]: 'La page que vous recherchez n\'existe pas ou a été déplacée.',
+    
     // Home Page
     [TranslationKeyEnum.WelcomeToApp]: 'Bienvenue dans votre application',
     [TranslationKeyEnum.DiscoverFeatures]: 'Découvrez toutes les fonctionnalités de votre application Material-UI. Cette page d\'accueil vous présente les principales caractéristiques de l\'app.',
@@ -405,6 +415,11 @@ const translations: Record<SupportedLangEnum, Record<TranslationKeyEnum, string>
     // Error Page
     [TranslationKeyEnum.CriticalError]: 'Error Crítico',
     [TranslationKeyEnum.ErrorDescription]: 'La aplicación ha encontrado un error crítico. Esto podría deberse a un problema del servidor o a una falla inesperada.',
+    
+    // NotFound Page
+    [TranslationKeyEnum.NotFoundTitle]: '404',
+    [TranslationKeyEnum.NotFoundSubtitle]: 'Página no encontrada',
+    [TranslationKeyEnum.NotFoundDescription]: 'La página que buscas no existe o ha sido movida.',
     
     // Home Page
     [TranslationKeyEnum.WelcomeToApp]: 'Bienvenido a tu aplicación',
@@ -557,6 +572,11 @@ const translations: Record<SupportedLangEnum, Record<TranslationKeyEnum, string>
     [TranslationKeyEnum.CriticalError]: 'Kritischer Fehler',
     [TranslationKeyEnum.ErrorDescription]: 'Die Anwendung ist auf einen kritischen Fehler gestoßen. Dies könnte auf ein Serverproblem oder einen unerwarteten Ausfall zurückzuführen sein.',
     
+    // NotFound Page
+    [TranslationKeyEnum.NotFoundTitle]: '404',
+    [TranslationKeyEnum.NotFoundSubtitle]: 'Seite nicht gefunden',
+    [TranslationKeyEnum.NotFoundDescription]: 'Die Seite, die Sie suchen, existiert nicht oder wurde verschoben.',
+    
     // Home Page
     [TranslationKeyEnum.WelcomeToApp]: 'Willkommen zu Ihrer Anwendung',
     [TranslationKeyEnum.DiscoverFeatures]: 'Entdecken Sie alle Funktionen Ihrer Material-UI-Anwendung. Diese Startseite präsentiert die Hauptmerkmale der App.',
@@ -574,7 +594,6 @@ const translations: Record<SupportedLangEnum, Record<TranslationKeyEnum, string>
     // Kanban Page
     [TranslationKeyEnum.ManageTasksWithDragDrop]: 'Verwalten Sie Ihre Aufgaben mit einem intuitiven Drag-and-Drop-System',
     [TranslationKeyEnum.Reset]: 'Zurücksetzen',
-    [TranslationKeyEnum.UsageInstructions]: 'Bedienungsanleitung:',
     [TranslationKeyEnum.DragAndDrop]: 'Drag and Drop',
     [TranslationKeyEnum.DragAndDropDesc]: 'Klicken und ziehen Sie Karten zwischen Spalten',
     [TranslationKeyEnum.EditTitles]: 'Titel bearbeiten',
