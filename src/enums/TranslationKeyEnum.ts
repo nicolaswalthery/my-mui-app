@@ -97,6 +97,24 @@ export const TranslationKeyEnum = {
   FieldRequired: 'fieldRequired',
   ChangesSavedLocally: 'changesSavedLocally',
   
+  // Error Page
+  CriticalError: 'criticalError',
+  ErrorDescription: 'errorDescription',
+  
+  // Home Page
+  WelcomeToApp: 'welcomeToApp',
+  DiscoverFeatures: 'discoverFeatures',
+  GetStarted: 'getStarted',
+  LearnMore: 'learnMore',
+  MainFeatures: 'mainFeatures',
+  ModernInterface: 'modernInterface',
+  ModernInterfaceDesc: 'modernInterfaceDesc',
+  ResponsiveDesign: 'responsiveDesign',
+  ResponsiveDesignDesc: 'responsiveDesignDesc',
+  OptimizedPerformance: 'optimizedPerformance',
+  OptimizedPerformanceDesc: 'optimizedPerformanceDesc',
+  Image: 'image',
+  
   // Footer
   FooterText: 'footerText',
 } as const;

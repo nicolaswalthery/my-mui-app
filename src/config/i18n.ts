@@ -100,6 +100,24 @@ const translations: Record<SupportedLangEnum, Record<TranslationKeyEnum, string>
     [TranslationKeyEnum.FieldRequired]: 'This field is required',
     [TranslationKeyEnum.ChangesSavedLocally]: 'Your changes will be saved locally in this demo.',
     
+    // Error Page
+    [TranslationKeyEnum.CriticalError]: 'Critical Error',
+    [TranslationKeyEnum.ErrorDescription]: 'The application has encountered a critical error. This might be due to a server issue or an unexpected failure.',
+    
+    // Home Page
+    [TranslationKeyEnum.WelcomeToApp]: 'Welcome to your application',
+    [TranslationKeyEnum.DiscoverFeatures]: 'Discover all the features of your Material-UI application. This home page presents the main characteristics of the app.',
+    [TranslationKeyEnum.GetStarted]: 'Get Started',
+    [TranslationKeyEnum.LearnMore]: 'Learn More',
+    [TranslationKeyEnum.MainFeatures]: 'Main Features',
+    [TranslationKeyEnum.ModernInterface]: 'Modern Interface',
+    [TranslationKeyEnum.ModernInterfaceDesc]: 'A modern and intuitive user interface built with Material-UI',
+    [TranslationKeyEnum.ResponsiveDesign]: 'Responsive Design',
+    [TranslationKeyEnum.ResponsiveDesignDesc]: 'Perfectly adapts to all types of screens and devices',
+    [TranslationKeyEnum.OptimizedPerformance]: 'Optimized Performance',
+    [TranslationKeyEnum.OptimizedPerformanceDesc]: 'Application optimized for fast and smooth performance',
+    [TranslationKeyEnum.Image]: 'Image',
+    
     // Footer
     [TranslationKeyEnum.FooterText]: 'My MUI App',
   },
@@ -201,6 +219,24 @@ const translations: Record<SupportedLangEnum, Record<TranslationKeyEnum, string>
     [TranslationKeyEnum.ValidEmailRequired]: 'Veuillez entrer une adresse e-mail valide',
     [TranslationKeyEnum.FieldRequired]: 'Ce champ est requis',
     [TranslationKeyEnum.ChangesSavedLocally]: 'Vos modifications seront sauvegardées localement dans cette démo.',
+    
+    // Error Page
+    [TranslationKeyEnum.CriticalError]: 'Erreur Critique',
+    [TranslationKeyEnum.ErrorDescription]: 'L\'application a rencontré une erreur critique. Cela peut être dû à un problème de serveur ou à une défaillance inattendue.',
+    
+    // Home Page
+    [TranslationKeyEnum.WelcomeToApp]: 'Bienvenue dans votre application',
+    [TranslationKeyEnum.DiscoverFeatures]: 'Découvrez toutes les fonctionnalités de votre application Material-UI. Cette page d\'accueil vous présente les principales caractéristiques de l\'app.',
+    [TranslationKeyEnum.GetStarted]: 'Commencer',
+    [TranslationKeyEnum.LearnMore]: 'En savoir plus',
+    [TranslationKeyEnum.MainFeatures]: 'Fonctionnalités principales',
+    [TranslationKeyEnum.ModernInterface]: 'Interface moderne',
+    [TranslationKeyEnum.ModernInterfaceDesc]: 'Une interface utilisateur moderne et intuitive construite avec Material-UI',
+    [TranslationKeyEnum.ResponsiveDesign]: 'Design Réactif',
+    [TranslationKeyEnum.ResponsiveDesignDesc]: 'S\'adapte parfaitement à tous les types d\'écrans et appareils',
+    [TranslationKeyEnum.OptimizedPerformance]: 'Performance optimisée',
+    [TranslationKeyEnum.OptimizedPerformanceDesc]: 'Application optimisée pour des performances rapides et fluides',
+    [TranslationKeyEnum.Image]: 'Image',
     
     // Footer
     [TranslationKeyEnum.FooterText]: 'Mon App MUI',
@@ -304,6 +340,24 @@ const translations: Record<SupportedLangEnum, Record<TranslationKeyEnum, string>
     [TranslationKeyEnum.FieldRequired]: 'Este campo es requerido',
     [TranslationKeyEnum.ChangesSavedLocally]: 'Tus cambios se guardarán localmente en esta demo.',
     
+    // Error Page
+    [TranslationKeyEnum.CriticalError]: 'Error Crítico',
+    [TranslationKeyEnum.ErrorDescription]: 'La aplicación ha encontrado un error crítico. Esto podría deberse a un problema del servidor o a una falla inesperada.',
+    
+    // Home Page
+    [TranslationKeyEnum.WelcomeToApp]: 'Bienvenido a tu aplicación',
+    [TranslationKeyEnum.DiscoverFeatures]: 'Descubre todas las características de tu aplicación Material-UI. Esta página de inicio presenta las principales funcionalidades de la app.',
+    [TranslationKeyEnum.GetStarted]: 'Comenzar',
+    [TranslationKeyEnum.LearnMore]: 'Saber más',
+    [TranslationKeyEnum.MainFeatures]: 'Características principales',
+    [TranslationKeyEnum.ModernInterface]: 'Interfaz Moderna',
+    [TranslationKeyEnum.ModernInterfaceDesc]: 'Una interfaz de usuario moderna e intuitiva construida con Material-UI',
+    [TranslationKeyEnum.ResponsiveDesign]: 'Diseño Responsivo',
+    [TranslationKeyEnum.ResponsiveDesignDesc]: 'Se adapta perfectamente a todo tipo de pantallas y dispositivos',
+    [TranslationKeyEnum.OptimizedPerformance]: 'Rendimiento Optimizado',
+    [TranslationKeyEnum.OptimizedPerformanceDesc]: 'Aplicación optimizada para un rendimiento rápido y fluido',
+    [TranslationKeyEnum.Image]: 'Imagen',
+    
     // Footer
     [TranslationKeyEnum.FooterText]: 'Mi App MUI',
   },
@@ -405,6 +459,24 @@ const translations: Record<SupportedLangEnum, Record<TranslationKeyEnum, string>
     [TranslationKeyEnum.ValidEmailRequired]: 'Bitte geben Sie eine gültige E-Mail-Adresse ein',
     [TranslationKeyEnum.FieldRequired]: 'Dieses Feld ist erforderlich',
     [TranslationKeyEnum.ChangesSavedLocally]: 'Ihre Änderungen werden lokal in dieser Demo gespeichert.',
+    
+    // Error Page
+    [TranslationKeyEnum.CriticalError]: 'Kritischer Fehler',
+    [TranslationKeyEnum.ErrorDescription]: 'Die Anwendung ist auf einen kritischen Fehler gestoßen. Dies könnte auf ein Serverproblem oder einen unerwarteten Ausfall zurückzuführen sein.',
+    
+    // Home Page
+    [TranslationKeyEnum.WelcomeToApp]: 'Willkommen zu Ihrer Anwendung',
+    [TranslationKeyEnum.DiscoverFeatures]: 'Entdecken Sie alle Funktionen Ihrer Material-UI-Anwendung. Diese Startseite präsentiert die Hauptmerkmale der App.',
+    [TranslationKeyEnum.GetStarted]: 'Loslegen',
+    [TranslationKeyEnum.LearnMore]: 'Mehr erfahren',
+    [TranslationKeyEnum.MainFeatures]: 'Hauptfunktionen',
+    [TranslationKeyEnum.ModernInterface]: 'Moderne Benutzeroberfläche',
+    [TranslationKeyEnum.ModernInterfaceDesc]: 'Eine moderne und intuitive Benutzeroberfläche, erstellt mit Material-UI',
+    [TranslationKeyEnum.ResponsiveDesign]: 'Responsives Design',
+    [TranslationKeyEnum.ResponsiveDesignDesc]: 'Passt sich perfekt an alle Bildschirmtypen und Geräte an',
+    [TranslationKeyEnum.OptimizedPerformance]: 'Optimierte Leistung',
+    [TranslationKeyEnum.OptimizedPerformanceDesc]: 'Anwendung optimiert für schnelle und flüssige Leistung',
+    [TranslationKeyEnum.Image]: 'Bild',
     
     // Footer
     [TranslationKeyEnum.FooterText]: 'Meine MUI App',
