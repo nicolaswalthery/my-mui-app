@@ -196,19 +196,6 @@ const Sidebar: React.FC<SidebarProps> = ({ menuItems, appTitle, onItemClick }) =
             )}
           </IconButton>
         </Tooltip>
-        
-        {/* Theme indicator text */}
-        <Typography 
-          variant="caption" 
-          display="block" 
-          color="text.secondary"
-          sx={{ mt: 1, fontSize: '0.7rem' }}
-        >
-          {theme.palette.mode === ThemeModeEnum.Light 
-            ? t(TranslationKeyEnum.LightTheme)
-            : t(TranslationKeyEnum.DarkTheme)
-          } {t(TranslationKeyEnum.Theme)}
-        </Typography>
       </Box>
     </Box>
   );
