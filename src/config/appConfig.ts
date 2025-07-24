@@ -1,5 +1,5 @@
 export const appConfig = {
-  defaultLanguage: 'en',
+  defaultLanguage: 'fr',
   appTitle: 'My MUI App',
   version: '1.0.0',
 };
