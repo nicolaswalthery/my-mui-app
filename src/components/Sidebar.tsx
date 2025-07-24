@@ -77,7 +77,7 @@ const Sidebar: React.FC<SidebarProps> = ({ menuItems, appTitle, onItemClick }) =
         transition: 'all 0.2s ease-in-out',
         '&:hover': {
           bgcolor: 'secondary.dark',
-          transform: 'scale(1.02)',
+          transform: 'scale(1.00)',
         }
       }}>
         <Typography
