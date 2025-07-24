@@ -16,7 +16,6 @@ import { useNavigate } from 'react-router-dom';
 import { AppRouteEnum } from '../enums/AppRouteEnum';
 import { useI18n } from '../contexts/i18nContext';
 import { TranslationKeyEnum } from '../enums/TranslationKeyEnum';
-import LanguageSwitcher from '../components/LanguageSwitcher';
 
 const Profile: React.FC = () => {
   const { t } = useI18n();
@@ -40,7 +39,6 @@ const Profile: React.FC = () => {
         <Typography variant="h4" gutterBottom>
           {t(TranslationKeyEnum.Profile)}
         </Typography>
-        <LanguageSwitcher variant="compact" showLabel={false} />
       </Box>
 
       <Paper 

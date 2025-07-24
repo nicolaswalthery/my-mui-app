@@ -21,7 +21,6 @@ import { Save, Restore } from '@mui/icons-material';
 import { useThemeMode } from '../theme/ThemeProvider';
 import { useI18n } from '../contexts/i18nContext';
 import { TranslationKeyEnum } from '../enums/TranslationKeyEnum';
-import LanguageSwitcher from '../components/LanguageSwitcher';
 
 const Settings: React.FC = () => {
   const { themeMode, setThemeMode } = useThemeMode();
@@ -78,11 +77,6 @@ const Settings: React.FC = () => {
                   />
                 </RadioGroup>
               </FormControl>
-
-              {/* Language Switcher */}
-              <Box sx={{ mt: 3 }}>
-                <LanguageSwitcher />
-              </Box>
             </CardContent>
           </Card>
         </Grid>

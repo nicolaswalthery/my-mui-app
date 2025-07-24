@@ -1,11 +1,10 @@
-// src/pages/Error.tsx - Updated with i18n support
+// src/pages/Error.tsx - Updated with i18n support (language switcher removed)
 import React from 'react';
 import { Box, Typography, Button, Paper, Stack } from '@mui/material';
 import ErrorOutlineIcon from '@mui/icons-material/ErrorOutline';
 import { Refresh, Home } from '@mui/icons-material';
 import { useI18n } from '../contexts/i18nContext';
 import { TranslationKeyEnum } from '../enums/TranslationKeyEnum';
-import LanguageSwitcher from '../components/LanguageSwitcher';
 import { useNavigate } from 'react-router-dom';
 import { AppRouteEnum } from '../enums/AppRouteEnum';
 
@@ -45,14 +44,8 @@ const ErrorPage: React.FC<ErrorPageProps> = ({ error, resetError }) => {
           p: 4,
           maxWidth: 600,
           textAlign: 'center',
-          position: 'relative',
         }}
       >
-        {/* Language switcher */}
-        <Box sx={{ position: 'absolute', top: 16, right: 16 }}>
-          <LanguageSwitcher variant="compact" showLabel={false} />
-        </Box>
-
         <ErrorOutlineIcon 
           color="error" 
           sx={{ 

@@ -2,7 +2,6 @@ import React from 'react';
 import FakeClientsDataTableModel from '../mocks/FakeClientData.ts';
 import { TranslationKeyEnum } from '../enums/TranslationKeyEnum';
 import { useTranslation } from '../hooks/useTranslation';
-import LanguageSwitcher from '../components/LanguageSwitcher';
 import {
   Box,
   Typography,
@@ -73,9 +72,6 @@ const Dashboard: React.FC = () => {
           <Typography variant="body1" color="text.secondary">
             {t(TranslationKeyEnum.WelcomeToDashboard)}
           </Typography>
-        </Box>
-        <Box sx={{ minWidth: 120 }}>
-          <LanguageSwitcher variant="compact" showLabel={false} />
         </Box>
       </Box>
 

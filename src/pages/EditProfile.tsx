@@ -6,7 +6,6 @@ import { useNavigate } from 'react-router-dom';
 import { AppRouteEnum } from '../enums/AppRouteEnum';
 import { useI18n } from '../contexts/i18nContext';
 import { TranslationKeyEnum } from '../enums/TranslationKeyEnum';
-import LanguageSwitcher from '../components/LanguageSwitcher';
 import { ArrowBack } from '@mui/icons-material';
 
 const EditProfile: React.FC = () => {
@@ -45,7 +44,6 @@ const EditProfile: React.FC = () => {
         >
           {t(TranslationKeyEnum.Profile)}
         </Button>
-        <LanguageSwitcher variant="compact" showLabel={false} />
       </Box>
 
       <Paper elevation={3} sx={{ p: 4 }}>

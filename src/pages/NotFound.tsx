@@ -4,7 +4,6 @@ import { Box, Typography, Button, Paper, Stack } from '@mui/material';
 import { Home, ArrowBack, Search } from '@mui/icons-material';
 import { useI18n } from '../contexts/i18nContext';
 import { TranslationKeyEnum } from '../enums/TranslationKeyEnum';
-import LanguageSwitcher from '../components/LanguageSwitcher';
 import { useNavigate } from 'react-router-dom';
 import { AppRouteEnum } from '../enums/AppRouteEnum';
 

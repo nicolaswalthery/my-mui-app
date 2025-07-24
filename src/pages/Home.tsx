@@ -15,7 +15,6 @@ import {
 import { Launch, Star, Language } from '@mui/icons-material';
 import { useI18n } from '../contexts/i18nContext';
 import { TranslationKeyEnum } from '../enums/TranslationKeyEnum';
-import LanguageSwitcher from '../components/LanguageSwitcher';
 import { useNavigate } from 'react-router-dom';
 import { AppRouteEnum } from '../enums/AppRouteEnum';
 
@@ -69,9 +68,6 @@ const Home: React.FC = () => {
             size="small"
             sx={{ mb: 2 }}
           />
-        </Box>
-        <Box sx={{ minWidth: 120 }}>
-          <LanguageSwitcher variant="compact" showLabel={false} />
         </Box>
       </Box>
       

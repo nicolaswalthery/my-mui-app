@@ -1,4 +1,4 @@
-// src/pages/Auth.tsx - Updated with i18n support
+// src/pages/Auth.tsx - Updated with i18n support (language switcher removed)
 import React, { useState } from 'react';
 import { UserStorageManager } from '../helpers/userStorageManager';
 import type { UserSessionModel } from '../models/UserSessionModel';
@@ -8,7 +8,6 @@ import { AppRouteEnum } from '../enums/AppRouteEnum';
 import { LoginStepEnum } from '../enums/LoginStepEnum';
 import { useI18n } from '../contexts/i18nContext';
 import { TranslationKeyEnum } from '../enums/TranslationKeyEnum';
-import LanguageSwitcher from '../components/LanguageSwitcher';
 import {
   Box,
   Button,
@@ -92,11 +91,6 @@ const Auth: React.FC = () => {
       px={2}
     >
       <Paper elevation={4} sx={{ p: 4, width: '100%', maxWidth: 400 }}>
-        {/* Language switcher at the top */}
-        <Box sx={{ mb: 3, display: 'flex', justifyContent: 'flex-end' }}>
-          <LanguageSwitcher variant="compact" showLabel={false} />
-        </Box>
-
         <Typography variant="h5" mb={3} textAlign="center">
           {getPageTitle()}
         </Typography>
