@@ -8,6 +8,7 @@ import {
 } from '@mui/icons-material';
 import type { RouteConfig } from '../models/RouteConfig';
 import { TranslationKeyEnum } from '../enums/TranslationKeyEnum';
+import { useTranslation } from '../hooks/useTranslation';
 import { useLocation } from 'react-router-dom';
 
 // Pages
@@ -107,9 +108,13 @@ export const routeConfig: TranslatableRouteConfig[] = [
 
 // Hook to get translated page title
 export const useCurrentPageTitle = () => {
+  const { t } = useTranslation();
   const location = useLocation();
-  // This would need to be enhanced to use translation context
-  return getPageTitle(location.pathname);
+  console.log('Current location:', location.pathname);
+  // Find the route based on the current path
+  var route = getRouteByPath(location.pathname);
+  console.log('Current route:', route);
+  return route ? t(route.displayNameKey) : 'Set a Page Title !';
 };
 
 // Helper function that could be enhanced to use translations
