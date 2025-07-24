@@ -22,7 +22,7 @@ const translations: Record<SupportedLangEnum, Record<TranslationKeyEnum, string>
     [TranslationKeyEnum.Home]: 'Home',
     [TranslationKeyEnum.Dashboard]: 'Dashboard',
     [TranslationKeyEnum.Settings]: 'Settings',
-    [TranslationKeyEnum.Profile]: 'Profile',
+    [TranslationKeyEnum.Profil]: 'Profil',
     
     // Authentication
     [TranslationKeyEnum.Login]: 'Login',

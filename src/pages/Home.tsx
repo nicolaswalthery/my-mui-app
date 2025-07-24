@@ -60,14 +60,6 @@ const Home: React.FC = () => {
           <Typography variant="h3" gutterBottom sx={{ fontWeight: 'bold', color: 'primary.main' }}>
             {t(TranslationKeyEnum.Home)}
           </Typography>
-          <Chip 
-            icon={<Language />} 
-            label="i18n Ready" 
-            color="primary" 
-            variant="outlined" 
-            size="small"
-            sx={{ mb: 2 }}
-          />
         </Box>
       </Box>
       
