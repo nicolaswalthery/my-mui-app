@@ -21,7 +21,6 @@ import { AppRouteEnum } from '../enums/AppRouteEnum';
 const Home: React.FC = () => {
   const { t } = useI18n();
   const navigate = useNavigate();
-
   // Define features with translation keys
   const features = [
     {

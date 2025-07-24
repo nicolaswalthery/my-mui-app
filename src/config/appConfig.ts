@@ -5,3 +5,7 @@ export const appConfig = {
 };
 
 export type AppConfig = typeof appConfig;
+
+export function getAppConfig(): AppConfig {
+  return appConfig;
+}
