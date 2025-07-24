@@ -1,4 +1,3 @@
-// src/enums/TranslationKeyEnum.ts - Enhanced version with NotFound page support
 export const TranslationKeyEnum = {
   // Common UI
   Welcome: 'welcome',
@@ -14,6 +13,7 @@ export const TranslationKeyEnum = {
   Loading: 'loading',
   Error: 'error',
   Success: 'success',
+  Menu: 'menu',
   
   // Navigation
   Home: 'home',
