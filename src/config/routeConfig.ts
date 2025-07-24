@@ -110,10 +110,8 @@ export const routeConfig: TranslatableRouteConfig[] = [
 export const useCurrentPageTitle = () => {
   const { t } = useTranslation();
   const location = useLocation();
-  console.log('Current location:', location.pathname);
-  // Find the route based on the current path
   var route = getRouteByPath(location.pathname);
-  console.log('Current route:', route);
+  console.log(route ? t(route.displayNameKey) : 'Set a Page Title !');
   return route ? t(route.displayNameKey) : 'Set a Page Title !';
 };
 

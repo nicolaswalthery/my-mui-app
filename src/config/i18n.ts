@@ -22,7 +22,7 @@ const translations: Record<SupportedLangEnum, Record<TranslationKeyEnum, string>
     [TranslationKeyEnum.Home]: 'Home',
     [TranslationKeyEnum.Dashboard]: 'Dashboard',
     [TranslationKeyEnum.Settings]: 'Settings',
-    [TranslationKeyEnum.Profil]: 'Profil',
+    [TranslationKeyEnum.Profile]: 'Profile',
     
     // Authentication
     [TranslationKeyEnum.Login]: 'Login',
@@ -178,7 +178,7 @@ const translations: Record<SupportedLangEnum, Record<TranslationKeyEnum, string>
     [TranslationKeyEnum.Home]: 'Accueil',
     [TranslationKeyEnum.Dashboard]: 'Tableau de bord',
     [TranslationKeyEnum.Settings]: 'Paramètres',
-    [TranslationKeyEnum.Profile]: 'Profil',
+    [TranslationKeyEnum.Profile]: 'Profile',
     
     // Authentication
     [TranslationKeyEnum.Login]: 'Connexion',
