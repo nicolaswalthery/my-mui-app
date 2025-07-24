@@ -34,13 +34,6 @@ const Profile: React.FC = () => {
 
   return (
     <Box sx={{ maxWidth: 800, margin: 'auto', p: 2 }}>
-      {/* Header with language switcher */}
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
-        <Typography variant="h4" gutterBottom>
-          {t(TranslationKeyEnum.Profile)}
-        </Typography>
-      </Box>
-
       <Paper 
         elevation={3} 
         sx={{ 
@@ -193,23 +186,6 @@ const Profile: React.FC = () => {
             {t(TranslationKeyEnum.EditProfile)}
           </Button>
         </Stack>
-
-        {/* Information box */}
-        <Box sx={{ 
-          mt: 4, 
-          p: 2, 
-          bgcolor: 'background.default', 
-          borderRadius: 2, 
-          border: 1, 
-          borderColor: 'divider' 
-        }}>
-          <Typography variant="caption" color="text.secondary" display="block" sx={{ mb: 1 }}>
-            👤 {t(TranslationKeyEnum.Profile)} - {t(TranslationKeyEnum.DemoVersion)}
-          </Typography>
-          <Typography variant="caption" color="text.secondary">
-            {t(TranslationKeyEnum.ChangesSavedLocally)}
-          </Typography>
-        </Box>
       </Paper>
     </Box>
   );

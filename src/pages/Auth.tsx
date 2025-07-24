@@ -168,16 +168,6 @@ const Auth: React.FC = () => {
             {message}
           </Typography>
         )}
-
-        {/* Welcome message for demo purposes */}
-        <Box sx={{ mt: 3, p: 2, bgcolor: 'background.paper', borderRadius: 1, border: 1, borderColor: 'divider' }}>
-          <Typography variant="caption" color="text.secondary" textAlign="center" display="block">
-            {t(TranslationKeyEnum.DemoVersion)}
-          </Typography>
-          <Typography variant="caption" color="text.secondary" textAlign="center" display="block">
-            {t(TranslationKeyEnum.AnyCredentialsWork)}
-          </Typography>
-        </Box>
       </Paper>
     </Box>
   );

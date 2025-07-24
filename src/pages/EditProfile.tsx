@@ -108,23 +108,6 @@ const EditProfile: React.FC = () => {
             </Button>
           </Box>
         </Stack>
-
-        {/* Information box */}
-        <Box sx={{ 
-          mt: 4, 
-          p: 2, 
-          bgcolor: 'background.default', 
-          borderRadius: 1, 
-          border: 1, 
-          borderColor: 'divider' 
-        }}>
-          <Typography variant="caption" color="text.secondary" display="block">
-            💡 {t(TranslationKeyEnum.EditProfile)} - {t(TranslationKeyEnum.DemoVersion)}
-          </Typography>
-          <Typography variant="caption" color="text.secondary">
-            {t(TranslationKeyEnum.ChangesSavedLocally)}
-          </Typography>
-        </Box>
       </Paper>
     </Box>
   );
