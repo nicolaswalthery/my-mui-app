@@ -29,7 +29,8 @@ import {
   Delete as DeleteIcon,
   Info as InfoIcon,
   CheckCircle as CheckCircleIcon,
-  Close as CloseIcon
+  Close as CloseIcon,
+  Warning as WarningIcon
 } from '@mui/icons-material';
 import CategoryEditor from '../components/CategoryEditor';
 import type { CategorySection } from '../components/CategoryEditor';
@@ -115,6 +116,10 @@ export default function MailAutomationForm() {
       return acc + completed;
     }, 0);
     return Math.round((completedSections / totalSections) * 100);
+  };
+
+  const isSectionComplete = (section: CategorySection) => {
+    return section.name && section.description && section.examples && section.examples.length > 0;
   };
 
   const getConfidenceLevelColor = (level: string) => {
@@ -291,6 +296,15 @@ export default function MailAutomationForm() {
                                 color={getConfidenceLevelColor(section.confidenceLevel) as any}
                                 sx={{ minWidth: 'auto', height: 20 }}
                               />
+                              {!isSectionComplete(section) && (
+                                <WarningIcon 
+                                  sx={{ 
+                                    fontSize: 16, 
+                                    color: 'warning.main',
+                                    opacity: 0.8
+                                  }} 
+                                />
+                              )}
                             </Stack>
                           }
                           secondary={section.description ? 
@@ -362,6 +376,15 @@ export default function MailAutomationForm() {
                                   color={getConfidenceLevelColor(sub.confidenceLevel) as any}
                                   sx={{ minWidth: 'auto', height: 16 }}
                                 />
+                                {!isSectionComplete(sub) && (
+                                  <WarningIcon 
+                                    sx={{ 
+                                      fontSize: 14, 
+                                      color: 'warning.main',
+                                      opacity: 0.8
+                                    }} 
+                                  />
+                                )}
                               </Stack>
                             }
                             secondary={
