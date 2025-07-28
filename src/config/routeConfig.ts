@@ -37,7 +37,7 @@ export const routeConfig: TranslatableRouteConfig[] = [
     displayName: 'Dashboard', // Fallback
     icon: Dashboard,
     component: DashboardPage,
-    showInMenu: true,
+    showInMenu: false,
     requiresAuth: false,
     descriptionKey: TranslationKeyEnum.WelcomeToDashboard,
     description: 'Main dashboard with overview',
@@ -60,7 +60,7 @@ export const routeConfig: TranslatableRouteConfig[] = [
     displayName: 'Settings', // Fallback
     icon: Settings,
     component: SettingsPage,
-    showInMenu: true,
+    showInMenu: false,
     requiresAuth: false,
     description: 'Application settings and preferences',
     order: 3,
@@ -85,16 +85,6 @@ export const routeConfig: TranslatableRouteConfig[] = [
     showInMenu: false,
     requiresAuth: false,
     description: 'Authentication Page',
-  },
-  {
-    path: '/kanban-board',
-    displayNameKey: TranslationKeyEnum.KanbanBoard,
-    displayName: 'Kanban Board', // Fallback
-    icon: Dashboard,
-    component: KanbanBoard,
-    showInMenu: true,
-    requiresAuth: false,
-    description: 'Kanban Board for task management',
   },
   {
     path: '/edit-profile',
