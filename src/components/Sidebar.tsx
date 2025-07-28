@@ -80,20 +80,16 @@ const Sidebar: React.FC<SidebarProps> = ({ menuItems, appTitle, onItemClick }) =
           transform: 'scale(1.00)',
         }
       }}>
-        <Typography
+        <img
           onClick={() => handleNavClick?.(AppRouteEnum.Home)}
-          variant="h6"
-          component="h1"
-          sx={{ 
-            cursor: 'pointer',
-            fontWeight: 600,
-            letterSpacing: '0.5px',
-            textAlign: 'center'
+          src="/starcmd-logo.svg" // Path to your SVG file
+          alt="App Logo"
+          style={{
+            width: 'auto', // Adjust size as needed
+            height: 30,    // Set a fixed height or width if necessary
+            cursor: 'pointer'
           }}
-          title={`${t(TranslationKeyEnum.GoHome)} - ${appTitle}`}
-        >
-          {appTitle}
-        </Typography>
+        />
       </Box>
 
       {/* Menu Item List */}
