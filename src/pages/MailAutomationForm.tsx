@@ -541,7 +541,8 @@ export default function MailAutomationForm() {
           position: 'sticky',
           bottom: 0,
           zIndex: 1000,
-          boxShadow: '0 -4px 16px rgba(0,0,0,0.1)'
+          boxShadow: '0 -4px 16px rgba(0,0,0,0.1)',
+
         }}>
           <CardContent>
             <Stack direction={{ xs: 'column', sm: 'row' }} alignItems="center" justifyContent="space-between" spacing={2}>
