@@ -192,7 +192,25 @@ export default function MailAutomationForm() {
             borderRadius: 3,
             border: 1,
             borderColor: 'divider',
-            height: 'fit-content'
+            height: 'fit-content',
+            position: 'sticky',
+            top: 24,
+            maxHeight: 'calc(100vh - 48px)',
+            overflowY: 'auto',
+            '&::-webkit-scrollbar': {
+              width: '8px',
+            },
+            '&::-webkit-scrollbar-track': {
+              background: 'rgba(0,0,0,0.1)',
+              borderRadius: '4px',
+            },
+            '&::-webkit-scrollbar-thumb': {
+              background: 'rgba(0,0,0,0.3)',
+              borderRadius: '4px',
+              '&:hover': {
+                background: 'rgba(0,0,0,0.5)',
+              },
+            },
           }}>
             <CardContent sx={{ p: 0 }}>
               {/* Sidebar Header */}
@@ -300,16 +318,38 @@ export default function MailAutomationForm() {
                             borderLeft: 2,
                             borderColor: 'divider',
                             ml: 2,
+                            cursor: 'pointer',
+                            transition: 'all 0.2s ease-in-out',
+                            '&:hover': {
+                              bgcolor: 'primary.25',
+                              borderColor: 'primary.light',
+                              '& .subcategory-name': {
+                                color: 'primary.main',
+                                textDecoration: 'underline'
+                              }
+                            },
                             '&.Mui-selected': {
                               bgcolor: 'primary.50',
-                              borderColor: 'primary.main'
+                              borderColor: 'primary.main',
+                              '& .subcategory-name': {
+                                color: 'primary.dark',
+                                fontWeight: 600
+                              }
                             }
                           }}
                         >
                           <ListItemText 
                             primary={
                               <Stack direction="row" alignItems="center" spacing={1}>
-                                <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                                <Typography 
+                                  variant="body2" 
+                                  className="subcategory-name"
+                                  sx={{ 
+                                    fontWeight: 500,
+                                    cursor: 'pointer',
+                                    transition: 'all 0.2s ease-in-out'
+                                  }}
+                                >
                                   ↳ {sub.name || `Sous-catégorie ${subIndex + 1}`}
                                 </Typography>
                                 <Chip
@@ -320,9 +360,20 @@ export default function MailAutomationForm() {
                                 />
                               </Stack>
                             }
-                            secondary={sub.description ? 
-                              sub.description.substring(0, 40) + (sub.description.length > 40 ? '...' : '') 
-                              : 'Aucune description'
+                            secondary={
+                              <Typography 
+                                variant="caption" 
+                                color="text.secondary"
+                                sx={{ 
+                                  cursor: 'pointer',
+                                  '&:hover': { color: 'text.primary' }
+                                }}
+                              >
+                                {sub.description ? 
+                                  sub.description.substring(0, 40) + (sub.description.length > 40 ? '...' : '') 
+                                  : 'Aucune description'
+                                }
+                              </Typography>
                             }
                           />
                           <IconButton
@@ -350,7 +401,10 @@ export default function MailAutomationForm() {
             borderRadius: 3,
             border: 1,
             borderColor: 'info.light',
-            bgcolor: 'info.50'
+            bgcolor: 'info.50',
+            position: 'sticky',
+            top: 'calc(100vh - 200px)',
+            zIndex: 1
           }}>
             <CardContent>
               <Stack direction="row" alignItems="flex-start" spacing={2}>

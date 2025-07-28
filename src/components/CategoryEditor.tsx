@@ -1,5 +1,5 @@
 // src/components/CategoryEditor.tsx
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   TextField,
@@ -20,7 +20,12 @@ import {
   Alert,
   Divider,
   Card,
-  CardContent
+  CardContent,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  IconButton
 } from '@mui/material';
 import {
   ExpandMore as ExpandMoreIcon,
@@ -30,7 +35,10 @@ import {
   Person as PersonIcon,
   Email as EmailIcon,
   Label as LabelIcon,
-  Description as DescriptionIcon
+  Description as DescriptionIcon,
+  Close as CloseIcon,
+  Save as SaveIcon,
+  Delete as DeleteIcon
 } from '@mui/icons-material';
 
 export interface MailExample {
@@ -64,6 +72,13 @@ const CategoryEditor: React.FC<CategoryEditorProps> = ({
   onChange,
   onAddSubcategory
 }) => {
+  const [showAddExample, setShowAddExample] = useState(false);
+  const [newExample, setNewExample] = useState<MailExample>({
+    subject: '',
+    body: '',
+    sender: ''
+  });
+
   const getConfidenceLevelInfo = (level: string) => {
     switch (level) {
       case 'auto':
@@ -95,6 +110,20 @@ const CategoryEditor: React.FC<CategoryEditorProps> = ({
           description: ''
         };
     }
+  };
+
+  const handleAddExample = () => {
+    if (newExample.subject.trim() && newExample.body.trim()) {
+      const updatedExamples = [...section.examples, newExample];
+      onChange('examples', updatedExamples);
+      setNewExample({ subject: '', body: '', sender: '' });
+      setShowAddExample(false);
+    }
+  };
+
+  const handleDeleteExample = (index: number) => {
+    const updatedExamples = section.examples.filter((_, i) => i !== index);
+    onChange('examples', updatedExamples);
   };
 
   const confidenceInfo = getConfidenceLevelInfo(section.confidenceLevel);
@@ -420,6 +449,7 @@ const CategoryEditor: React.FC<CategoryEditorProps> = ({
               variant="outlined" 
               startIcon={<AddIcon />}
               size="small"
+              onClick={() => setShowAddExample(true)}
               sx={{ 
                 borderRadius: 2,
                 textTransform: 'none'
@@ -444,23 +474,153 @@ const CategoryEditor: React.FC<CategoryEditorProps> = ({
                   borderRadius: 2, 
                   bgcolor: 'success.50',
                   border: 1,
-                  borderColor: 'success.light'
+                  borderColor: 'success.light',
+                  position: 'relative'
                 }}>
-                  <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 1 }}>
-                    📧 Exemple {idx + 1}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary">
-                    <strong>Sujet:</strong> {example.subject}
-                  </Typography>
-                  <Typography variant="body2" color="text.secondary" sx={{ mt: 0.5 }}>
-                    <strong>Expéditeur:</strong> {example.sender || 'Non spécifié'}
-                  </Typography>
+                  <Stack direction="row" alignItems="flex-start" justifyContent="space-between">
+                    <Box sx={{ flex: 1 }}>
+                      <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 1 }}>
+                        📧 Exemple {idx + 1}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
+                        <strong>Sujet:</strong> {example.subject}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary" sx={{ mb: 0.5 }}>
+                        <strong>Expéditeur:</strong> {example.sender || 'Non spécifié'}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary">
+                        <strong>Corps:</strong> {example.body.length > 100 ? 
+                          example.body.substring(0, 100) + '...' : 
+                          example.body
+                        }
+                      </Typography>
+                    </Box>
+                    <IconButton
+                      size="small"
+                      onClick={() => handleDeleteExample(idx)}
+                      sx={{ 
+                        color: 'error.main',
+                        '&:hover': { bgcolor: 'error.50' }
+                      }}
+                    >
+                      <DeleteIcon fontSize="small" />
+                    </IconButton>
+                  </Stack>
                 </Paper>
               ))}
             </Stack>
           )}
         </CardContent>
       </Card>
+
+      {/* Add Example Dialog */}
+      <Dialog 
+        open={showAddExample} 
+        onClose={() => setShowAddExample(false)}
+        maxWidth="md"
+        fullWidth
+        PaperProps={{
+          sx: { borderRadius: 3 }
+        }}
+      >
+        <DialogTitle sx={{ 
+          display: 'flex', 
+          alignItems: 'center', 
+          justifyContent: 'space-between',
+          pb: 1
+        }}>
+          <Stack direction="row" alignItems="center" spacing={1}>
+            <EmailIcon color="primary" />
+            <Typography variant="h6" sx={{ fontWeight: 600 }}>
+              Ajouter un exemple d'email
+            </Typography>
+          </Stack>
+          <IconButton 
+            onClick={() => setShowAddExample(false)}
+            size="small"
+          >
+            <CloseIcon />
+          </IconButton>
+        </DialogTitle>
+        
+        <DialogContent sx={{ pt: 2 }}>
+          <Alert severity="info" sx={{ mb: 3, borderRadius: 2 }}>
+            <Typography variant="body2">
+              Les exemples d'emails permettent d'améliorer la précision de la classification automatique. 
+              Plus vous ajoutez d'exemples pertinents, plus le système sera efficace.
+            </Typography>
+          </Alert>
+
+          <Stack spacing={3}>
+            <TextField
+              label="Sujet de l'email"
+              fullWidth
+              required
+              value={newExample.subject}
+              onChange={(e) => setNewExample({ ...newExample, subject: e.target.value })}
+              placeholder="Ex: [FACTURE] Votre commande #12345"
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  borderRadius: 2
+                }
+              }}
+            />
+
+            <TextField
+              label="Expéditeur (optionnel)"
+              fullWidth
+              value={newExample.sender}
+              onChange={(e) => setNewExample({ ...newExample, sender: e.target.value })}
+              placeholder="Ex: noreply@company.com"
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  borderRadius: 2
+                }
+              }}
+            />
+
+            <TextField
+              label="Corps de l'email"
+              fullWidth
+              required
+              multiline
+              minRows={4}
+              maxRows={8}
+              value={newExample.body}
+              onChange={(e) => setNewExample({ ...newExample, body: e.target.value })}
+              placeholder="Contenu de l'email exemple..."
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  borderRadius: 2
+                }
+              }}
+            />
+          </Stack>
+        </DialogContent>
+        
+        <DialogActions sx={{ p: 3, pt: 1 }}>
+          <Button 
+            onClick={() => setShowAddExample(false)}
+            color="inherit"
+            sx={{ borderRadius: 2, textTransform: 'none' }}
+          >
+            Annuler
+          </Button>
+          <Button 
+            onClick={handleAddExample}
+            variant="contained"
+            startIcon={<SaveIcon />}
+            disabled={!newExample.subject.trim() || !newExample.body.trim()}
+            sx={{ 
+              borderRadius: 2, 
+              textTransform: 'none',
+              px: 3
+            }}
+          >
+            Ajouter l'exemple
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 };
