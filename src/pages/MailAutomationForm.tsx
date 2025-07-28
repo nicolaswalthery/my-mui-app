@@ -611,7 +611,7 @@ export default function MailAutomationForm() {
                   <Typography variant="body2" color="text.secondary" sx={{
                     fontSize: { xs: '0.8rem', sm: '0.875rem' }
                   }}>
-                    {sections.length} catégorie(s) configurée(s) • {getCompletionPercentage()}% complété
+                    {getCompletionPercentage()}% complété
                   </Typography>
                 </Box>
               </Stack>
