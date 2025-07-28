@@ -31,7 +31,6 @@ import {
   CheckCircle as CheckCircleIcon
 } from '@mui/icons-material';
 import CategoryEditor from '../components/CategoryEditor';
-import ConfirmationDialog from '../components/ConfirmationDialog';
 import type { CategorySection } from '../components/CategoryEditor';
 
 export default function MailAutomationForm() {
@@ -443,21 +442,21 @@ export default function MailAutomationForm() {
           }}>
             <CardContent>
               <Stack direction="row" alignItems="flex-start" spacing={2}>
-                <InfoIcon color="info" />
-                <Box>
-                  <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 1 }}>
-                    💡 Conseils
-                  </Typography>
-                  <Typography variant="caption" color="text.secondary" sx={{ lineHeight: 1.4 }}>
-                    • Utilisez des mots-clés spécifiques pour une meilleure classification
-                    <br />
-                    • Les sous-catégories permettent une organisation plus fine
-                    <br />
-                    • Le niveau "Auto" traite les emails automatiquement
-                  </Typography>
-                </Box>
-              </Stack>
-            </CardContent>
+                  <InfoIcon color="info" />
+                  <Box sx={{ pr: 3 }}>
+                    <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 1 }}>
+                      💡 Conseils
+                    </Typography>
+                    <Typography variant="caption" color="text.secondary" sx={{ lineHeight: 1.4 }}>
+                      • Utilisez des mots-clés spécifiques pour une meilleure classification
+                      <br />
+                      • Les sous-catégories permettent une organisation plus fine
+                      <br />
+                      • Le niveau "Auto" traite les emails automatiquement
+                    </Typography>
+                  </Box>
+                </Stack>
+              </CardContent>
           </Card>
         </Grid>
 
@@ -564,7 +563,7 @@ export default function MailAutomationForm() {
               </Stack>
               <Stack direction="row" spacing={2}>
                 <Button variant="outlined" color="inherit">
-                  Prévisualiser
+                  Sauvegarder
                 </Button>
                 <Button 
                   variant="contained" 
@@ -576,7 +575,7 @@ export default function MailAutomationForm() {
                     textTransform: 'none'
                   }}
                 >
-                  Activer l'automatisation
+                  Activer
                 </Button>
               </Stack>
             </Stack>
