@@ -15,8 +15,9 @@ export class ConfigManager {
     getAppConfig(): CurrentAppConfig {
         if(import.meta.env.DEV)
             return new CurrentAppConfig(this.commonConfig, this.appDevConfig);
+        
         else(import.meta.env.PROD)
-            return new CurrentAppConfig(this.commonConfig, "TO DO: Add production API URL");
+            return new CurrentAppConfig(this.commonConfig, this.appDevConfig /*"TO DO: Add production Ap Config"*/); 
     }
 }
 
@@ -28,15 +29,23 @@ export class CurrentAppConfig{
     public airableApiKey: string;
     public airtableBaseUrl: string;
     public apiCallTimeout: string;
+    public starcmdAirtableToken: string;
+    public starcmdAirtableClientTableName: string;
+    public starcmdAirtableCategoriesTableName: string;
+    public starcmdAirtableEmailsExempleTableName: string;
 
     constructor(AppConfig: AppConfig, Config: AppDevConfig) {
         this.appTitle = AppConfig.appTitle;
         this.appVersion = AppConfig.version;
-        this.airtableBaseUrl = Config.airtableBaseUrl;
+        this.airtableBaseUrl = Config.starcmdAirtableBaseUrl;
         this.airableApiKey = Config.airtableApiKey;
         this.backendApi = Config.backendApi;
         this.defaultLanguage = AppConfig.defaultLanguage;
         this.apiCallTimeout = AppConfig.apiCallTimeout;
+        this.starcmdAirtableToken = Config.starcmdAirtableToken;
+        this.starcmdAirtableClientTableName = Config.starcmdAirtableClientTableName;
+        this.starcmdAirtableCategoriesTableName = Config.starcmdAirtableCategoriesTableName;
+        this.starcmdAirtableEmailsExempleTableName = Config.starcmdAirtableEmailExempleTableName;
     }
 }
 

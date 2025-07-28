@@ -1,13 +1,13 @@
-import type { AxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import type { AxiosInstance as StarcmdAirtableAxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
 import axios from 'axios';
 import { configManager } from '../config/configManager';
 
 
-const config = configManager.getAppConfig();
+const currentAppConfig = configManager.getAppConfig();
 // Create an Axios instance
-const axiosInstance: AxiosInstance = axios.create({
-  baseURL: config.airtableBaseUrl,
-  timeout: config.apiCallTimeout
+const axiosInstance: StarcmdAirtableAxiosInstance = axios.create({
+  baseURL: currentAppConfig.airtableBaseUrl,
+  timeout: currentAppConfig.apiCallTimeout
 });
 
 // Request interceptor for handling global errors
