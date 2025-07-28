@@ -46,7 +46,16 @@ const EditProfile: React.FC = () => {
         </Button>
       </Box>
 
-      <Paper elevation={3} sx={{ p: 4 }}>
+      <Paper 
+              elevation={3} 
+              sx={{ 
+                p: 4, 
+                borderRadius: 3,
+                background: 'linear-gradient(135deg, rgba(25, 118, 210, 0.05) 0%, rgba(156, 39, 176, 0.05) 100%)',
+                border: 1,
+                borderColor: 'divider'
+              }}
+            >
         <Typography variant="h5" gutterBottom>
           {t(TranslationKeyEnum.EditProfile)}
         </Typography>
