@@ -154,6 +154,9 @@ const translations: Record<SupportedLangEnum, Record<TranslationKeyEnum, string>
     [TranslationKeyEnum.TechStackSelection]: 'Tech Stack Selection',
     [TranslationKeyEnum.TechStackSelectionDesc]: 'Technical stack selection',
     
+    // Mail Automation Service
+    [TranslationKeyEnum.MailAutoForm]: 'Mail Automation Form',
+
     // Footer
     [TranslationKeyEnum.FooterText]: 'My MUI App',
   },
@@ -310,6 +313,9 @@ const translations: Record<SupportedLangEnum, Record<TranslationKeyEnum, string>
     [TranslationKeyEnum.TechStackSelection]: 'Choix des technologies',
     [TranslationKeyEnum.TechStackSelectionDesc]: 'Sélection du stack technique',
     
+    // Mail Automation Service
+    [TranslationKeyEnum.MailAutoForm]: 'Formulaire d\'automatisation des mails',
+
     // Footer
     [TranslationKeyEnum.FooterText]: 'Mon App MUI',
   },
@@ -466,6 +472,9 @@ const translations: Record<SupportedLangEnum, Record<TranslationKeyEnum, string>
     [TranslationKeyEnum.TechStackSelection]: 'Selección de tecnologías',
     [TranslationKeyEnum.TechStackSelectionDesc]: 'Selección del stack técnico',
     
+    // Mail Automation Service
+    [TranslationKeyEnum.MailAutoForm]: 'Formulario de automatización de correos',
+
     // Footer
     [TranslationKeyEnum.FooterText]: 'Mi App MUI',
   },
@@ -621,6 +630,9 @@ const translations: Record<SupportedLangEnum, Record<TranslationKeyEnum, string>
     [TranslationKeyEnum.TechStackSelection]: 'Tech-Stack-Auswahl',
     [TranslationKeyEnum.TechStackSelectionDesc]: 'Auswahl des technischen Stacks',
     
+    // Mail Automation Service
+    [TranslationKeyEnum.MailAutoForm]: 'Mail-Automatisierungsformular',
+
     // Footer
     [TranslationKeyEnum.FooterText]: 'Meine MUI App',
   },

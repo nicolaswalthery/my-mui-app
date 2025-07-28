@@ -8,6 +8,7 @@ export const AppRouteEnum = {
   Error: '/error',
   KanbanBoard: '/kanban-board',
   EditProfile: '/edit-profile',
+  MailAutoOnboarding: '/mail-auto-onboarding',
 
 } as const;
 

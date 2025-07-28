@@ -17,6 +17,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import ErrorPage from './pages/Error';
 import KanbanBoard from './pages/KanbanBoard';
 
+
 const AppRouter: React.FC = () => {
   return (
     <Router>
@@ -41,6 +42,7 @@ const AppRouter: React.FC = () => {
           <Route path={AppRouteEnum.Error} element={<ErrorPage />} />
           <Route path={AppRouteEnum.KanbanBoard} element={<KanbanBoard />} />
           <Route path={AppRouteEnum.EditProfile} element={<EditProfile />} />
+          <Route path={AppRouteEnum.MailAutoOnboarding} element={<MailAutomationForm />} />
         </Route>
       </Routes>
     </Router>

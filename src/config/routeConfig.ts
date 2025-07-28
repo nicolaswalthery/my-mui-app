@@ -4,7 +4,8 @@ import {
   Home,
   Settings,
   People,
-  VpnKey
+  VpnKey,
+  Mail
 } from '@mui/icons-material';
 import type { RouteConfig } from '../models/RouteConfig';
 import { TranslationKeyEnum } from '../enums/TranslationKeyEnum';
@@ -19,6 +20,7 @@ import AuthPage from '../pages/Auth';
 import ProfilePage from '../pages/Profile';
 import KanbanBoard from '../pages/KanbanBoard';
 import EditProfile from '../pages/EditProfile';
+import MailAutomationForm from '../pages/MailAutomationForm';
 
 // Enhanced RouteConfig with translation keys
 interface TranslatableRouteConfig extends Omit<RouteConfig, 'displayName' | 'description'> {
@@ -103,6 +105,16 @@ export const routeConfig: TranslatableRouteConfig[] = [
     showInMenu: false,
     requiresAuth: true,
     description: 'Edit user profile',
+  },
+  {
+    path: '/mail-auto-onboarding',
+    displayNameKey: TranslationKeyEnum.MailAutoForm,
+    displayName: 'Mail Automation', // Fallback
+    icon: Mail,
+    component: MailAutomationForm,
+    showInMenu: true,
+    requiresAuth: true,
+    description: 'On-boarding form for mail automation services',
   },
 ];
 

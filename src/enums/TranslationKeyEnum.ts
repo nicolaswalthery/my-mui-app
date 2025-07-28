@@ -151,6 +151,9 @@ export const TranslationKeyEnum = {
   TechStackSelection: 'techStackSelection',
   TechStackSelectionDesc: 'techStackSelectionDesc',
   
+  // Mail Automation Service
+  MailAutoForm: 'mailAutoForm',
+
   // Footer
   FooterText: 'footerText',
 } as const;
