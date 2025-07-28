@@ -33,7 +33,7 @@ const Profile: React.FC = () => {
   };
 
   return (
-    <Box sx={{ maxWidth: 800, margin: 'auto', p: 2 }}>
+    <Box sx={{ minWidth: 450, margin: 'auto', p: 2 }}>
       <Paper 
         elevation={3} 
         sx={{ 
