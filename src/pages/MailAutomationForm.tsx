@@ -31,11 +31,24 @@ import {
   CheckCircle as CheckCircleIcon
 } from '@mui/icons-material';
 import CategoryEditor from '../components/CategoryEditor';
+import ConfirmationDialog from '../components/ConfirmationDialog';
 import type { CategorySection } from '../components/CategoryEditor';
 
 export default function MailAutomationForm() {
   const [sections, setSections] = useState<CategorySection[]>([]);
   const [selected, setSelected] = useState<{ parent: number; child?: number } | null>(null);
+  const [confirmDelete, setConfirmDelete] = useState<{
+    open: boolean;
+    type: 'category' | 'subcategory';
+    parentIndex: number;
+    childIndex?: number;
+    name: string;
+  }>({ 
+    open: false, 
+    type: 'category', 
+    parentIndex: -1, 
+    name: '' 
+  });
 
   const addSection = () => {
     setSections([
@@ -76,6 +89,28 @@ export default function MailAutomationForm() {
     }
     setSections(updated);
     setSelected(null);
+    setConfirmDelete({ open: false, type: 'category', parentIndex: -1, name: '' });
+  };
+
+  const openDeleteConfirmation = (parentIndex: number, childIndex?: number) => {
+    const section = sections[parentIndex];
+    if (childIndex !== undefined) {
+      const subcategory = section.subcategories?.[childIndex];
+      setConfirmDelete({
+        open: true,
+        type: 'subcategory',
+        parentIndex,
+        childIndex,
+        name: subcategory?.name || `Sous-catégorie ${childIndex + 1}`
+      });
+    } else {
+      setConfirmDelete({
+        open: true,
+        type: 'category',
+        parentIndex,
+        name: section.name || `Catégorie ${parentIndex + 1}`
+      });
+    }
   };
 
   const updateSection = (parentIndex: number, field: keyof CategorySection, value: any, childIndex?: number) => {
