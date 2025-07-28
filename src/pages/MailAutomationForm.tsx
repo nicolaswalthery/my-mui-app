@@ -2,35 +2,19 @@ import React, { useState } from 'react';
 import {
   Box,
   Button,
-  TextField,
   Typography,
-  Checkbox,
-  FormControlLabel,
-  Divider,
-  Stack
+  Grid,
+  List,
+  ListItemButton,
+  ListItemText,
+  Paper
 } from '@mui/material';
+import CategoryEditor from '../components/CategoryEditor';
+import type { CategorySection } from '../components/CategoryEditor';
 
-interface MailExample {
-  subject: string;
-  body: string;
-  sender?: string;
-}
-
-interface CategorySection {
-  name: string;
-  description: string;
-  senderType?: string;
-  keywords?: string;
-  subjectPattern?: string;
-  format?: string;
-  attachments?: string;
-  urgency?: string;
-  examples: MailExample[];
-  confidenceLevel: 'auto' | 'high' | 'manual';
-}
-
-export default function CategoryForm() {
+export default function MailAutomationForm() {
   const [sections, setSections] = useState<CategorySection[]>([]);
+  const [selectedIndex, setSelectedIndex] = useState<number | null>(null);
 
   const addSection = () => {
     setSections([
@@ -40,77 +24,70 @@ export default function CategoryForm() {
         description: '',
         examples: [],
         confidenceLevel: 'manual',
+        subcategories: []
       },
     ]);
+    setSelectedIndex(sections.length);
+  };
+
+  const addSubcategory = (parentIndex: number) => {
+    const newSections = [...sections];
+    const parent = newSections[parentIndex];
+    if (!parent.subcategories) parent.subcategories = [];
+    parent.subcategories.push({
+      name: '',
+      description: '',
+      examples: [],
+      confidenceLevel: 'manual',
+      subcategories: []
+    });
+    setSections(newSections);
   };
 
   const updateSection = (index: number, field: keyof CategorySection, value: any) => {
     const newSections = [...sections];
-    newSections[index][field] = value;
+    newSections[index] = {
+      ...newSections[index],
+      [field]: value
+    };
     setSections(newSections);
   };
 
   return (
-    <Box>
-      <Typography variant="h4" gutterBottom>
-        Ajouter une catégorie de mails
-      </Typography>
-      <Button onClick={addSection} variant="contained" sx={{ mb: 3 }}>
-        ➕ Ajouter une section
-      </Button>
+    <Grid container spacing={4}>
+      {/* Colonne gauche : Liste des catégories */}
+      <Grid item xs={12} md={4}>
+        <Typography variant="h5" gutterBottom>
+          Catégories
+        </Typography>
+        <Button onClick={addSection} variant="contained" sx={{ mb: 2 }}>
+          ➕ Nouvelle catégorie
+        </Button>
+        <Paper elevation={1}>
+          <List dense>
+            {sections.map((section, index) => (
+              <ListItemButton
+                key={index}
+                selected={selectedIndex === index}
+                onClick={() => setSelectedIndex(index)}
+              >
+                <ListItemText primary={section.name || `Catégorie ${index + 1}`} />
+              </ListItemButton>
+            ))}
+          </List>
+        </Paper>
+      </Grid>
 
-      {sections.map((section, i) => (
-        <Box key={i} sx={{ mb: 5, p: 3, border: '1px solid #ccc', borderRadius: 2 }}>
-          <Typography variant="h6" gutterBottom>Section {i + 1}</Typography>
-
-          <TextField
-            label="Nom de la catégorie"
-            fullWidth
-            value={section.name}
-            onChange={(e) => updateSection(i, 'name', e.target.value)}
-            sx={{ mb: 2 }}
+      {/* Colonne droite : Formulaire dynamique */}
+      <Grid item xs={12} md={8}>
+        {selectedIndex !== null && (
+          <CategoryEditor
+            section={sections[selectedIndex]}
+            onChange={(field, value) => updateSection(selectedIndex, field, value)}
+            onAddSubcategory={() => addSubcategory(selectedIndex)}
           />
-
-          <TextField
-            label="Description détaillée"
-            fullWidth
-            multiline
-            minRows={3}
-            value={section.description}
-            onChange={(e) => updateSection(i, 'description', e.target.value)}
-            sx={{ mb: 2 }}
-          />
-
-          <Divider sx={{ my: 2 }} />
-
-          <Typography variant="subtitle1">Options avancées</Typography>
-
-          <Stack spacing={2} sx={{ mb: 2 }}>
-            <TextField label="Type d'expéditeur" fullWidth onChange={(e) => updateSection(i, 'senderType', e.target.value)} />
-            <TextField label="Mots-clés fréquents" fullWidth onChange={(e) => updateSection(i, 'keywords', e.target.value)} />
-            <TextField label="Objet typique" fullWidth onChange={(e) => updateSection(i, 'subjectPattern', e.target.value)} />
-            <TextField label="Structure ou format" fullWidth onChange={(e) => updateSection(i, 'format', e.target.value)} />
-            <TextField label="Pièces jointes fréquentes" fullWidth onChange={(e) => updateSection(i, 'attachments', e.target.value)} />
-            <TextField label="Urgence" fullWidth onChange={(e) => updateSection(i, 'urgency', e.target.value)} />
-          </Stack>
-
-          <Divider sx={{ my: 2 }} />
-
-          <Typography variant="subtitle1">Niveau de confiance</Typography>
-          <FormControlLabel
-            control={<Checkbox checked={section.confidenceLevel === 'auto'} onChange={() => updateSection(i, 'confidenceLevel', 'auto')} />}
-            label="Toujours classer automatiquement"
-          />
-          <FormControlLabel
-            control={<Checkbox checked={section.confidenceLevel === 'high'} onChange={() => updateSection(i, 'confidenceLevel', 'high')} />}
-            label="Classer uniquement avec un haut niveau de confiance"
-          />
-          <FormControlLabel
-            control={<Checkbox checked={section.confidenceLevel === 'manual'} onChange={() => updateSection(i, 'confidenceLevel', 'manual')} />}
-            label="Envoyer une suggestion à valider"
-          />
-        </Box>
-      ))}
-    </Box>
+        )}
+      </Grid>
+    </Grid>
   );
 }
