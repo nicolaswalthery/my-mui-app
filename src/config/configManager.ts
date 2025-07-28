@@ -14,18 +14,30 @@ export class ConfigManager {
 
     getAppConfig(): CurrentAppConfig {
         if(import.meta.env.DEV)
-            return new CurrentAppConfig(this.commonConfig, this.appDevConfig.backendApi);
+            return new CurrentAppConfig(this.commonConfig, this.appDevConfig);
         else(import.meta.env.PROD)
             return new CurrentAppConfig(this.commonConfig, "TO DO: Add production API URL");
     }
 }
 
 export class CurrentAppConfig{
-    private config: AppConfig;
-    private appDevConfig: AppDevConfig;
+    public appTitle: string;
+    public appVersion: string;
+    public defaultLanguage: string;
+    public backendApi: string;
+    public airableApiKey: string;
+    public airtableBaseUrl: string;
+    public apiCallTimeout: string;
 
-    constructor(AppCommonConfig: AppConfig, backendApi: string) {
-        this.config = AppCommonConfig;
-        this.appDevConfig = { backendApi };
+    constructor(AppConfig: AppConfig, Config: AppDevConfig) {
+        this.appTitle = AppConfig.appTitle;
+        this.appVersion = AppConfig.version;
+        this.airtableBaseUrl = Config.airtableBaseUrl;
+        this.airableApiKey = Config.airtableApiKey;
+        this.backendApi = Config.backendApi;
+        this.defaultLanguage = AppConfig.defaultLanguage;
+        this.apiCallTimeout = AppConfig.apiCallTimeout;
     }
 }
+
+export const configManager = new ConfigManager();
