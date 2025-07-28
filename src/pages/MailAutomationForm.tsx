@@ -530,8 +530,56 @@ export default function MailAutomationForm() {
         </Grid>
       </Grid>
 
-      {/* Action Bar */}
-      {sections.length > 0 && (
+      {/* Action Bar - Display Configuration incomplète */}
+      {sections.length > 0 && getCompletionPercentage() < 100 && (
+        <Card sx={{ 
+          mt: 4,
+          borderRadius: 3,
+          border: 1,
+          borderColor: 'error.light',
+          bgcolor: 'error.50',
+          position: 'sticky',
+          bottom: 0,
+          zIndex: 1000,
+          boxShadow: '0 -4px 16px rgba(0,0,0,0.1)',
+        }}>
+          <CardContent>
+            <Stack direction={{ xs: 'column', sm: 'row' }} alignItems="center" justifyContent="space-between" spacing={2}>
+              <Stack direction="row" alignItems="center" spacing={2}>
+                <InfoIcon color="error" />
+                <Box>
+                  <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+                    Configuration incomplète
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {sections.length} catégorie(s) configurée(s) • {getCompletionPercentage()}% complété
+                  </Typography>
+                </Box>
+              </Stack>
+              <Stack direction="row" spacing={2}>
+                <Button variant="outlined" color="inherit">
+                  Sauvegarder
+                </Button>
+                <Button 
+                  variant="contained" 
+                  color="error"
+                  disabled
+                  sx={{ 
+                    px: 3,
+                    borderRadius: 2,
+                    textTransform: 'none'
+                  }}
+                >
+                  Compléter la configuration
+                </Button>
+              </Stack>
+            </Stack>
+          </CardContent>
+        </Card>
+      )}
+
+      {/* Action Bar - Configuration prête */}
+      {sections.length > 0 && getCompletionPercentage() === 100 && (
         <Card sx={{ 
           mt: 4,
           borderRadius: 3,
@@ -542,7 +590,6 @@ export default function MailAutomationForm() {
           bottom: 0,
           zIndex: 1000,
           boxShadow: '0 -4px 16px rgba(0,0,0,0.1)',
-
         }}>
           <CardContent>
             <Stack direction={{ xs: 'column', sm: 'row' }} alignItems="center" justifyContent="space-between" spacing={2}>
@@ -577,11 +624,10 @@ export default function MailAutomationForm() {
             </Stack>
           </CardContent>
         </Card>
-        
       )}
 
       {/* Add spacing below the sticky card */}
-    <Box sx={{ height: 20 }} />
+      <Box sx={{ height: 20 }} />
     </Container>
   );
 }
