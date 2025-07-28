@@ -106,9 +106,11 @@ export default function MailAutomationForm() {
       return acc + 1 + (section.subcategories?.length || 0);
     }, 0);
     const completedSections = sections.reduce((acc, section) => {
-      let completed = section.name && section.description ? 1 : 0;
+      let completed = section.name && section.description && section.examples && section.examples.length > 0 ? 1 : 0;
       if (section.subcategories) {
-        completed += section.subcategories.filter(sub => sub.name && sub.description).length;
+        completed += section.subcategories.filter(sub => 
+          sub.name && sub.description && sub.examples && sub.examples.length > 0
+        ).length;
       }
       return acc + completed;
     }, 0);
