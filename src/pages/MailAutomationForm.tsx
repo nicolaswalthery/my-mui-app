@@ -7,10 +7,32 @@ import {
   List,
   ListItemButton,
   ListItemText,
-  Paper
+  Paper,
+  Container,
+  Card,
+  CardContent,
+  Chip,
+  Stack,
+  Divider,
+  IconButton,
+  Tooltip,
+  LinearProgress,
+  Alert,
+  AlertTitle
 } from '@mui/material';
+import {
+  Add as AddIcon,
+  Email as EmailIcon,
+  Category as CategoryIcon,
+  AutoAwesome as AutoAwesomeIcon,
+  Settings as SettingsIcon,
+  Delete as DeleteIcon,
+  Info as InfoIcon,
+  CheckCircle as CheckCircleIcon
+} from '@mui/icons-material';
 import CategoryEditor from '../components/CategoryEditor';
 import type { CategorySection } from '../components/CategoryEditor';
+
 export default function MailAutomationForm() {
   const [sections, setSections] = useState<CategorySection[]>([]);
   const [selected, setSelected] = useState<{ parent: number; child?: number } | null>(null);
@@ -43,6 +65,19 @@ export default function MailAutomationForm() {
     setSections(updated);
   };
 
+  const deleteSection = (parentIndex: number, childIndex?: number) => {
+    const updated = [...sections];
+    if (childIndex !== undefined) {
+      const subcats = updated[parentIndex].subcategories ?? [];
+      subcats.splice(childIndex, 1);
+      updated[parentIndex].subcategories = subcats;
+    } else {
+      updated.splice(parentIndex, 1);
+    }
+    setSections(updated);
+    setSelected(null);
+  };
+
   const updateSection = (parentIndex: number, field: keyof CategorySection, value: any, childIndex?: number) => {
     const updated = [...sections];
     if (childIndex !== undefined) {
@@ -63,60 +98,402 @@ export default function MailAutomationForm() {
     return parent;
   };
 
+  const getCompletionPercentage = () => {
+    if (sections.length === 0) return 0;
+    const totalSections = sections.reduce((acc, section) => {
+      return acc + 1 + (section.subcategories?.length || 0);
+    }, 0);
+    const completedSections = sections.reduce((acc, section) => {
+      let completed = section.name && section.description ? 1 : 0;
+      if (section.subcategories) {
+        completed += section.subcategories.filter(sub => sub.name && sub.description).length;
+      }
+      return acc + completed;
+    }, 0);
+    return Math.round((completedSections / totalSections) * 100);
+  };
+
+  const getConfidenceLevelColor = (level: string) => {
+    switch (level) {
+      case 'auto': return 'success';
+      case 'high': return 'warning';
+      case 'manual': return 'default';
+      default: return 'default';
+    }
+  };
+
+  const getConfidenceLevelIcon = (level: string) => {
+    switch (level) {
+      case 'auto': return '🤖';
+      case 'high': return '⚡';
+      case 'manual': return '👤';
+      default: return '❓';
+    }
+  };
+
   return (
-    <Grid container spacing={4}>
-      {/* Left column: Category + Subcategory list */}
-      <Grid item xs={12} md={4}>
-        <Typography variant="h5" gutterBottom>
-          Catégories
-        </Typography>
-        <Button onClick={addSection} variant="contained" sx={{ mb: 2 }}>
-          ➕ Nouvelle catégorie
-        </Button>
-        <Paper elevation={1}>
-          <List dense>
-            {sections.map((section, index) => (
-              <Box key={index}>
-                <ListItemButton
-                  selected={selected?.parent === index && selected?.child === undefined}
-                  onClick={() => setSelected({ parent: index })}
-                >
-                  <ListItemText primary={section.name || `Catégorie ${index + 1}`} />
-                </ListItemButton>
+    <Container maxWidth="xl">
+      {/* Header Section */}
+      <Box sx={{ 
+        mb: 4, 
+        p: 4, 
+        borderRadius: 3, 
+        background: 'linear-gradient(135deg, rgba(25, 118, 210, 0.1) 0%, rgba(156, 39, 176, 0.1) 100%)',
+        border: 1,
+        borderColor: 'primary.light'
+      }}>
+        <Stack direction="row" alignItems="center" spacing={2} sx={{ mb: 2 }}>
+          <EmailIcon sx={{ fontSize: 40, color: 'primary.main' }} />
+          <Box>
+            <Typography variant="h4" sx={{ fontWeight: 600, color: 'primary.main' }}>
+              Configuration de l'Automatisation Email
+            </Typography>
+            <Typography variant="subtitle1" color="text.secondary">
+              Créez et gérez vos catégories de classification automatique des emails
+            </Typography>
+          </Box>
+        </Stack>
 
-                {/* Subcategories */}
-                {section.subcategories?.map((sub, subIndex) => (
-                  <ListItemButton
-                    key={`sub-${index}-${subIndex}`}
-                    sx={{ pl: 4 }}
-                    selected={selected?.parent === index && selected?.child === subIndex}
-                    onClick={() => setSelected({ parent: index, child: subIndex })}
-                  >
-                    <ListItemText primary={sub.name || `↳ Sous-catégorie ${subIndex + 1}`} />
-                  </ListItemButton>
-                ))}
-              </Box>
-            ))}
-          </List>
-        </Paper>
-      </Grid>
-
-      {/* Right column: Editor */}
-      <Grid item xs={12} md={8}>
-        {selected && getCurrentSection() && (
-          <CategoryEditor
-            section={getCurrentSection()!}
-            onChange={(field, value) =>
-              updateSection(selected.parent, field, value, selected.child)
-            }
-            onAddSubcategory={
-              selected.child === undefined
-                ? () => addSubcategory(selected.parent)
-                : undefined // only allow sub-subcategories if you want recursion
-            }
-          />
+        {/* Progress Section */}
+        {sections.length > 0 && (
+          <Box sx={{ mt: 3 }}>
+            <Stack direction="row" alignItems="center" spacing={2} sx={{ mb: 1 }}>
+              <Typography variant="body2" color="text.secondary">
+                Progression de la configuration
+              </Typography>
+              <Chip 
+                label={`${getCompletionPercentage()}% complété`}
+                size="small"
+                color={getCompletionPercentage() === 100 ? 'success' : 'primary'}
+                icon={getCompletionPercentage() === 100 ? <CheckCircleIcon /> : undefined}
+              />
+            </Stack>
+            <LinearProgress 
+              variant="determinate" 
+              value={getCompletionPercentage()} 
+              sx={{ 
+                height: 8, 
+                borderRadius: 4,
+                bgcolor: 'rgba(0,0,0,0.1)',
+                '& .MuiLinearProgress-bar': {
+                  borderRadius: 4
+                }
+              }}
+            />
+          </Box>
         )}
+      </Box>
+
+      {/* Main Content */}
+      <Grid container spacing={4}>
+        {/* Left Sidebar - Categories List */}
+        <Grid item xs={12} lg={4}>
+          <Card sx={{ 
+            borderRadius: 3,
+            border: 1,
+            borderColor: 'divider',
+            height: 'fit-content'
+          }}>
+            <CardContent sx={{ p: 0 }}>
+              {/* Sidebar Header */}
+              <Box sx={{ p: 3, pb: 2 }}>
+                <Stack direction="row" alignItems="center" justifyContent="space-between">
+                  <Stack direction="row" alignItems="center" spacing={1}>
+                    <CategoryIcon color="primary" />
+                    <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                      Catégories
+                    </Typography>
+                  </Stack>
+                  <Chip 
+                    label={sections.length}
+                    size="small"
+                    color="primary"
+                  />
+                </Stack>
+                
+                <Button 
+                  onClick={addSection} 
+                  variant="contained" 
+                  startIcon={<AddIcon />}
+                  fullWidth
+                  sx={{ 
+                    mt: 2,
+                    borderRadius: 2,
+                    textTransform: 'none',
+                    py: 1.5
+                  }}
+                >
+                  Nouvelle catégorie
+                </Button>
+              </Box>
+
+              <Divider />
+
+              {/* Categories List */}
+              {sections.length === 0 ? (
+                <Box sx={{ p: 4, textAlign: 'center' }}>
+                  <AutoAwesomeIcon sx={{ fontSize: 48, color: 'text.disabled', mb: 2 }} />
+                  <Typography variant="body2" color="text.secondary">
+                    Aucune catégorie créée
+                  </Typography>
+                  <Typography variant="caption" color="text.disabled">
+                    Cliquez sur "Nouvelle catégorie" pour commencer
+                  </Typography>
+                </Box>
+              ) : (
+                <List sx={{ p: 0 }}>
+                  {sections.map((section, index) => (
+                    <Box key={index}>
+                      <ListItemButton
+                        selected={selected?.parent === index && selected?.child === undefined}
+                        onClick={() => setSelected({ parent: index })}
+                        sx={{ 
+                          py: 2,
+                          px: 3,
+                          '&.Mui-selected': {
+                            bgcolor: 'primary.50',
+                            borderRight: 3,
+                            borderColor: 'primary.main'
+                          }
+                        }}
+                      >
+                        <ListItemText 
+                          primary={
+                            <Stack direction="row" alignItems="center" spacing={1}>
+                              <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                                {section.name || `Catégorie ${index + 1}`}
+                              </Typography>
+                              <Chip
+                                label={getConfidenceLevelIcon(section.confidenceLevel)}
+                                size="small"
+                                color={getConfidenceLevelColor(section.confidenceLevel) as any}
+                                sx={{ minWidth: 'auto', height: 20 }}
+                              />
+                            </Stack>
+                          }
+                          secondary={section.description ? 
+                            section.description.substring(0, 50) + (section.description.length > 50 ? '...' : '') 
+                            : 'Aucune description'
+                          }
+                        />
+                        <IconButton
+                          size="small"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            deleteSection(index);
+                          }}
+                          sx={{ opacity: 0.7, '&:hover': { opacity: 1, color: 'error.main' } }}
+                        >
+                          <DeleteIcon fontSize="small" />
+                        </IconButton>
+                      </ListItemButton>
+
+                      {/* Subcategories */}
+                      {section.subcategories?.map((sub, subIndex) => (
+                        <ListItemButton
+                          key={`sub-${index}-${subIndex}`}
+                          selected={selected?.parent === index && selected?.child === subIndex}
+                          onClick={() => setSelected({ parent: index, child: subIndex })}
+                          sx={{ 
+                            pl: 5,
+                            py: 1.5,
+                            borderLeft: 2,
+                            borderColor: 'divider',
+                            ml: 2,
+                            '&.Mui-selected': {
+                              bgcolor: 'primary.50',
+                              borderColor: 'primary.main'
+                            }
+                          }}
+                        >
+                          <ListItemText 
+                            primary={
+                              <Stack direction="row" alignItems="center" spacing={1}>
+                                <Typography variant="body2" sx={{ fontWeight: 500 }}>
+                                  ↳ {sub.name || `Sous-catégorie ${subIndex + 1}`}
+                                </Typography>
+                                <Chip
+                                  label={getConfidenceLevelIcon(sub.confidenceLevel)}
+                                  size="small"
+                                  color={getConfidenceLevelColor(sub.confidenceLevel) as any}
+                                  sx={{ minWidth: 'auto', height: 16 }}
+                                />
+                              </Stack>
+                            }
+                            secondary={sub.description ? 
+                              sub.description.substring(0, 40) + (sub.description.length > 40 ? '...' : '') 
+                              : 'Aucune description'
+                            }
+                          />
+                          <IconButton
+                            size="small"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              deleteSection(index, subIndex);
+                            }}
+                            sx={{ opacity: 0.7, '&:hover': { opacity: 1, color: 'error.main' } }}
+                          >
+                            <DeleteIcon fontSize="small" />
+                          </IconButton>
+                        </ListItemButton>
+                      ))}
+                    </Box>
+                  ))}
+                </List>
+              )}
+            </CardContent>
+          </Card>
+
+          {/* Help Card */}
+          <Card sx={{ 
+            mt: 3,
+            borderRadius: 3,
+            border: 1,
+            borderColor: 'info.light',
+            bgcolor: 'info.50'
+          }}>
+            <CardContent>
+              <Stack direction="row" alignItems="flex-start" spacing={2}>
+                <InfoIcon color="info" />
+                <Box>
+                  <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 1 }}>
+                    💡 Conseils
+                  </Typography>
+                  <Typography variant="caption" color="text.secondary" sx={{ lineHeight: 1.4 }}>
+                    • Utilisez des mots-clés spécifiques pour une meilleure classification
+                    <br />
+                    • Les sous-catégories permettent une organisation plus fine
+                    <br />
+                    • Le niveau "Auto" traite les emails automatiquement
+                  </Typography>
+                </Box>
+              </Stack>
+            </CardContent>
+          </Card>
+        </Grid>
+
+        {/* Right Content - Editor */}
+        <Grid item xs={12} lg={8}>
+          {!selected || !getCurrentSection() ? (
+            <Card sx={{ 
+              borderRadius: 3,
+              border: 1,
+              borderColor: 'divider',
+              height: 400,
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
+            }}>
+              <Box sx={{ textAlign: 'center', p: 4 }}>
+                <SettingsIcon sx={{ fontSize: 64, color: 'text.disabled', mb: 2 }} />
+                <Typography variant="h6" color="text.secondary" sx={{ mb: 1 }}>
+                  Sélectionnez une catégorie
+                </Typography>
+                <Typography variant="body2" color="text.disabled">
+                  Choisissez une catégorie dans la liste de gauche pour commencer la configuration
+                </Typography>
+              </Box>
+            </Card>
+          ) : (
+            <Card sx={{ 
+              borderRadius: 3,
+              border: 1,
+              borderColor: 'divider'
+            }}>
+              <CardContent sx={{ p: 0 }}>
+                {/* Editor Header */}
+                <Box sx={{ 
+                  p: 3, 
+                  pb: 2,
+                  background: 'linear-gradient(135deg, rgba(25, 118, 210, 0.05) 0%, rgba(156, 39, 176, 0.05) 100%)'
+                }}>
+                  <Stack direction="row" alignItems="center" justifyContent="space-between">
+                    <Stack direction="row" alignItems="center" spacing={2}>
+                      <CategoryIcon color="primary" />
+                      <Box>
+                        <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                          {getCurrentSection()?.name || 'Nouvelle catégorie'}
+                        </Typography>
+                        <Typography variant="caption" color="text.secondary">
+                          {selected?.child !== undefined ? 'Sous-catégorie' : 'Catégorie principale'}
+                        </Typography>
+                      </Box>
+                    </Stack>
+                    <Stack direction="row" spacing={1}>
+                      <Chip
+                        label={`${getConfidenceLevelIcon(getCurrentSection()?.confidenceLevel || 'manual')} ${getCurrentSection()?.confidenceLevel || 'manual'}`}
+                        color={getConfidenceLevelColor(getCurrentSection()?.confidenceLevel || 'manual') as any}
+                        size="small"
+                      />
+                    </Stack>
+                  </Stack>
+                </Box>
+
+                <Divider />
+
+                {/* Editor Content */}
+                <Box sx={{ p: 3 }}>
+                  <CategoryEditor
+                    section={getCurrentSection()!}
+                    onChange={(field, value) =>
+                      updateSection(selected.parent, field, value, selected.child)
+                    }
+                    onAddSubcategory={
+                      selected.child === undefined
+                        ? () => addSubcategory(selected.parent)
+                        : undefined
+                    }
+                  />
+                </Box>
+              </CardContent>
+            </Card>
+          )}
+        </Grid>
       </Grid>
-    </Grid>
+
+      {/* Action Bar */}
+      {sections.length > 0 && (
+        <Card sx={{ 
+          mt: 4,
+          borderRadius: 3,
+          border: 1,
+          borderColor: 'success.light',
+          bgcolor: 'success.50'
+        }}>
+          <CardContent>
+            <Stack direction={{ xs: 'column', sm: 'row' }} alignItems="center" justifyContent="space-between" spacing={2}>
+              <Stack direction="row" alignItems="center" spacing={2}>
+                <CheckCircleIcon color="success" />
+                <Box>
+                  <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+                    Configuration prête
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {sections.length} catégorie(s) configurée(s) • {getCompletionPercentage()}% complété
+                  </Typography>
+                </Box>
+              </Stack>
+              <Stack direction="row" spacing={2}>
+                <Button variant="outlined" color="inherit">
+                  Prévisualiser
+                </Button>
+                <Button 
+                  variant="contained" 
+                  color="success"
+                  startIcon={<CheckCircleIcon />}
+                  sx={{ 
+                    px: 3,
+                    borderRadius: 2,
+                    textTransform: 'none'
+                  }}
+                >
+                  Activer l'automatisation
+                </Button>
+              </Stack>
+            </Stack>
+          </CardContent>
+        </Card>
+      )}
+    </Container>
   );
 }
