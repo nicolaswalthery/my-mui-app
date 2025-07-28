@@ -1,13 +1,13 @@
-import type { AxiosInstance as StarcmdAirtableAxiosInstance, AxiosRequestConfig, AxiosResponse } from 'axios';
+import type { AxiosInstance, AxiosResponse, AxiosError } from 'axios';
 import axios from 'axios';
 import { configManager } from '../config/configManager';
 
-
 const currentAppConfig = configManager.getAppConfig();
+
 // Create an Axios instance
-const axiosInstance: StarcmdAirtableAxiosInstance = axios.create({
+const axiosInstance: AxiosInstance = axios.create({
   baseURL: currentAppConfig.airtableBaseUrl,
-  timeout: currentAppConfig.apiCallTimeout
+  timeout: Number(currentAppConfig.apiCallTimeout)
 });
 
 // Request interceptor for handling global errors
@@ -19,13 +19,13 @@ axiosInstance.interceptors.request.use(
     }
     return config;
   },
-  (error) => Promise.reject(error)
+  (error: AxiosError) => Promise.reject(error)
 );
 
 // Response interceptor for handling global errors
 axiosInstance.interceptors.response.use(
   (response: AxiosResponse) => response,
-  (error) => {
+  (error: AxiosError) => {
     // Handle common errors here
     if (error.response?.status === 401) {
       // Handle unauthorized access
