@@ -5,20 +5,13 @@ import {
   TextField,
   Stack,
   Typography,
-  Checkbox,
-  FormControlLabel,
   Button,
   Paper,
   Chip,
-  RadioGroup,
-  Radio,
-  FormControl,
-  FormLabel,
   Accordion,
   AccordionSummary,
   AccordionDetails,
   Alert,
-  Divider,
   Card,
   CardContent,
   Dialog,
@@ -30,9 +23,6 @@ import {
 import {
   ExpandMore as ExpandMoreIcon,
   Add as AddIcon,
-  SmartToy as SmartToyIcon,
-  Speed as SpeedIcon,
-  Person as PersonIcon,
   Email as EmailIcon,
   Label as LabelIcon,
   Description as DescriptionIcon,
@@ -57,7 +47,6 @@ export interface CategorySection {
   attachments?: string;
   urgency?: string;
   examples: MailExample[];
-  confidenceLevel: 'auto' | 'high' | 'manual';
   subcategories?: CategorySection[];
 }
 
@@ -79,39 +68,6 @@ const CategoryEditor: React.FC<CategoryEditorProps> = ({
     sender: ''
   });
 
-  const getConfidenceLevelInfo = (level: string) => {
-    switch (level) {
-      case 'auto':
-        return {
-          icon: <SmartToyIcon />,
-          color: 'success' as const,
-          label: 'Classification automatique',
-          description: 'Les emails seront automatiquement classés dans cette catégorie'
-        };
-      case 'high':
-        return {
-          icon: <SpeedIcon />,
-          color: 'warning' as const,
-          label: 'Haute confiance',
-          description: 'Classification automatique avec validation optionnelle'
-        };
-      case 'manual':
-        return {
-          icon: <PersonIcon />,
-          color: 'default' as const,
-          label: 'Validation manuelle',
-          description: 'Chaque email nécessitera une validation manuelle'
-        };
-      default:
-        return {
-          icon: <PersonIcon />,
-          color: 'default' as const,
-          label: 'Non défini',
-          description: ''
-        };
-    }
-  };
-
   const handleAddExample = () => {
     if (newExample.subject.trim() && newExample.body.trim()) {
       const updatedExamples = [...section.examples, newExample];
@@ -125,8 +81,6 @@ const CategoryEditor: React.FC<CategoryEditorProps> = ({
     const updatedExamples = section.examples.filter((_, i) => i !== index);
     onChange('examples', updatedExamples);
   };
-
-  const confidenceInfo = getConfidenceLevelInfo(section.confidenceLevel);
 
   return (
     <Box sx={{ maxWidth: '100%' }}>
@@ -142,11 +96,14 @@ const CategoryEditor: React.FC<CategoryEditorProps> = ({
 
           <Stack spacing={3}>
             <TextField
-              label="Nom de la catégorie"
+              label="Nom de la catégorie *"
               fullWidth
+              required
               value={section.name}
               onChange={(e) => onChange('name', e.target.value)}
               placeholder="Ex: Factures, Newsletters, Support client..."
+              error={!section.name}
+              helperText={!section.name ? "Ce champ est obligatoire" : ""}
               sx={{
                 '& .MuiOutlinedInput-root': {
                   borderRadius: 2
@@ -155,13 +112,16 @@ const CategoryEditor: React.FC<CategoryEditorProps> = ({
             />
 
             <TextField
-              label="Description"
+              label="Description *"
               fullWidth
+              required
               multiline
               minRows={3}
               value={section.description}
               onChange={(e) => onChange('description', e.target.value)}
               placeholder="Décrivez le type d'emails qui appartiennent à cette catégorie..."
+              error={!section.description}
+              helperText={!section.description ? "Ce champ est obligatoire" : ""}
               sx={{
                 '& .MuiOutlinedInput-root': {
                   borderRadius: 2
@@ -217,94 +177,6 @@ const CategoryEditor: React.FC<CategoryEditorProps> = ({
         </CardContent>
       </Card>
 
-      {/* Confidence Level Section */}
-      <Card sx={{ mb: 3, borderRadius: 2, border: 1, borderColor: 'divider' }}>
-        <CardContent>
-          <Stack direction="row" alignItems="center" spacing={1} sx={{ mb: 3 }}>
-            {confidenceInfo.icon}
-            <Typography variant="h6" sx={{ fontWeight: 600 }}>
-              Niveau de confiance
-            </Typography>
-            <Chip 
-              label={confidenceInfo.label}
-              color={confidenceInfo.color}
-              size="small"
-            />
-          </Stack>
-
-          <Alert severity="info" sx={{ mb: 3, borderRadius: 2 }}>
-            {confidenceInfo.description}
-          </Alert>
-
-          <FormControl component="fieldset">
-            <RadioGroup
-              value={section.confidenceLevel}
-              onChange={(e) => onChange('confidenceLevel', e.target.value)}
-            >
-              <Paper sx={{ p: 2, mb: 2, borderRadius: 2, border: 1, borderColor: section.confidenceLevel === 'auto' ? 'success.main' : 'divider' }}>
-                <FormControlLabel
-                  value="auto"
-                  control={<Radio />}
-                  label={
-                    <Stack direction="row" alignItems="center" spacing={1}>
-                      <SmartToyIcon color="success" />
-                      <Box>
-                        <Typography variant="body1" sx={{ fontWeight: 500 }}>
-                          🤖 Classification automatique
-                        </Typography>
-                        <Typography variant="caption" color="text.secondary">
-                          Traitement entièrement automatisé
-                        </Typography>
-                      </Box>
-                    </Stack>
-                  }
-                />
-              </Paper>
-
-              <Paper sx={{ p: 2, mb: 2, borderRadius: 2, border: 1, borderColor: section.confidenceLevel === 'high' ? 'warning.main' : 'divider' }}>
-                <FormControlLabel
-                  value="high"
-                  control={<Radio />}
-                  label={
-                    <Stack direction="row" alignItems="center" spacing={1}>
-                      <SpeedIcon color="warning" />
-                      <Box>
-                        <Typography variant="body1" sx={{ fontWeight: 500 }}>
-                          ⚡ Haute confiance
-                        </Typography>
-                        <Typography variant="caption" color="text.secondary">
-                          Classification automatique avec alerte optionnelle
-                        </Typography>
-                      </Box>
-                    </Stack>
-                  }
-                />
-              </Paper>
-
-              <Paper sx={{ p: 2, borderRadius: 2, border: 1, borderColor: section.confidenceLevel === 'manual' ? 'primary.main' : 'divider' }}>
-                <FormControlLabel
-                  value="manual"
-                  control={<Radio />}
-                  label={
-                    <Stack direction="row" alignItems="center" spacing={1}>
-                      <PersonIcon color="primary" />
-                      <Box>
-                        <Typography variant="body1" sx={{ fontWeight: 500 }}>
-                          👤 Validation manuelle
-                        </Typography>
-                        <Typography variant="caption" color="text.secondary">
-                          Chaque email nécessite une confirmation
-                        </Typography>
-                      </Box>
-                    </Stack>
-                  }
-                />
-              </Paper>
-            </RadioGroup>
-          </FormControl>
-        </CardContent>
-      </Card>
-
       {/* Advanced Options */}
       <Accordion sx={{ mb: 3, borderRadius: 2, border: 1, borderColor: 'divider', '&:before': { display: 'none' } }}>
         <AccordionSummary 
@@ -318,21 +190,21 @@ const CategoryEditor: React.FC<CategoryEditorProps> = ({
         <AccordionDetails>
           <Stack spacing={2}>
             <TextField
-              label="Format de message ?"
+              label="Format de message"
               value={section.format || ''}
               onChange={(e) => onChange('format', e.target.value)}
               placeholder="HTML, Plain text, Both..."
               size="small"
             />
             <TextField
-              label="Types de pièces jointes probables ?"
+              label="Types de pièces jointes probables"
               value={section.attachments || ''}
               onChange={(e) => onChange('attachments', e.target.value)}
               placeholder="PDF, DOC, XLS..."
               size="small"
             />
             <TextField
-              label="Niveau d'urgence par DÉFAUT de la (sous-)catégorie ?"
+              label="Niveau d'urgence par défaut de la catégorie"
               value={section.urgency || ''}
               onChange={(e) => onChange('urgency', e.target.value)}
               placeholder="Urgent, Normal, Faible..."
@@ -412,11 +284,6 @@ const CategoryEditor: React.FC<CategoryEditorProps> = ({
               <Typography variant="subtitle2" sx={{ fontWeight: 600 }}>
                 ↳ {subcat.name || `Sous-catégorie ${idx + 1}`}
               </Typography>
-              <Chip
-                label={getConfidenceLevelInfo(subcat.confidenceLevel).label}
-                color={getConfidenceLevelInfo(subcat.confidenceLevel).color}
-                size="small"
-              />
             </Stack>
             <Typography variant="body2" color="text.secondary">
               {subcat.description || 'Aucune description'}
@@ -437,12 +304,12 @@ const CategoryEditor: React.FC<CategoryEditorProps> = ({
             <Stack direction="row" alignItems="center" spacing={1}>
               <EmailIcon color="primary" />
               <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                Exemples d'emails
+                Exemples d'emails *
               </Typography>
               <Chip 
                 label={section.examples.length}
                 size="small"
-                color={section.examples.length > 0 ? 'success' : 'default'}
+                color={section.examples.length > 0 ? 'success' : 'error'}
               />
             </Stack>
             <Button 
@@ -460,9 +327,9 @@ const CategoryEditor: React.FC<CategoryEditorProps> = ({
           </Stack>
 
           {section.examples.length === 0 ? (
-            <Alert severity="warning" sx={{ borderRadius: 2 }}>
+            <Alert severity="error" sx={{ borderRadius: 2 }}>
               <Typography variant="body2">
-                Aucun exemple défini. Les exemples aident à améliorer la précision 
+                <strong>Au moins un exemple est requis.</strong> Les exemples aident à améliorer la précision 
                 de la classification automatique.
               </Typography>
             </Alert>
@@ -553,7 +420,7 @@ const CategoryEditor: React.FC<CategoryEditorProps> = ({
 
           <Stack spacing={3}>
             <TextField
-              label="Sujet de l'email"
+              label="Sujet de l'email *"
               fullWidth
               required
               value={newExample.subject}
@@ -580,7 +447,7 @@ const CategoryEditor: React.FC<CategoryEditorProps> = ({
             />
 
             <TextField
-              label="Corps de l'email"
+              label="Corps de l'email *"
               fullWidth
               required
               multiline
