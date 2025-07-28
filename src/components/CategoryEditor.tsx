@@ -318,21 +318,21 @@ const CategoryEditor: React.FC<CategoryEditorProps> = ({
         <AccordionDetails>
           <Stack spacing={2}>
             <TextField
-              label="Format de message"
+              label="Format de message ?"
               value={section.format || ''}
               onChange={(e) => onChange('format', e.target.value)}
               placeholder="HTML, Plain text, Both..."
               size="small"
             />
             <TextField
-              label="Types de pièces jointes"
+              label="Types de pièces jointes probables ?"
               value={section.attachments || ''}
               onChange={(e) => onChange('attachments', e.target.value)}
               placeholder="PDF, DOC, XLS..."
               size="small"
             />
             <TextField
-              label="Niveau d'urgence"
+              label="Niveau d'urgence par DÉFAUT de la (sous-)catégorie ?"
               value={section.urgency || ''}
               onChange={(e) => onChange('urgency', e.target.value)}
               placeholder="Urgent, Normal, Faible..."
