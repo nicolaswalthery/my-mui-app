@@ -16,7 +16,7 @@ import NotFound from './pages/NotFound';
 import ProtectedRoute from './components/ProtectedRoute';
 import ErrorPage from './pages/Error';
 import KanbanBoard from './pages/KanbanBoard';
-
+import MailAutomationForm from './pages/MailAutomationForm';
 
 const AppRouter: React.FC = () => {
   return (
