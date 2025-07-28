@@ -7,7 +7,7 @@ const currentAppConfig = configManager.getAppConfig();
 // Create an Axios instance
 const axiosInstance: AxiosInstance = axios.create({
   baseURL: currentAppConfig.airtableBaseUrl,
-  timeout: Number(currentAppConfig.apiCallTimeout)
+  timeout: parseInt(currentAppConfig.apiCallTimeout, 10)
 });
 
 // Request interceptor for handling global errors
