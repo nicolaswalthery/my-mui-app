@@ -408,8 +408,8 @@ export default function MailAutomationForm() {
             borderColor: 'info.light',
             bgcolor: 'info.50',
             position: 'sticky',
-            top: 'calc(100vh - 200px)',
-            zIndex: 1
+            top: 'calc(100vh - 200px - 70px)',
+            zIndex: 1,
           }}>
             {showHelpCard && (
               <CardContent sx={{ position: 'relative' }}>
