@@ -33,7 +33,7 @@ const EditProfile: React.FC = () => {
   const isFormValid = firstName.trim() && lastName.trim() && email.trim();
 
   return (
-    <Box sx={{ maxWidth: 800, margin: 'auto', p: 2 }}>
+    <Box sx={{ minWidth: 550, margin: 'auto', p: 2 }}>
       {/* Header with language switcher */}
       <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 3 }}>
         <Button
