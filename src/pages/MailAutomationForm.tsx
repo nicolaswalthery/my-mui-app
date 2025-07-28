@@ -38,7 +38,7 @@ import type { CategorySection } from '../components/CategoryEditor';
 export default function MailAutomationForm() {
   const [sections, setSections] = useState<CategorySection[]>([]);
   const [selected, setSelected] = useState<{ parent: number; child?: number } | null>(null);
-  const [showHelpCard, setShowHelpCard] = useState(true); // Add state for help card visibility
+  const [showHelpCard, setShowHelpCard] = useState(true);
 
   const addSection = () => {
     setSections([
@@ -122,32 +122,53 @@ export default function MailAutomationForm() {
 
   return (
     <Container maxWidth="xl">
-      {/* Header Section */}
+      {/* Header Section - RESPONSIVE */}
       <Box sx={{ 
-        mb: 4, 
-        p: 4, 
+        mb: { xs: 3, sm: 4 }, 
+        p: { xs: 3, sm: 4 }, 
         borderRadius: 3, 
         background: 'linear-gradient(135deg, rgba(25, 118, 210, 0.1) 0%, rgba(156, 39, 176, 0.1) 100%)',
         border: 1,
         borderColor: 'primary.light'
       }}>
-        <Stack direction="row" alignItems="center" spacing={2} sx={{ mb: 2 }}>
-          <EmailIcon sx={{ fontSize: 40, color: 'primary.main' }} />
+        <Stack 
+          direction={{ xs: 'column', sm: 'row' }} 
+          alignItems={{ xs: 'flex-start', sm: 'center' }} 
+          spacing={2} 
+          sx={{ mb: 2 }}
+        >
+          <EmailIcon sx={{ 
+            fontSize: { xs: 32, sm: 40 }, 
+            color: 'primary.main' 
+          }} />
           <Box>
-            <Typography variant="h4" sx={{ fontWeight: 600, color: 'primary.main' }}>
+            <Typography variant="h4" sx={{ 
+              fontWeight: 600, 
+              color: 'primary.main',
+              fontSize: { xs: '1.5rem', sm: '2rem', md: '2.125rem' }
+            }}>
               Configuration de l'Automatisation de vos e-mails
             </Typography>
-            <Typography variant="subtitle1" color="text.secondary">
+            <Typography variant="subtitle1" color="text.secondary" sx={{
+              fontSize: { xs: '0.9rem', sm: '1rem' }
+            }}>
               Créez et gérez vos catégories de classification automatique de vos emails
             </Typography>
           </Box>
         </Stack>
 
-        {/* Progress Section */}
+        {/* Progress Section - RESPONSIVE */}
         {sections.length > 0 && (
-          <Box sx={{ mt: 3 }}>
-            <Stack direction="row" alignItems="center" spacing={2} sx={{ mb: 1 }}>
-              <Typography variant="body2" color="text.secondary">
+          <Box sx={{ mt: { xs: 2, sm: 3 } }}>
+            <Stack 
+              direction={{ xs: 'column', sm: 'row' }} 
+              alignItems={{ xs: 'flex-start', sm: 'center' }} 
+              spacing={2} 
+              sx={{ mb: 1 }}
+            >
+              <Typography variant="body2" color="text.secondary" sx={{
+                fontSize: { xs: '0.8rem', sm: '0.875rem' }
+              }}>
                 Progression de la configuration
               </Typography>
               <Chip 
@@ -161,7 +182,7 @@ export default function MailAutomationForm() {
               variant="determinate" 
               value={getCompletionPercentage()} 
               sx={{ 
-                height: 8, 
+                height: { xs: 6, sm: 8 }, 
                 borderRadius: 4,
                 bgcolor: 'rgba(0,0,0,0.1)',
                 '& .MuiLinearProgress-bar': {
@@ -173,19 +194,20 @@ export default function MailAutomationForm() {
         )}
       </Box>
 
-      {/* Main Content */}
-      <Grid container spacing={4}>
-        {/* Left Sidebar - Categories List */}
+      {/* Main Content - RESPONSIVE GRID */}
+      <Grid container spacing={{ xs: 2, sm: 3, md: 4 }}>
+        {/* Left Sidebar - Categories List - RESPONSIVE */}
         <Grid item xs={12} lg={4}>
           <Card sx={{ 
             borderRadius: 3,
             border: 1,
             borderColor: 'divider',
             height: 'fit-content',
-            position: 'sticky',
+            position: { xs: 'static', lg: 'sticky' },
             top: 24,
-            maxHeight: 'calc(100vh - 48px)',
-            overflowY: 'auto',
+            maxHeight: { lg: 'calc(100vh - 48px)' },
+            overflowY: { lg: 'auto' },
+            mb: { xs: 2, lg: 0 },
             '&::-webkit-scrollbar': {
               width: '8px',
             },
@@ -201,21 +223,26 @@ export default function MailAutomationForm() {
               },
             },
           }}>
-            <CardContent sx={{ p: 0, minWidth: 460 }}>
-              {/* Sidebar Header */}
-              <Box sx={{ p: 3, pb: 2 }}>
-                <Stack direction="row" alignItems="center" justifyContent="space-between">
+            <CardContent sx={{ p: 0, minWidth: { xs: 'auto', lg: 460 } }}>
+              {/* Sidebar Header - RESPONSIVE */}
+              <Box sx={{ p: { xs: 2, sm: 3 }, pb: 2 }}>
+                <Stack 
+                  direction={{ xs: 'column', sm: 'row' }} 
+                  alignItems={{ xs: 'stretch', sm: 'center' }} 
+                  justifyContent="space-between"
+                  spacing={{ xs: 2, sm: 0 }}
+                >
                   <Stack direction="row" alignItems="center" spacing={1}>
                     <CategoryIcon color="primary" />
                     <Typography variant="h6" sx={{ fontWeight: 600 }}>
                       Catégories
                     </Typography>
+                    <Chip 
+                      label={sections.length}
+                      size="small"
+                      color="primary"
+                    />
                   </Stack>
-                  <Chip 
-                    label={sections.length}
-                    size="small"
-                    color="primary"
-                  />
                 </Stack>
                 
                 <Button 
@@ -227,7 +254,8 @@ export default function MailAutomationForm() {
                     mt: 2,
                     borderRadius: 2,
                     textTransform: 'none',
-                    py: 1.5
+                    py: { xs: 1, sm: 1.5 },
+                    fontSize: { xs: '0.875rem', sm: '1rem' }
                   }}
                 >
                   Nouvelle catégorie
@@ -236,14 +264,22 @@ export default function MailAutomationForm() {
 
               <Divider />
 
-              {/* Categories List */}
+              {/* Categories List - RESPONSIVE */}
               {sections.length === 0 ? (
-                <Box sx={{ p: 4, textAlign: 'center' }}>
-                  <AutoAwesomeIcon sx={{ fontSize: 48, color: 'text.disabled', mb: 2 }} />
-                  <Typography variant="body2" color="text.secondary">
+                <Box sx={{ p: { xs: 3, sm: 4 }, textAlign: 'center' }}>
+                  <AutoAwesomeIcon sx={{ 
+                    fontSize: { xs: 40, sm: 48 }, 
+                    color: 'text.disabled', 
+                    mb: 2 
+                  }} />
+                  <Typography variant="body2" color="text.secondary" sx={{
+                    fontSize: { xs: '0.8rem', sm: '0.875rem' }
+                  }}>
                     Aucune catégorie créée
                   </Typography>
-                  <Typography variant="caption" color="text.disabled">
+                  <Typography variant="caption" color="text.disabled" sx={{
+                    fontSize: { xs: '0.7rem', sm: '0.75rem' }
+                  }}>
                     Cliquez sur "Nouvelle catégorie" pour commencer
                   </Typography>
                 </Box>
@@ -255,8 +291,8 @@ export default function MailAutomationForm() {
                         selected={selected?.parent === index && selected?.child === undefined}
                         onClick={() => setSelected({ parent: index })}
                         sx={{ 
-                          py: 2,
-                          px: 3,
+                          py: { xs: 1.5, sm: 2 },
+                          px: { xs: 2, sm: 3 },
                           '&.Mui-selected': {
                             bgcolor: 'primary.50',
                             borderRight: 3,
@@ -267,13 +303,16 @@ export default function MailAutomationForm() {
                         <ListItemText 
                           primary={
                             <Stack direction="row" alignItems="center" spacing={1}>
-                              <Typography variant="body1" sx={{ fontWeight: 500 }}>
+                              <Typography variant="body1" sx={{ 
+                                fontWeight: 500,
+                                fontSize: { xs: '0.9rem', sm: '1rem' }
+                              }}>
                                 {section.name || `Catégorie ${index + 1}`}
                               </Typography>
                               {!isSectionComplete(section) && (
                                 <WarningIcon 
                                   sx={{ 
-                                    fontSize: 16, 
+                                    fontSize: { xs: 14, sm: 16 }, 
                                     color: 'warning.main',
                                     opacity: 0.8
                                   }} 
@@ -298,18 +337,18 @@ export default function MailAutomationForm() {
                         </IconButton>
                       </ListItemButton>
 
-                      {/* Subcategories */}
+                      {/* Subcategories - RESPONSIVE */}
                       {section.subcategories?.map((sub, subIndex) => (
                         <ListItemButton
                           key={`sub-${index}-${subIndex}`}
                           selected={selected?.parent === index && selected?.child === subIndex}
                           onClick={() => setSelected({ parent: index, child: subIndex })}
                           sx={{ 
-                            pl: 5,
-                            py: 1.5,
+                            pl: { xs: 4, sm: 5 },
+                            py: { xs: 1, sm: 1.5 },
                             borderLeft: 2,
                             borderColor: 'divider',
-                            ml: 2,
+                            ml: { xs: 1, sm: 2 },
                             cursor: 'pointer',
                             transition: 'all 0.2s ease-in-out',
                             '&:hover': {
@@ -339,7 +378,8 @@ export default function MailAutomationForm() {
                                   sx={{ 
                                     fontWeight: 500,
                                     cursor: 'pointer',
-                                    transition: 'all 0.2s ease-in-out'
+                                    transition: 'all 0.2s ease-in-out',
+                                    fontSize: { xs: '0.8rem', sm: '0.875rem' }
                                   }}
                                 >
                                   ↳ {sub.name || `Sous-catégorie ${subIndex + 1}`}
@@ -347,7 +387,7 @@ export default function MailAutomationForm() {
                                 {!isSectionComplete(sub) && (
                                   <WarningIcon 
                                     sx={{ 
-                                      fontSize: 14, 
+                                      fontSize: { xs: 12, sm: 14 }, 
                                       color: 'warning.main',
                                       opacity: 0.8
                                     }} 
@@ -361,7 +401,8 @@ export default function MailAutomationForm() {
                                 color="text.secondary"
                                 sx={{ 
                                   cursor: 'pointer',
-                                  '&:hover': { color: 'text.primary' }
+                                  '&:hover': { color: 'text.primary' },
+                                  fontSize: { xs: '0.7rem', sm: '0.75rem' }
                                 }}
                               >
                                 {sub.description ? 
@@ -390,30 +431,27 @@ export default function MailAutomationForm() {
             </CardContent>
           </Card>
 
-          {/* Help Card */}
-          <Box>
-            
-          </Box>
+          {/* Help Card - RESPONSIVE */}
           <Card sx={{ 
-            mt: 3,
+            mt: { xs: 2, lg: 3 },
             borderRadius: 3,
             border: showHelpCard ? 1 : 0,
             borderColor: 'info.light',
             bgcolor: 'info.50',
-            position: 'sticky',
-            top: 'calc(100vh - 200px - 70px)',
+            position: { xs: 'static', lg: 'sticky' },
+            top: { lg: 'calc(100vh - 200px - 70px)' },
             zIndex: 1,
+            display: { xs: showHelpCard ? 'block' : 'none', lg: 'block' }
           }}>
             {showHelpCard && (
-              <CardContent sx={{ position: 'relative' }}>
-                {/* Hide button for help card */}
+              <CardContent sx={{ position: 'relative', p: { xs: 2, sm: 3 } }}>
                 <IconButton
                   size="small"
                   onClick={() => setShowHelpCard(false)}
                   sx={{ 
                     position: 'absolute',
-                    top: 8,
-                    right: 8,
+                    top: { xs: 6, sm: 8 },
+                    right: { xs: 6, sm: 8 },
                     opacity: 0.7,
                     '&:hover': { 
                       opacity: 1,
@@ -426,11 +464,18 @@ export default function MailAutomationForm() {
 
                 <Stack direction="row" alignItems="flex-start" spacing={2}>
                   <InfoIcon color="info" />
-                  <Box sx={{ pr: 3 }}>
-                    <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 1 }}>
+                  <Box sx={{ pr: { xs: 2, sm: 3 } }}>
+                    <Typography variant="subtitle2" sx={{ 
+                      fontWeight: 600, 
+                      mb: 1,
+                      fontSize: { xs: '0.9rem', sm: '1rem' }
+                    }}>
                       💡 Conseils
                     </Typography>
-                    <Typography variant="caption" color="text.secondary" sx={{ lineHeight: 1.4 }}>
+                    <Typography variant="caption" color="text.secondary" sx={{ 
+                      lineHeight: 1.4,
+                      fontSize: { xs: '0.7rem', sm: '0.75rem' }
+                    }}>
                       • Utilisez des mots-clés spécifiques pour une meilleure classification
                       <br />
                       • Les sous-catégories permettent une organisation plus fine
@@ -444,24 +489,34 @@ export default function MailAutomationForm() {
           </Card>
         </Grid>
 
-        {/* Right Content - Editor */}
-        <Grid item xs={12} lg={8} sx={{ width: '66.5%' }}>
+        {/* Right Content - Editor - RESPONSIVE */}
+        <Grid item xs={12} lg={8}>
           {!selected || !getCurrentSection() ? (
             <Card sx={{ 
               borderRadius: 3,
               border: 1,
               borderColor: 'divider',
-              height: 520,
+              height: { xs: 300, sm: 400, md: 520 },
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center'
             }}>
-              <Box sx={{ textAlign: 'center', p: 4 }}>
-                <SettingsIcon sx={{ fontSize: 64, color: 'text.disabled', mb: 2 }} />
-                <Typography variant="h6" color="text.secondary" sx={{ mb: 1 }}>
+              <Box sx={{ textAlign: 'center', p: { xs: 3, sm: 4 } }}>
+                <SettingsIcon sx={{ 
+                  fontSize: { xs: 48, sm: 56, md: 64 }, 
+                  color: 'text.disabled', 
+                  mb: 2 
+                }} />
+                <Typography variant="h6" color="text.secondary" sx={{ 
+                  mb: 1,
+                  fontSize: { xs: '1.1rem', sm: '1.25rem', md: '1.5rem' }
+                }}>
                   Sélectionnez une catégorie
                 </Typography>
-                <Typography variant="body2" color="text.disabled">
+                <Typography variant="body2" color="text.disabled" sx={{
+                  fontSize: { xs: '0.8rem', sm: '0.875rem' },
+                  px: { xs: 1, sm: 0 }
+                }}>
                   Choisissez une catégorie dans la liste de gauche pour commencer la configuration
                 </Typography>
               </Box>
@@ -473,17 +528,25 @@ export default function MailAutomationForm() {
               borderColor: 'divider'
             }}>
               <CardContent sx={{ p: 0 }}>
-                {/* Editor Header */}
+                {/* Editor Header - RESPONSIVE */}
                 <Box sx={{ 
-                  p: 3, 
+                  p: { xs: 2, sm: 3 }, 
                   pb: 2,
                   background: 'linear-gradient(135deg, rgba(25, 118, 210, 0.05) 0%, rgba(156, 39, 176, 0.05) 100%)'
                 }}>
-                  <Stack direction="row" alignItems="center" justifyContent="space-between">
+                  <Stack 
+                    direction={{ xs: 'column', sm: 'row' }} 
+                    alignItems={{ xs: 'flex-start', sm: 'center' }} 
+                    justifyContent="space-between"
+                    spacing={{ xs: 1, sm: 2 }}
+                  >
                     <Stack direction="row" alignItems="center" spacing={2}>
                       <CategoryIcon color="primary" />
                       <Box>
-                        <Typography variant="h6" sx={{ fontWeight: 600 }}>
+                        <Typography variant="h6" sx={{ 
+                          fontWeight: 600,
+                          fontSize: { xs: '1.1rem', sm: '1.25rem' }
+                        }}>
                           {getCurrentSection()?.name || 'Nouvelle catégorie'}
                         </Typography>
                         <Typography variant="caption" color="text.secondary">
@@ -496,8 +559,8 @@ export default function MailAutomationForm() {
 
                 <Divider />
 
-                {/* Editor Content */}
-                <Box sx={{ p: 3 }}>
+                {/* Editor Content - RESPONSIVE */}
+                <Box sx={{ p: { xs: 2, sm: 3 } }}>
                   <CategoryEditor
                     section={getCurrentSection()!}
                     onChange={(field, value) =>
@@ -516,7 +579,7 @@ export default function MailAutomationForm() {
         </Grid>
       </Grid>
 
-      {/* Action Bar - Display Configuration incomplète */}
+      {/* Action Bar - Configuration incomplète - RESPONSIVE */}
       {sections.length > 0 && getCompletionPercentage() < 100 && (
         <Card sx={{ 
           mt: 4,
@@ -529,21 +592,42 @@ export default function MailAutomationForm() {
           zIndex: 1000,
           boxShadow: '0 -4px 16px rgba(0,0,0,0.1)',
         }}>
-          <CardContent>
-            <Stack direction={{ xs: 'column', sm: 'row' }} alignItems="center" justifyContent="space-between" spacing={2}>
+          <CardContent sx={{ p: { xs: 2, sm: 3 } }}>
+            <Stack 
+              direction={{ xs: 'column', sm: 'row' }} 
+              alignItems={{ xs: 'flex-start', sm: 'center' }} 
+              justifyContent="space-between" 
+              spacing={2}
+            >
               <Stack direction="row" alignItems="center" spacing={2}>
                 <InfoIcon color="error" />
                 <Box>
-                  <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+                  <Typography variant="subtitle1" sx={{ 
+                    fontWeight: 600,
+                    fontSize: { xs: '1rem', sm: '1.125rem' }
+                  }}>
                     Configuration incomplète
                   </Typography>
-                  <Typography variant="body2" color="text.secondary">
+                  <Typography variant="body2" color="text.secondary" sx={{
+                    fontSize: { xs: '0.8rem', sm: '0.875rem' }
+                  }}>
                     {sections.length} catégorie(s) configurée(s) • {getCompletionPercentage()}% complété
                   </Typography>
                 </Box>
               </Stack>
-              <Stack direction="row" spacing={2}>
-                <Button variant="outlined" color="inherit">
+              <Stack 
+                direction={{ xs: 'row', sm: 'row' }} 
+                spacing={2}
+                sx={{ width: { xs: '100%', sm: 'auto' } }}
+              >
+                <Button 
+                  variant="outlined" 
+                  color="inherit"
+                  sx={{ 
+                    flex: { xs: 1, sm: 'none' },
+                    fontSize: { xs: '0.8rem', sm: '0.875rem' }
+                  }}
+                >
                   Sauvegarder
                 </Button>
                 <Button 
@@ -551,9 +635,11 @@ export default function MailAutomationForm() {
                   color="error"
                   disabled
                   sx={{ 
-                    px: 3,
+                    px: { xs: 2, sm: 3 },
                     borderRadius: 2,
-                    textTransform: 'none'
+                    textTransform: 'none',
+                    flex: { xs: 1, sm: 'none' },
+                    fontSize: { xs: '0.8rem', sm: '0.875rem' }
                   }}
                 >
                   Compléter la configuration
@@ -564,7 +650,7 @@ export default function MailAutomationForm() {
         </Card>
       )}
 
-      {/* Action Bar - Configuration prête */}
+      {/* Action Bar - Configuration prête - RESPONSIVE */}
       {sections.length > 0 && getCompletionPercentage() === 100 && (
         <Card sx={{ 
           mt: 4,
@@ -577,21 +663,42 @@ export default function MailAutomationForm() {
           zIndex: 1000,
           boxShadow: '0 -4px 16px rgba(0,0,0,0.1)',
         }}>
-          <CardContent>
-            <Stack direction={{ xs: 'column', sm: 'row' }} alignItems="center" justifyContent="space-between" spacing={2}>
+          <CardContent sx={{ p: { xs: 2, sm: 3 } }}>
+            <Stack 
+              direction={{ xs: 'column', sm: 'row' }} 
+              alignItems={{ xs: 'flex-start', sm: 'center' }} 
+              justifyContent="space-between" 
+              spacing={2}
+            >
               <Stack direction="row" alignItems="center" spacing={2}>
                 <CheckCircleIcon color="success" />
                 <Box>
-                  <Typography variant="subtitle1" sx={{ fontWeight: 600 }}>
+                  <Typography variant="subtitle1" sx={{ 
+                    fontWeight: 600,
+                    fontSize: { xs: '1rem', sm: '1.125rem' }
+                  }}>
                     Configuration prête
                   </Typography>
-                  <Typography variant="body2" color="text.secondary">
+                  <Typography variant="body2" color="text.secondary" sx={{
+                    fontSize: { xs: '0.8rem', sm: '0.875rem' }
+                  }}>
                     {sections.length} catégorie(s) configurée(s) • {getCompletionPercentage()}% complété
                   </Typography>
                 </Box>
               </Stack>
-              <Stack direction="row" spacing={2}>
-                <Button variant="outlined" color="inherit">
+              <Stack 
+                direction={{ xs: 'row', sm: 'row' }} 
+                spacing={2}
+                sx={{ width: { xs: '100%', sm: 'auto' } }}
+              >
+                <Button 
+                  variant="outlined" 
+                  color="inherit"
+                  sx={{ 
+                    flex: { xs: 1, sm: 'none' },
+                    fontSize: { xs: '0.8rem', sm: '0.875rem' }
+                  }}
+                >
                   Sauvegarder
                 </Button>
                 <Button 
@@ -599,9 +706,11 @@ export default function MailAutomationForm() {
                   color="success"
                   startIcon={<CheckCircleIcon />}
                   sx={{ 
-                    px: 3,
+                    px: { xs: 2, sm: 3 },
                     borderRadius: 2,
-                    textTransform: 'none'
+                    textTransform: 'none',
+                    flex: { xs: 1, sm: 'none' },
+                    fontSize: { xs: '0.8rem', sm: '0.875rem' }
                   }}
                 >
                   Activer
