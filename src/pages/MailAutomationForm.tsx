@@ -28,7 +28,8 @@ import {
   Settings as SettingsIcon,
   Delete as DeleteIcon,
   Info as InfoIcon,
-  CheckCircle as CheckCircleIcon
+  CheckCircle as CheckCircleIcon,
+  Close as CloseIcon
 } from '@mui/icons-material';
 import CategoryEditor from '../components/CategoryEditor';
 import type { CategorySection } from '../components/CategoryEditor';
@@ -36,18 +37,7 @@ import type { CategorySection } from '../components/CategoryEditor';
 export default function MailAutomationForm() {
   const [sections, setSections] = useState<CategorySection[]>([]);
   const [selected, setSelected] = useState<{ parent: number; child?: number } | null>(null);
-  const [confirmDelete, setConfirmDelete] = useState<{
-    open: boolean;
-    type: 'category' | 'subcategory';
-    parentIndex: number;
-    childIndex?: number;
-    name: string;
-  }>({ 
-    open: false, 
-    type: 'category', 
-    parentIndex: -1, 
-    name: '' 
-  });
+  const [showHelpCard, setShowHelpCard] = useState(true); // Add state for help card visibility
 
   const addSection = () => {
     setSections([
@@ -88,28 +78,6 @@ export default function MailAutomationForm() {
     }
     setSections(updated);
     setSelected(null);
-    setConfirmDelete({ open: false, type: 'category', parentIndex: -1, name: '' });
-  };
-
-  const openDeleteConfirmation = (parentIndex: number, childIndex?: number) => {
-    const section = sections[parentIndex];
-    if (childIndex !== undefined) {
-      const subcategory = section.subcategories?.[childIndex];
-      setConfirmDelete({
-        open: true,
-        type: 'subcategory',
-        parentIndex,
-        childIndex,
-        name: subcategory?.name || `Sous-catégorie ${childIndex + 1}`
-      });
-    } else {
-      setConfirmDelete({
-        open: true,
-        type: 'category',
-        parentIndex,
-        name: section.name || `Catégorie ${parentIndex + 1}`
-      });
-    }
   };
 
   const updateSection = (parentIndex: number, field: keyof CategorySection, value: any, childIndex?: number) => {
@@ -180,10 +148,10 @@ export default function MailAutomationForm() {
           <EmailIcon sx={{ fontSize: 40, color: 'primary.main' }} />
           <Box>
             <Typography variant="h4" sx={{ fontWeight: 600, color: 'primary.main' }}>
-              Configuration de l'Automatisation Email
+              Configuration de l'Automatisation de vos e-mails
             </Typography>
             <Typography variant="subtitle1" color="text.secondary">
-              Créez et gérez vos catégories de classification automatique des emails
+              Créez et gérez vos catégories de classification automatique de vos emails
             </Typography>
           </Box>
         </Stack>
@@ -246,7 +214,7 @@ export default function MailAutomationForm() {
               },
             },
           }}>
-            <CardContent sx={{ p: 0 }}>
+            <CardContent sx={{ p: 0, minWidth: 460 }}>
               {/* Sidebar Header */}
               <Box sx={{ p: 3, pb: 2 }}>
                 <Stack direction="row" alignItems="center" justifyContent="space-between">
@@ -430,18 +398,40 @@ export default function MailAutomationForm() {
           </Card>
 
           {/* Help Card */}
+          <Box>
+            
+          </Box>
           <Card sx={{ 
             mt: 3,
             borderRadius: 3,
-            border: 1,
+            border: showHelpCard ? 1 : 0,
             borderColor: 'info.light',
             bgcolor: 'info.50',
             position: 'sticky',
             top: 'calc(100vh - 200px)',
             zIndex: 1
           }}>
-            <CardContent>
-              <Stack direction="row" alignItems="flex-start" spacing={2}>
+            {showHelpCard && (
+              <CardContent sx={{ position: 'relative' }}>
+                {/* Hide button for help card */}
+                <IconButton
+                  size="small"
+                  onClick={() => setShowHelpCard(false)}
+                  sx={{ 
+                    position: 'absolute',
+                    top: 8,
+                    right: 8,
+                    opacity: 0.7,
+                    '&:hover': { 
+                      opacity: 1,
+                      bgcolor: 'rgba(255,255,255,0.2)'
+                    }
+                  }}
+                >
+                  <CloseIcon fontSize="small" />
+                </IconButton>
+
+                <Stack direction="row" alignItems="flex-start" spacing={2}>
                   <InfoIcon color="info" />
                   <Box sx={{ pr: 3 }}>
                     <Typography variant="subtitle2" sx={{ fontWeight: 600, mb: 1 }}>
@@ -457,6 +447,7 @@ export default function MailAutomationForm() {
                   </Box>
                 </Stack>
               </CardContent>
+            )}
           </Card>
         </Grid>
 
@@ -546,7 +537,11 @@ export default function MailAutomationForm() {
           borderRadius: 3,
           border: 1,
           borderColor: 'success.light',
-          bgcolor: 'success.50'
+          bgcolor: 'success.50',
+          position: 'sticky',
+          bottom: 0,
+          zIndex: 1000,
+          boxShadow: '0 -4px 16px rgba(0,0,0,0.1)'
         }}>
           <CardContent>
             <Stack direction={{ xs: 'column', sm: 'row' }} alignItems="center" justifyContent="space-between" spacing={2}>
