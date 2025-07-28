@@ -445,13 +445,13 @@ export default function MailAutomationForm() {
         </Grid>
 
         {/* Right Content - Editor */}
-        <Grid item xs={12} lg={8}>
+        <Grid item xs={12} lg={8} sx={{ width: '66.5%' }}>
           {!selected || !getCurrentSection() ? (
             <Card sx={{ 
               borderRadius: 3,
               border: 1,
               borderColor: 'divider',
-              height: 400,
+              height: 520,
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center'
