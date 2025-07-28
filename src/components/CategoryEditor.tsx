@@ -420,7 +420,7 @@ const CategoryEditor: React.FC<CategoryEditorProps> = ({
 
           <Stack spacing={3}>
             <TextField
-              label="Sujet de l'email *"
+              label="Sujet de l'email"
               fullWidth
               required
               value={newExample.subject}
@@ -447,7 +447,7 @@ const CategoryEditor: React.FC<CategoryEditorProps> = ({
             />
 
             <TextField
-              label="Corps de l'email *"
+              label="Corps de l'email"
               fullWidth
               required
               multiline
