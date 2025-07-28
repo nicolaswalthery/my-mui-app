@@ -96,7 +96,7 @@ const CategoryEditor: React.FC<CategoryEditorProps> = ({
 
           <Stack spacing={3}>
             <TextField
-              label="Nom de la catégorie *"
+              label="Nom de la catégorie"
               fullWidth
               required
               value={section.name}
@@ -112,7 +112,7 @@ const CategoryEditor: React.FC<CategoryEditorProps> = ({
             />
 
             <TextField
-              label="Description *"
+              label="Description"
               fullWidth
               required
               multiline
