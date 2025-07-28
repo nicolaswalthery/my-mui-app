@@ -576,7 +576,11 @@ export default function MailAutomationForm() {
             </Stack>
           </CardContent>
         </Card>
+        
       )}
+
+      {/* Add spacing below the sticky card */}
+    <Box sx={{ height: 20 }} />
     </Container>
   );
 }
