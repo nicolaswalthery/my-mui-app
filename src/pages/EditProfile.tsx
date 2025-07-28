@@ -7,6 +7,8 @@ import { AppRouteEnum } from '../enums/AppRouteEnum';
 import { useI18n } from '../contexts/i18nContext';
 import { TranslationKeyEnum } from '../enums/TranslationKeyEnum';
 import { ArrowBack } from '@mui/icons-material';
+import axiosInstance from '../services/starcmdAirtableAxiosInstance';
+import { configManager } from '../config/configManager'
 
 const EditProfile: React.FC = () => {
   const { t } = useI18n();
@@ -15,16 +17,35 @@ const EditProfile: React.FC = () => {
   const [email, setEmail] = useState(UserStorageManager.getUser()?.email || '');
   const [isSaving, setIsSaving] = useState(false);
   const navigate = useNavigate();
+  const appConfig = configManager.getAppConfig();
 
   const handleSave = async () => {
     setIsSaving(true);
-    // Simulate API call delay
-    await new Promise(resolve => setTimeout(resolve, 500));
-    
-    UserStorageManager.updateUser({ firstName, lastName, email });
+
+    // Prepare user data to send in the API request
+    const userData = { firstName, lastName, email };
+    console.log(appConfig.airtableBaseUrl+'/'+appConfig.starcmdAirtableClientTableName);
+  try {
+    // Make the API call to update the user (using the axiosInstance or your custom hook)
+    const response = await axiosInstance.post(appConfig.airtableBaseUrl+'/'+appConfig.starcmdAirtableClientTableName, userData);
+
+    // Handle the response after successful API call (optional)
+    if (response.status === 200) {
+      // Assuming updateUser stores the user data in localStorage or any other place
+      UserStorageManager.updateUser(userData);
+      setIsSaving(false);
+      navigate(AppRouteEnum.Profile);
+    } else {
+      // Handle failure (e.g., show an error message)
+      setIsSaving(false);
+      alert('Failed to save user data');
+    }
+  } catch (error) {
     setIsSaving(false);
-    navigate(AppRouteEnum.Profile);
-  };
+    console.error('Error saving user data:', error);
+    alert('An error occurred while saving user data');
+  }
+};
 
   const handleCancel = () => {
     navigate(AppRouteEnum.Profile);
