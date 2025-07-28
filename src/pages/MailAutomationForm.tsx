@@ -535,6 +535,67 @@ export default function MailAutomationForm() {
 
                 <Divider />
 
+                {/* Mandatory Fields Status - Subtle */}
+                <Box sx={{ p: 3, pb: 2, bgcolor: 'rgba(0,0,0,0.02)', borderBottom: '1px solid rgba(0,0,0,0.05)' }}>
+                  <Typography variant="caption" sx={{ fontWeight: 500, mb: 1.5, color: 'text.secondary', display: 'block' }}>
+                    Champs obligatoires
+                  </Typography>
+                  <Stack direction="row" spacing={1.5} flexWrap="wrap" useFlexGap>
+                    <Chip
+                      icon={getCurrentSection()?.name ? <CheckCircleIcon sx={{ fontSize: 14 }} /> : <WarningIcon sx={{ fontSize: 14 }} />}
+                      label="Nom"
+                      size="small"
+                      sx={{
+                        height: 24,
+                        fontSize: '0.7rem',
+                        bgcolor: getCurrentSection()?.name ? 'rgba(76, 175, 80, 0.1)' : 'rgba(255, 152, 0, 0.1)',
+                        color: getCurrentSection()?.name ? 'success.dark' : 'warning.dark',
+                        border: getCurrentSection()?.name ? '1px solid rgba(76, 175, 80, 0.2)' : '1px solid rgba(255, 152, 0, 0.2)',
+                        '& .MuiChip-icon': {
+                          color: getCurrentSection()?.name ? 'success.main' : 'warning.main',
+                        }
+                      }}
+                    />
+                    <Chip
+                      icon={getCurrentSection()?.description ? <CheckCircleIcon sx={{ fontSize: 14 }} /> : <WarningIcon sx={{ fontSize: 14 }} />}
+                      label="Description"
+                      size="small"
+                      sx={{
+                        height: 24,
+                        fontSize: '0.7rem',
+                        bgcolor: getCurrentSection()?.description ? 'rgba(76, 175, 80, 0.1)' : 'rgba(255, 152, 0, 0.1)',
+                        color: getCurrentSection()?.description ? 'success.dark' : 'warning.dark',
+                        border: getCurrentSection()?.description ? '1px solid rgba(76, 175, 80, 0.2)' : '1px solid rgba(255, 152, 0, 0.2)',
+                        '& .MuiChip-icon': {
+                          color: getCurrentSection()?.description ? 'success.main' : 'warning.main',
+                        }
+                      }}
+                    />
+                    <Chip
+                      icon={getCurrentSection()?.examples && getCurrentSection()?.examples.length > 0 ? <CheckCircleIcon sx={{ fontSize: 14 }} /> : <WarningIcon sx={{ fontSize: 14 }} />}
+                      label={`Exemples (${getCurrentSection()?.examples?.length || 0})`}
+                      size="small"
+                      sx={{
+                        height: 24,
+                        fontSize: '0.7rem',
+                        bgcolor: getCurrentSection()?.examples && getCurrentSection()?.examples.length > 0 ? 'rgba(76, 175, 80, 0.1)' : 'rgba(255, 152, 0, 0.1)',
+                        color: getCurrentSection()?.examples && getCurrentSection()?.examples.length > 0 ? 'success.dark' : 'warning.dark',
+                        border: getCurrentSection()?.examples && getCurrentSection()?.examples.length > 0 ? '1px solid rgba(76, 175, 80, 0.2)' : '1px solid rgba(255, 152, 0, 0.2)',
+                        '& .MuiChip-icon': {
+                          color: getCurrentSection()?.examples && getCurrentSection()?.examples.length > 0 ? 'success.main' : 'warning.main',
+                        }
+                      }}
+                    />
+                  </Stack>
+                  {!isSectionComplete(getCurrentSection()!) && (
+                    <Typography variant="caption" sx={{ mt: 1.5, display: 'block', color: 'text.disabled', fontSize: '0.65rem' }}>
+                      Complétez tous les champs pour activer cette catégorie
+                    </Typography>
+                  )}
+                </Box>
+
+                <Divider />
+
                 {/* Editor Content */}
                 <Box sx={{ p: 3 }}>
                   <CategoryEditor
@@ -643,7 +704,7 @@ export default function MailAutomationForm() {
                     textTransform: 'none'
                   }}
                 >
-                  Activer
+                  Activer & sauvegarder la catégorisation automatique
                 </Button>
               </Stack>
             </Stack>
