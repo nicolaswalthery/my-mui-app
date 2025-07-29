@@ -10,14 +10,12 @@ import type {
   AirtableRecord,
   AirtableResponse,
   AirtableCreateRequest,
-  AirtableUpdateRequest,
-  CategoryHierarchy
+  AirtableUpdateRequest
 } from '../models/CategoryData';
 
 export class CategoryAirtableService {
   private static instance: CategoryAirtableService;
   private readonly tableName: string;
-  private readonly tableId: string = 'tblMqtB7fzXgBGAOs';
   private emailExampleService: EmailExampleAirtableService;
 
   private constructor() {
@@ -151,31 +149,6 @@ private async createSingleCategory(
 }
 
   /**
-   * Flatten category hierarchy for processing
-   */
-  private flattenCategoryHierarchy(categories: CategorySection[], parentId?: string, level: number = 0): CategoryHierarchy[] {
-    const flattened: CategoryHierarchy[] = [];
-    
-    for (const category of categories) {
-      // Add current category
-      flattened.push({
-        category: { ...category, subcategories: [] }, // Remove subcategories for individual processing
-        parentId,
-        level
-      });
-      
-      // Add subcategories recursively
-      if (category.subcategories && category.subcategories.length > 0) {
-        // We'll need to use the actual category ID, so we'll process this after creation
-        const subFlattened = this.flattenCategoryHierarchy(category.subcategories, undefined, level + 1);
-        flattened.push(...subFlattened);
-      }
-    }
-    
-    return flattened;
-  }
-
-  /**
    * Create categories with full hierarchy support
    */
   public async createCategoriesWithHierarchy(categories: CategorySection[], clientId?: string): Promise<CategorySection[]> {
@@ -183,7 +156,6 @@ private async createSingleCategory(
       console.log("createCategoriesWithHierarchy");
       const createdCategories: { [tempId: string]: string } = {}; // Map temp IDs to real IDs
       const categoryMap: { [realId: string]: CategorySection } = {};
-      const results: CategorySection[] = [];
 
       // Process categories level by level to handle dependencies
       const processLevel = async (cats: CategorySection[], parentId?: string): Promise<CategorySection[]> => {

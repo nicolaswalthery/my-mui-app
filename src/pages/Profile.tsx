@@ -23,14 +23,15 @@ const Profile: React.FC = () => {
   
   const user = UserStorageManager.getUser();
   const userName = user ? `${user.firstName} ${user.lastName}` : '';
-  const userEmail = user?.email || '';
-  const userRole = user?.role || '';
+  const userEmail = user!.email
 
   // Get user initials for avatar
-  const getInitials = () => {
-    if (!user) return '';
-    return `${user.firstName.charAt(0)}${user.lastName.charAt(0)}`.toUpperCase();
-  };
+const getInitials = () => {
+  if (!user || !user.firstName || !user.lastName) {
+    return 'UU';  // Default initials if no first name or last name
+  }
+  return `${user.firstName.charAt(0)}${user.lastName.charAt(0)}`.toUpperCase();
+};
 
   return (
     <Box sx={{ minWidth: 450, margin: 'auto', p: 2 }}>
@@ -100,7 +101,6 @@ const Profile: React.FC = () => {
               <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                 <Badge fontSize="small" color="action" />
                 <Chip 
-                  label={userRole} 
                   variant="outlined" 
                   size="small"
                   color="primary"
