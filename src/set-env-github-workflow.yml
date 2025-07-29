@@ -1,0 +1,33 @@
+name: Set Environment Variables
+
+on:
+  push:
+    branches:
+      - main  # Trigger the workflow when changes are pushed to the main branch
+  pull_request:
+    branches:
+      - main  # Trigger on pull requests targeting the main branch
+
+jobs:
+  set-env-vars:
+    runs-on: ubuntu-latest
+
+    steps:
+      # Set environment variables using GitHub Secrets
+      - name: Set environment variables
+        env:
+          VITE_DEFAULT_LANGUAGE: ${{ secrets.VITE_DEFAULT_LANGUAGE }} 
+          VITE_APP_TITLE: ${{ secrets.VITE_APP_TITLE }}  
+          VITE_VERSION: ${{ secrets.VITE_VERSION }}  
+          VITE_API_CALL_TIMEOUT: ${{ secrets.VITE_API_CALL_TIMEOUT }}  
+          VITE_SOURCE: ${{ secrets.VITE_SOURCE }}  
+          VITE_AIRTABLE_BASE_URL: ${{ secrets.VITE_AIRTABLE_BASE_URL }}  
+          VITE_STARCMD_AIRTABLE_TOKEN: ${{ secrets.VITE_STARCMD_AIRTABLE_TOKEN }}  
+          VITE_STARCMD_AIRTABLE_CLIENT_TABLE_NAME: ${{ secrets.VITE_STARCMD_AIRTABLE_CLIENT_TABLE_NAME }}  
+          VITE_STARCMD_AIRTABLE_CATEGORIES_TABLE_NAME: ${{ secrets.VITE_STARCMD_AIRTABLE_CATEGORIES_TABLE_NAME }}  
+          VITE_STARCMD_AIRTABLE_EMAIL_EXAMPLE_TABLE_NAME: ${{ secrets.VITE_STARCMD_AIRTABLE_EMAIL_EXAMPLE_TABLE_NAME }}  
+          VITE_STARCMD_AIRTABLE_CLIENT_TABLE_ID: ${{ secrets.VITE_STARCMD_AIRTABLE_CLIENT_TABLE_ID }}  
+          VITE_STARCMD_AIRTABLE_CATEGORIES_TABLE_ID: ${{ secrets.VITE_STARCMD_AIRTABLE_CATEGORIES_TABLE_ID }}  
+          VITE_STARCMD_AIRTABLE_EMAIL_EXAMPLE_TABLE_ID: ${{ secrets.VITE_STARCMD_AIRTABLE_EMAIL_EXAMPLE_TABLE_ID }}   
+
+          
