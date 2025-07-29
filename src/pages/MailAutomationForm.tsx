@@ -257,17 +257,16 @@ export default function MailAutomationForm() {
           {/* Action buttons in header */}
           <Stack direction="row" spacing={1}>
             <Button 
-              variant="outlined" 
-              size="small"
-              onClick={handleSaveConfiguration}
-              sx={{ 
-                borderRadius: 2,
-                textTransform: 'none',
-                fontSize: { xs: '0.7rem', sm: '0.8rem' }
-              }}
-            >
-              Sauvegarder
-            </Button>
+                  variant="outlined" 
+                  color="primary"
+                  onClick={handleSaveConfiguration}
+                  sx={{ 
+                    flex: { xs: 1, sm: 'none' },
+                    fontSize: { xs: '0.8rem', sm: '0.875rem' }
+                  }}
+                >
+                  Sauvegarder
+                </Button>
             {sections.length > 0 && (
               <Button 
                 variant="text" 
@@ -630,7 +629,7 @@ export default function MailAutomationForm() {
               borderRadius: 3,
               border: 1,
               borderColor: 'divider',
-              height: { xs: 300, sm: 400, md: 520 },
+              minHeight: { xs: 300, sm: 400, md: 520 },
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center'
@@ -756,7 +755,7 @@ export default function MailAutomationForm() {
               >
                 <Button 
                   variant="outlined" 
-                  color="inherit"
+                  color="primary"
                   onClick={handleSaveConfiguration}
                   sx={{ 
                     flex: { xs: 1, sm: 'none' },
@@ -828,7 +827,7 @@ export default function MailAutomationForm() {
               >
                 <Button 
                   variant="outlined" 
-                  color="inherit"
+                  color="primary"
                   onClick={handleSaveConfiguration}
                   sx={{ 
                     flex: { xs: 1, sm: 'none' },
