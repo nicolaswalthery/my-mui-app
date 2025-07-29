@@ -223,7 +223,6 @@ export default function MailAutomationForm() {
       const userEmail = currentUser!.email;
       
       const clientId = await clientServices.getClientIdByEmail(userEmail!);
-      console.log("client id : "+clientId);
       // Save to Airtable
       const savedCategories = await categoryServices.saveUserCategories(sections, clientId!);
       

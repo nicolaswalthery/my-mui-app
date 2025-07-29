@@ -249,57 +249,49 @@ export class CategoryAirtableService {
   }
 
   /**
-   * Get categories by client with full hierarchy
-   */
-  public async getCategoriesByClient(clientId: string): Promise<CategorySection[]> {
-    try {
-      const filterFormula = `{Client} = "${clientId}"`;
-      const response = await axiosInstance.get<AirtableResponse<AirtableCategoryFields>>(
-        `/${this.tableName}?filterByFormula=${encodeURIComponent(filterFormula)}`
-      );
+ * Get categories by client with examples (simplified version)
+ */
+public async getCategoriesByClient(clientId: string): Promise<CategorySection[]> {
+  try {
+    // Get all categories
+    const response = await axiosInstance.get<AirtableResponse<AirtableCategoryFields>>(
+      `/${this.tableName}`
+    );
 
-      if (!response.data.records || response.data.records.length === 0) {
-        return [];
-      }
-
-      // Convert records to categories
-      const allCategories = await Promise.all(
-        response.data.records.map(async (record) => {
-          const category = this.mapAirtableFieldsToCategory(record.fields, record);
-          
-          // Load email examples
-          if (record.fields["Exemples d'e-mails"] && record.fields["Exemples d'e-mails"].length > 0) {
-            category.examples = await this.emailExampleService.getEmailExamplesByCategory(record.id!);
-          }
-          
-          return category;
-        })
-      );
-
-      // Build hierarchy (only return root categories, subcategories will be nested)
-      const rootCategories = allCategories.filter(cat => !cat.parentCategoryId);
-      const categoryMap = new Map(allCategories.map(cat => [cat.id!, cat]));
-
-      // Build the hierarchy
-      const buildHierarchy = (category: CategorySection): CategorySection => {
-        const subcategoryIds = response.data.records
-          .find(record => record.id === category.id)?.fields["Sous-catégories"] || [];
-        
-        category.subcategories = subcategoryIds
-          .map(id => categoryMap.get(id))
-          .filter(Boolean)
-          .map(subcat => buildHierarchy(subcat!));
-        
-        return category;
-      };
-
-      return rootCategories.map(buildHierarchy);
-
-    } catch (error: any) {
-      console.error('Error getting categories by client:', error);
-      throw ApiErrorHandler.createFromHttpError(error);
+    if (!response.data.records) {
+      return [];
     }
+
+    // Filter and map categories
+    const categories: CategorySection[] = [];
+    
+    for (const record of response.data.records) {
+      // Check if category belongs to client
+      const clientField = record.fields["Client"];
+      if (Array.isArray(clientField) && clientField.includes(clientId)) {
+        // Convert to CategorySection
+        const category = this.mapAirtableFieldsToCategory(record.fields, record);
+        
+        // Load email examples if they exist
+        if (record.fields["Exemples d'e-mails"]?.length > 0) {
+          try {
+            category.examples = await this.emailExampleService.getEmailExamplesByCategory(record.id!);
+          } catch {
+            category.examples = [];
+          }
+        }
+        
+        categories.push(category);
+      }
+    }
+
+    return categories;
+
+  } catch (error: any) {
+    console.error('Error getting categories by client:', error);
+    return [];
   }
+}
 
   /**
    * Update a category and its hierarchy
@@ -457,6 +449,7 @@ export class CategoryAirtableService {
    */
   public async saveUserCategories(categories: CategorySection[], userId: string): Promise<CategorySection[]> {
     try {
+      console.log("saveUserCategories / clientId "+ userId);
       // Delete existing categories for this client
       const existingCategories = await this.getCategoriesByClient(userId);
       
