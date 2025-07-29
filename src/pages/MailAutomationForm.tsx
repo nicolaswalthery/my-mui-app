@@ -415,9 +415,9 @@ export default function MailAutomationForm() {
       </Box>
 
       {/* Main Content - RESPONSIVE GRID */}
-      <Grid container spacing={{ xs: 1, sm: 2, md: 2 }}>
+      <Grid container spacing={2}>
         {/* Left Sidebar - Categories List - RESPONSIVE */}
-        <Grid item xs={12} lg={4}>
+        <Grid>
           <Card sx={{ 
             borderRadius: 3,
             border: 1,
@@ -733,7 +733,7 @@ export default function MailAutomationForm() {
         </Grid>
 
         {/* Right Content - Editor - RESPONSIVE */}
-        <Grid item xs={12} lg={8}>
+        <Grid>
           {!selected || !getCurrentSection() ? (
             <Card sx={{ 
               borderRadius: 3,
