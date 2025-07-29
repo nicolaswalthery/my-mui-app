@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   Button,
@@ -34,14 +34,69 @@ import {
 } from '@mui/icons-material';
 import CategoryEditor from '../components/CategoryEditor';
 import type { CategorySection } from '../components/CategoryEditor';
+import { UserStorageManager } from '../helpers/userStorageManager';
 
 export default function MailAutomationForm() {
   const [sections, setSections] = useState<CategorySection[]>([]);
   const [selected, setSelected] = useState<{ parent: number; child?: number } | null>(null);
   const [showHelpCard, setShowHelpCard] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
+
+  // Initialize component with data from session storage
+  useEffect(() => {
+    const initializeData = () => {
+      // Initialize user session if it doesn't exist
+      UserStorageManager.initializeUserSession();
+      
+      // Load saved categories
+      const savedCategories = UserStorageManager.getMailCategories();
+      setSections(savedCategories);
+      
+      // Load selected category state
+      const savedSelected = UserStorageManager.getSelectedCategory();
+      // Validate that the saved selection is still valid
+      if (savedSelected && savedCategories.length > 0) {
+        const isValidSelection = 
+          savedSelected.parent < savedCategories.length &&
+          (savedSelected.child === undefined || 
+           (savedCategories[savedSelected.parent].subcategories && 
+            savedSelected.child < savedCategories[savedSelected.parent].subcategories!.length));
+        
+        if (isValidSelection) {
+          setSelected(savedSelected);
+        } else {
+          // Clear invalid selection
+          UserStorageManager.saveSelectedCategory(null);
+          setSelected(null);
+        }
+      }
+      
+      // Load help card preference
+      const showHelp = UserStorageManager.getPreference('showHelpCard', true);
+      setShowHelpCard(showHelp);
+      
+      setIsLoading(false);
+    };
+
+    initializeData();
+  }, []);
+
+  // Save categories to session storage whenever sections change
+  useEffect(() => {
+    if (!isLoading) {
+      UserStorageManager.saveMailCategories(sections);
+    }
+  }, [sections, isLoading]);
+
+  // Save selected state whenever it changes
+  useEffect(() => {
+    if (!isLoading) {
+      UserStorageManager.saveSelectedCategory(selected);
+    }
+  }, [selected, isLoading]);
 
   const addSection = () => {
-    setSections([
+    const newSections = [
       ...sections,
       {
         name: '',
@@ -49,7 +104,8 @@ export default function MailAutomationForm() {
         examples: [],
         subcategories: [],
       },
-    ]);
+    ];
+    setSections(newSections);
     setSelected({ parent: sections.length });
   };
 
@@ -120,6 +176,48 @@ export default function MailAutomationForm() {
     return section.name && section.description && section.examples && section.examples.length > 0;
   };
 
+  const handleCloseHelpCard = () => {
+    setShowHelpCard(false);
+    UserStorageManager.savePreference('showHelpCard', false);
+  };
+
+  const handleSaveConfiguration = () => {
+    // Force save current state
+    UserStorageManager.batchUpdate({
+      categories: sections,
+      selected: selected,
+      preferences: { showHelpCard }
+    });
+    
+    // You can add additional save logic here (e.g., API call)
+    console.log('Configuration saved to session storage');
+  };
+
+  const handleClearAll = () => {
+    if (window.confirm('Êtes-vous sûr de vouloir supprimer toutes les catégories ? Cette action ne peut pas être annulée.')) {
+      setSections([]);
+      setSelected(null);
+      UserStorageManager.clearMailCategories();
+      UserStorageManager.saveSelectedCategory(null);
+    }
+  };
+
+  // Show loading state
+  if (isLoading) {
+    return (
+      <Container maxWidth="xl">
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '50vh' }}>
+          <Stack alignItems="center" spacing={2}>
+            <LinearProgress sx={{ width: 300 }} />
+            <Typography variant="body2" color="text.secondary">
+              Chargement de votre configuration...
+            </Typography>
+          </Stack>
+        </Box>
+      </Container>
+    );
+  }
+
   return (
     <Container maxWidth="xl">
       {/* Header Section - RESPONSIVE */}
@@ -141,7 +239,7 @@ export default function MailAutomationForm() {
             fontSize: { xs: 32, sm: 40 }, 
             color: 'primary.main' 
           }} />
-          <Box>
+          <Box sx={{ flex: 1 }}>
             <Typography variant="h4" sx={{ 
               fontWeight: 600, 
               color: 'primary.main',
@@ -155,6 +253,37 @@ export default function MailAutomationForm() {
               Créez et gérez vos catégories de classification automatique de vos emails
             </Typography>
           </Box>
+          
+          {/* Action buttons in header */}
+          <Stack direction="row" spacing={1}>
+            <Button 
+              variant="outlined" 
+              size="small"
+              onClick={handleSaveConfiguration}
+              sx={{ 
+                borderRadius: 2,
+                textTransform: 'none',
+                fontSize: { xs: '0.7rem', sm: '0.8rem' }
+              }}
+            >
+              Sauvegarder
+            </Button>
+            {sections.length > 0 && (
+              <Button 
+                variant="text" 
+                size="small"
+                color="error"
+                onClick={handleClearAll}
+                sx={{ 
+                  borderRadius: 2,
+                  textTransform: 'none',
+                  fontSize: { xs: '0.7rem', sm: '0.8rem' }
+                }}
+              >
+                Tout effacer
+              </Button>
+            )}
+          </Stack>
         </Stack>
 
         {/* Progress Section - RESPONSIVE */}
@@ -177,6 +306,11 @@ export default function MailAutomationForm() {
                 color={getCompletionPercentage() === 100 ? 'success' : 'primary'}
                 icon={getCompletionPercentage() === 100 ? <CheckCircleIcon /> : undefined}
               />
+              <Typography variant="caption" color="text.disabled" sx={{
+                fontSize: { xs: '0.7rem', sm: '0.75rem' }
+              }}>
+                💾 Sauvegardé automatiquement
+              </Typography>
             </Stack>
             <LinearProgress 
               variant="determinate" 
@@ -447,7 +581,7 @@ export default function MailAutomationForm() {
               <CardContent sx={{ position: 'relative', p: { xs: 2, sm: 3 } }}>
                 <IconButton
                   size="small"
-                  onClick={() => setShowHelpCard(false)}
+                  onClick={handleCloseHelpCard}
                   sx={{ 
                     position: 'absolute',
                     top: { xs: 6, sm: 8 },
@@ -480,7 +614,7 @@ export default function MailAutomationForm() {
                       <br />
                       • Les sous-catégories permettent une organisation plus fine
                       <br />
-                      • Le niveau "Auto" traite les emails automatiquement
+                      • Vos données sont sauvegardées automatiquement dans votre navigateur
                     </Typography>
                   </Box>
                 </Stack>
@@ -611,7 +745,7 @@ export default function MailAutomationForm() {
                   <Typography variant="body2" color="text.secondary" sx={{
                     fontSize: { xs: '0.8rem', sm: '0.875rem' }
                   }}>
-                    {getCompletionPercentage()}% complété
+                    {getCompletionPercentage()}% complété • 💾 Sauvegardé automatiquement
                   </Typography>
                 </Box>
               </Stack>
@@ -623,6 +757,7 @@ export default function MailAutomationForm() {
                 <Button 
                   variant="outlined" 
                   color="inherit"
+                  onClick={handleSaveConfiguration}
                   sx={{ 
                     flex: { xs: 1, sm: 'none' },
                     fontSize: { xs: '0.8rem', sm: '0.875rem' }
@@ -682,7 +817,7 @@ export default function MailAutomationForm() {
                   <Typography variant="body2" color="text.secondary" sx={{
                     fontSize: { xs: '0.8rem', sm: '0.875rem' }
                   }}>
-                    {sections.length} catégorie(s) configurée(s) • {getCompletionPercentage()}% complété
+                    {sections.length} catégorie(s) configurée(s) • {getCompletionPercentage()}% complété • 💾 Sauvegardé
                   </Typography>
                 </Box>
               </Stack>
@@ -694,6 +829,7 @@ export default function MailAutomationForm() {
                 <Button 
                   variant="outlined" 
                   color="inherit"
+                  onClick={handleSaveConfiguration}
                   sx={{ 
                     flex: { xs: 1, sm: 'none' },
                     fontSize: { xs: '0.8rem', sm: '0.875rem' }

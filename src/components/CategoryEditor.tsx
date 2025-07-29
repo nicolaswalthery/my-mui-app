@@ -31,24 +31,8 @@ import {
   Delete as DeleteIcon
 } from '@mui/icons-material';
 
-export interface MailExample {
-  subject: string;
-  body: string;
-  sender?: string;
-}
-
-export interface CategorySection {
-  name: string;
-  description: string;
-  senderType?: string;
-  keywords?: string;
-  subjectPattern?: string;
-  format?: string;
-  attachments?: string;
-  urgency?: string;
-  examples: MailExample[];
-  subcategories?: CategorySection[];
-}
+// Import types from the model to ensure consistency
+import type { MailExample, CategorySection } from '../models/UserSessionModel';
 
 interface CategoryEditorProps {
   section: CategorySection;
@@ -436,7 +420,7 @@ const CategoryEditor: React.FC<CategoryEditorProps> = ({
             <TextField
               label="Expéditeur (optionnel)"
               fullWidth
-              value={newExample.sender}
+              value={newExample.sender || ''}
               onChange={(e) => setNewExample({ ...newExample, sender: e.target.value })}
               placeholder="Ex: noreply@company.com"
               sx={{
