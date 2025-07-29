@@ -33,10 +33,10 @@ export class ClientAirtableService {
    */
   private mapClientDataToAirtableFields(clientData: ClientData): AirtableClientFields {
     return {
-      "Prénom": clientData.firstName,
-      "Nom": clientData.lastName,
+      "Prénom": clientData?.firstName || "",
+      "Nom": clientData?.lastName  || "",
       "E-mail": clientData.email,
-      "Source Enregistrement": clientData.sourceEnregistrement || "Application Web"
+      "Source Enregistrement": clientData.sourceEnregistrement
     };
   }
 
@@ -57,7 +57,6 @@ export class ClientAirtableService {
    */
   public async createClient(clientData: ClientData): Promise<ClientData> {
     try {
-        console.log("createClient"+ clientData.email)
       const airtableFields = this.mapClientDataToAirtableFields(clientData);
       
       console.log("airtableFields:"+ airtableFields['E-mail'])
@@ -149,7 +148,7 @@ export class ClientAirtableService {
   /**
    * Find a client record by email (internal method that returns full record)
    */
-  private async findRecordByEmail(email: string): Promise<AirtableRecord | null> {
+  public async findRecordByEmail(email: string): Promise<AirtableRecord | null> {
     try {
       const filterFormula = `{E-mail} = "${email}"`;
       const response = await axiosInstance.get<AirtableResponse>(
