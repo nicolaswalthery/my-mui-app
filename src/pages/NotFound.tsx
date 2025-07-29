@@ -1,7 +1,7 @@
 // src/pages/NotFound.tsx - Updated with i18n support
 import React from 'react';
 import { Box, Typography, Button, Paper, Stack } from '@mui/material';
-import { Home, ArrowBack, Search } from '@mui/icons-material';
+import { Home, ArrowBack } from '@mui/icons-material';
 import { useI18n } from '../contexts/i18nContext';
 import { TranslationKeyEnum } from '../enums/TranslationKeyEnum';
 import { useNavigate } from 'react-router-dom';

@@ -1,12 +1,11 @@
 // src/services/EmailExampleAirtableService.ts - Service for email examples
-import axiosInstance from './StarcmdAirtableAxiosInstance';
+import axiosInstance from './starcmdAirtableAxiosInstance';
 import { configManager } from '../config/configManager';
 import { ApiErrorEnum } from '../enums/ApiErrorEnum';
 import { ApiErrorHandler } from '../helpers/ApiErrorHandler';
 import type { 
   MailExample,
   AirtableEmailExampleFields,
-  AirtableRecord,
   AirtableResponse,
   AirtableCreateRequest,
   AirtableUpdateRequest
@@ -108,7 +107,7 @@ export class EmailExampleAirtableService {
   public async updateEmailExamples(
     exampleIds: string[], 
     examples: MailExample[], 
-    categoryId?: string
+    categoryId: string
   ): Promise<string[]> {
     try {
       if (examples.length === 0) return [];

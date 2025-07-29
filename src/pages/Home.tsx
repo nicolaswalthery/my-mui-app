@@ -12,7 +12,7 @@ import {
   Chip,
   Container,
 } from '@mui/material';
-import { Launch, Star, Language } from '@mui/icons-material';
+import { Launch, Star } from '@mui/icons-material';
 import { useI18n } from '../contexts/i18nContext';
 import { TranslationKeyEnum } from '../enums/TranslationKeyEnum';
 import { useNavigate } from 'react-router-dom';
