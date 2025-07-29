@@ -112,8 +112,6 @@ export default function MUILayout() {
         
         {/* Pages content rendered here */}
         <Outlet />
-
-        <FooterProps footerText={t(TranslationKeyEnum.FooterText)} />
       </Box>
     </Box>
   );

@@ -1,6 +1,6 @@
 export const appConfig = {
   defaultLanguage: 'fr',
-  appTitle: 'My MUI App',
+  appTitle: 'STARCMD.AI',
   version: '1.0.0',
   apiCallTimeout: '10000'
 };
