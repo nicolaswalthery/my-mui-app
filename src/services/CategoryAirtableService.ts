@@ -88,7 +88,6 @@ private async createSingleCategory(
   clientId?: string
 ): Promise<string> {
   try {
-    console.log("// First create the category record");
     
     // Create the category record WITHOUT email examples first
     const airtableFields = this.mapCategoryToAirtableFields(
@@ -103,7 +102,6 @@ private async createSingleCategory(
       records: [{ fields: airtableFields }]
     };
 
-    console.log("axiosInstance.post<AirtableResponse<AirtableCategoryFields>>");
     const response = await axiosInstance.post<AirtableResponse<AirtableCategoryFields>>(
       `/${this.tableName}`,
       requestData
@@ -111,11 +109,9 @@ private async createSingleCategory(
 
     if (response.data.records && response.data.records.length > 0) {
       const categoryId = response.data.records[0].id!;
-      console.log("Category created with ID:", categoryId);
       
       // Now create email examples with the category ID
       if (category.examples && category.examples.length > 0) {
-        console.log("// Now create email examples linked to the category");
         const emailExampleIds = await this.emailExampleService.createEmailExamples(
           category.examples, 
           categoryId // Use the actual category ID
@@ -123,7 +119,6 @@ private async createSingleCategory(
         
         // Update the category to include the email example IDs
         if (emailExampleIds.length > 0) {
-          console.log("// Update category to link to email examples");
           const updateData: AirtableUpdateRequest<Partial<AirtableCategoryFields>> = {
             records: [{
               id: categoryId,
@@ -139,8 +134,7 @@ private async createSingleCategory(
           );
         }
       }
-      
-      console.log("return categoryId;");
+    
       return categoryId;
     } else {
       throw ApiErrorHandler.createFromBusinessLogicError(
@@ -149,8 +143,6 @@ private async createSingleCategory(
       );
     }
   } catch (error: any) {
-    console.error('Error creating single category:', error);
-    
     if (error && typeof error === 'object' && 'code' in error && Object.values(ApiErrorEnum).includes(error.code as ApiErrorEnum)) {
       throw error;
     }
