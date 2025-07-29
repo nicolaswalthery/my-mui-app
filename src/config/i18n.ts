@@ -1,7 +1,11 @@
-// src/config/i18n.ts - Enhanced version with NotFound page support
+// src/config/i18n.ts - Complete version with all translation keys
 import { SupportedLangEnum, TranslationKeyEnum } from '../enums/TranslationKeyEnum';
 
-const translations: Record<SupportedLangEnum, Record<TranslationKeyEnum, string>> = {
+// Define the type for a complete translation object
+type TranslationObject = Record<TranslationKeyEnum, string>;
+
+// Define the translations with explicit typing
+const translations: Record<SupportedLangEnum, TranslationObject> = {
   [SupportedLangEnum.English]: {
     // Common UI
     [TranslationKeyEnum.Welcome]: 'Welcome',
@@ -183,7 +187,7 @@ const translations: Record<SupportedLangEnum, Record<TranslationKeyEnum, string>
     [TranslationKeyEnum.Home]: 'Accueil',
     [TranslationKeyEnum.Dashboard]: 'Tableau de bord',
     [TranslationKeyEnum.Settings]: 'Paramètres',
-    [TranslationKeyEnum.Profile]: 'Profile',
+    [TranslationKeyEnum.Profile]: 'Profil',
     
     // Authentication
     [TranslationKeyEnum.Login]: 'Connexion',
@@ -498,7 +502,7 @@ const translations: Record<SupportedLangEnum, Record<TranslationKeyEnum, string>
     [TranslationKeyEnum.Error]: 'Fehler',
     [TranslationKeyEnum.Success]: 'Erfolg',
     [TranslationKeyEnum.Menu]: 'Menü',
-
+    
     // Navigation
     [TranslationKeyEnum.Home]: 'Startseite',
     [TranslationKeyEnum.Dashboard]: 'Dashboard',
@@ -607,6 +611,7 @@ const translations: Record<SupportedLangEnum, Record<TranslationKeyEnum, string>
     // Kanban Page
     [TranslationKeyEnum.ManageTasksWithDragDrop]: 'Verwalten Sie Ihre Aufgaben mit einem intuitiven Drag-and-Drop-System',
     [TranslationKeyEnum.Reset]: 'Zurücksetzen',
+    [TranslationKeyEnum.UsageInstructions]: 'Anleitung:',
     [TranslationKeyEnum.DragAndDrop]: 'Drag and Drop',
     [TranslationKeyEnum.DragAndDropDesc]: 'Klicken und ziehen Sie Karten zwischen Spalten',
     [TranslationKeyEnum.EditTitles]: 'Titel bearbeiten',
@@ -642,7 +647,7 @@ const translations: Record<SupportedLangEnum, Record<TranslationKeyEnum, string>
   },
 };
 
-export const getTranslations = (lang: SupportedLangEnum): Record<string, string> => {
+export const getTranslations = (lang: SupportedLangEnum): TranslationObject => {
   return translations[lang] || translations[SupportedLangEnum.English];
 };
 
