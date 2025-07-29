@@ -1,6 +1,6 @@
 export const appConfig = {
   defaultLanguage: 'fr',
-  appTitle: 'STARCMD.AI',
+  appTitle: 'STARCMD - TEMPLATE PROJECT',
   version: '1.0.0',
   apiCallTimeout: '10000'
 };

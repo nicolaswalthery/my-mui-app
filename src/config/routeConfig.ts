@@ -18,7 +18,6 @@ import HomePage from '../pages/Home';
 import SettingsPage from '../pages/Settings';
 import AuthPage from '../pages/Auth';
 import ProfilePage from '../pages/Profile';
-import KanbanBoard from '../pages/KanbanBoard';
 import EditProfile from '../pages/EditProfile';
 import MailAutomationForm from '../pages/MailAutomationForm';
 
@@ -37,7 +36,7 @@ export const routeConfig: TranslatableRouteConfig[] = [
     displayName: 'Dashboard', // Fallback
     icon: Dashboard,
     component: DashboardPage,
-    showInMenu: false,
+    showInMenu: true,
     requiresAuth: false,
     descriptionKey: TranslationKeyEnum.WelcomeToDashboard,
     description: 'Main dashboard with overview',
@@ -60,7 +59,7 @@ export const routeConfig: TranslatableRouteConfig[] = [
     displayName: 'Settings', // Fallback
     icon: Settings,
     component: SettingsPage,
-    showInMenu: false,
+    showInMenu: true,
     requiresAuth: false,
     description: 'Application settings and preferences',
     order: 3,
