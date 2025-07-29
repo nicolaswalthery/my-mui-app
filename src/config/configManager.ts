@@ -28,6 +28,7 @@ export class CurrentAppConfig{
     public backendApi: string;
     public airtableApiKey: string;
     public apiCallTimeout: string;
+    public source: string;
     
     // Airtable configuration
     public airtableBaseUrl: string;
@@ -48,6 +49,7 @@ export class CurrentAppConfig{
         this.backendApi = Config.backendApi;
         this.defaultLanguage = AppConfig.defaultLanguage;
         this.apiCallTimeout = AppConfig.apiCallTimeout;
+        this.source = AppConfig.source;
         
         // Airtable configuration
         this.airtableBaseUrl = Config.airtableBaseUrl;

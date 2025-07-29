@@ -1,9 +1,9 @@
 // src/models/ClientData.ts - Data models only
 export interface ClientData {
-  firstName: string;
-  lastName: string;
+  firstName?: string;
+  lastName?: string;
   email: string;
-  sourceEnregistrement?: string;
+  sourceEnregistrement: string;
 }
 
 export interface AirtableClientFields {

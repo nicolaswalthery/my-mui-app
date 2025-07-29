@@ -2,12 +2,13 @@
 import React, { useState } from 'react';
 import { UserStorageManager } from '../helpers/userStorageManager';
 import type { UserSessionModel } from '../models/UserSessionModel';
-import { UserRoleEnum } from '../enums/UserRoleEnum';
 import { useNavigate } from 'react-router-dom';
 import { AppRouteEnum } from '../enums/AppRouteEnum';
 import { LoginStepEnum } from '../enums/LoginStepEnum';
 import { useI18n } from '../contexts/i18nContext';
+import { ClientAirtableService } from '../services/ClientAirtableService';
 import { TranslationKeyEnum } from '../enums/TranslationKeyEnum';
+import { configManager } from '../config/configManager';
 import {
   Box,
   Button,
@@ -20,46 +21,42 @@ import {
 const Auth: React.FC = () => {
   const { t } = useI18n();
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
   const [code, setCode] = useState('');
   const [step, setStep] = useState<LoginStepEnum>(LoginStepEnum.Login);
   const [message, setMessage] = useState('');
   const navigate = useNavigate();
 
-  const handleLogin = (e: React.FormEvent) => {
-    e.preventDefault();
-    
-    const userData: UserSessionModel = {
-      email: email,
-      id: Date.now(),
-      firstName: 'Fake', 
-      lastName: 'User',
-      role: UserRoleEnum.Admin,
-    };
+  //Airtable Services
+  const clientServices = ClientAirtableService.getInstance();
 
-    // TODO: Check if auth OK 
-    const isAuth = true; // Simulate authentication check
-    if (isAuth) {
+  const handleEmailLogin = (e: React.FormEvent) => {
+    e.preventDefault();
       setStep(LoginStepEnum.Verify);
-      setMessage(''); // Clear any previous messages
-    } else {
-      setMessage(t(TranslationKeyEnum.InvalidCredentials));
-    }
+      setMessage('');
   };
 
   const handleCodeVerify = async (e: React.FormEvent) => {
     e.preventDefault();
-
+    
     // Call to backend to verify code
-    const isCodeValid = true; // Simulate code verification
+    const isCodeValid = code == "1234"; // Simulate code verification
 
     if (isCodeValid) {
+      var clientData = await clientServices.findClientByEmail(email);
+      if(clientData == null){ 
+          const newClientData = {
+          email: email,
+          firstName: '',
+          lastName: '',  
+          sourceEnregistrement: configManager.getAppConfig().source
+        };
+        clientData = await clientServices.createClient(newClientData);
+      }
+
       const userData: UserSessionModel = {
-        email,
-        id: Date.now(),
-        firstName: 'Fake',
-        lastName: 'User',
-        role: UserRoleEnum.Admin,
+        email: clientData!.email,
+        firstName: clientData?.firstName || "",
+        lastName: clientData?.lastName || ""
       };
 
       UserStorageManager.saveUser(userData);
@@ -95,7 +92,7 @@ const Auth: React.FC = () => {
           {getPageTitle()}
         </Typography>
 
-        <form onSubmit={step === LoginStepEnum.Login ? handleLogin : handleCodeVerify}>
+        <form onSubmit={step === LoginStepEnum.Login ? handleEmailLogin : handleCodeVerify}>
           <Stack spacing={2}>
             {step === LoginStepEnum.Login ? (
               <>
@@ -105,15 +102,6 @@ const Auth: React.FC = () => {
                   variant="outlined"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  required
-                  fullWidth
-                />
-                <TextField
-                  label={t(TranslationKeyEnum.Password)}
-                  type="password"
-                  variant="outlined"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
                   required
                   fullWidth
                 />

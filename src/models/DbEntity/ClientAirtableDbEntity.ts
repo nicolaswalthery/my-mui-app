@@ -3,13 +3,12 @@ import axiosInstance from '../../services/StarcmdAirtableAxiosInstance';
 import { configManager } from '../../config/configManager';
 import { ApiErrorEnum } from '../../enums/ApiErrorEnum';
 import { ApiErrorHandler } from '../../helpers/ApiErrorHandler';
-import type {  ApiError } from '../../helpers/ApiErrorHandler';
 
 export interface ClientData {
   firstName: string;
   lastName: string;
   email: string;
-  sourceEnregistrement?: string;
+  sourceEnregistrement: string;
 }
 
 export interface AirtableClientFields {

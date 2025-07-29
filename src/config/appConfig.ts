@@ -1,9 +1,10 @@
 export const appConfig = {
-  defaultLanguage: 'fr',
-  appTitle: 'STARCMD.AI',
-  version: '1.0.0',
-  apiCallTimeout: '10000'
-};
+  defaultLanguage: import.meta.env.VITE_DEFAULT_LANGUAGE,
+  appTitle: import.meta.env.VITE_APP_TITLE,
+  version: import.meta.env.VITE_VERSION,
+  apiCallTimeout: import.meta.env.VITE_API_CALL_TIMEOUT,
+  source: import.meta.env.VITE_SOURCE,
+}
 
 export type AppConfig = typeof appConfig;
 
