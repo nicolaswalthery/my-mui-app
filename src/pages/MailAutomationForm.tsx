@@ -18,7 +18,8 @@ import {
   Tooltip,
   LinearProgress,
   Alert,
-  AlertTitle
+  AlertTitle,
+  Snackbar
 } from '@mui/material';
 import {
   Add as AddIcon,
@@ -30,17 +31,25 @@ import {
   Info as InfoIcon,
   CheckCircle as CheckCircleIcon,
   Close as CloseIcon,
-  Warning as WarningIcon
+  Warning as WarningIcon,
+  CloudUpload as CloudUploadIcon,
+  Sync as SyncIcon
 } from '@mui/icons-material';
 import CategoryEditor from '../components/CategoryEditor';
-import type { CategorySection } from '../components/CategoryEditor';
+import type { CategorySection } from '../models/CategoryData';
 import { UserStorageManager } from '../helpers/userStorageManager';
+import { CategoryAirtableService } from '../services/CategoryAirtableService';
 
 export default function MailAutomationForm() {
   const [sections, setSections] = useState<CategorySection[]>([]);
   const [selected, setSelected] = useState<{ parent: number; child?: number } | null>(null);
   const [showHelpCard, setShowHelpCard] = useState(true);
   const [isLoading, setIsLoading] = useState(true);
+  const [isSaving, setIsSaving] = useState(false);
+  const [saveMessage, setSaveMessage] = useState<{type: 'success' | 'error', message: string} | null>(null);
+  
+  // Airtable service
+  const categoryService = CategoryAirtableService.getInstance();
 
   // Initialize component with data from session storage
   useEffect(() => {
@@ -181,16 +190,56 @@ export default function MailAutomationForm() {
     UserStorageManager.savePreference('showHelpCard', false);
   };
 
-  const handleSaveConfiguration = () => {
-    // Force save current state
-    UserStorageManager.batchUpdate({
-      categories: sections,
-      selected: selected,
-      preferences: { showHelpCard }
-    });
-    
-    // You can add additional save logic here (e.g., API call)
-    console.log('Configuration saved to session storage');
+  const handleSaveConfiguration = async () => {
+    try {
+      setIsSaving(true);
+      
+      // Force save current state to session storage
+      UserStorageManager.batchUpdate({
+        categories: sections,
+        selected: selected,
+        preferences: { showHelpCard }
+      });
+      
+      console.log('Configuration saved to session storage');
+      
+      setSaveMessage({ type: 'success', message: 'Configuration sauvegardée localement avec succès !' });
+    } catch (error) {
+      console.error('Error saving configuration:', error);
+      setSaveMessage({ type: 'error', message: 'Erreur lors de la sauvegarde locale' });
+    } finally {
+      setIsSaving(false);
+    }
+  };
+
+  const handleSaveToAirtable = async () => {
+    try {
+      setIsSaving(true);
+      
+      // Get current user email from session or context
+      const currentUser = UserStorageManager.getUser();
+      const userEmail = currentUser?.email || 'user@example.com'; // Fallback for demo
+      
+      // Save to Airtable
+      const savedCategories = await categoryService.saveUserCategories(sections, userEmail);
+      
+      // Update local storage with the returned data (including IDs)
+      setSections(savedCategories);
+      UserStorageManager.saveMailCategories(savedCategories);
+      
+      setSaveMessage({ 
+        type: 'success', 
+        message: `Configuration sauvegardée dans Airtable avec succès ! ${savedCategories.length} catégorie(s) créée(s).` 
+      });
+    } catch (error) {
+      console.error('Error saving to Airtable:', error);
+      setSaveMessage({ 
+        type: 'error', 
+        message: 'Erreur lors de la sauvegarde dans Airtable. Vérifiez votre connexion.' 
+      });
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   const handleClearAll = () => {
@@ -200,6 +249,10 @@ export default function MailAutomationForm() {
       UserStorageManager.clearMailCategories();
       UserStorageManager.saveSelectedCategory(null);
     }
+  };
+
+  const handleCloseSaveMessage = () => {
+    setSaveMessage(null);
   };
 
   // Show loading state
@@ -220,6 +273,22 @@ export default function MailAutomationForm() {
 
   return (
     <Container maxWidth="xl">
+      {/* Success/Error Messages */}
+      <Snackbar
+        open={!!saveMessage}
+        autoHideDuration={6000}
+        onClose={handleCloseSaveMessage}
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
+      >
+        <Alert 
+          onClose={handleCloseSaveMessage} 
+          severity={saveMessage?.type} 
+          sx={{ width: '100%' }}
+        >
+          {saveMessage?.message}
+        </Alert>
+      </Snackbar>
+
       {/* Header Section - RESPONSIVE */}
       <Box sx={{ 
         mb: { xs: 3, sm: 4 }, 
@@ -257,22 +326,40 @@ export default function MailAutomationForm() {
           {/* Action buttons in header */}
           <Stack direction="row" spacing={1}>
             <Button 
-                  variant="outlined" 
-                  color="primary"
-                  onClick={handleSaveConfiguration}
-                  sx={{ 
-                    flex: { xs: 1, sm: 'none' },
-                    fontSize: { xs: '0.8rem', sm: '0.875rem' }
-                  }}
-                >
-                  Sauvegarder
-                </Button>
+              variant="outlined" 
+              color="primary"
+              onClick={handleSaveConfiguration}
+              disabled={isSaving}
+              sx={{ 
+                borderRadius: 2,
+                textTransform: 'none',
+                fontSize: { xs: '0.7rem', sm: '0.8rem' }
+              }}
+            >
+              {isSaving ? <SyncIcon className="spin" /> : null}
+              Sauvegarder
+            </Button>
+            <Button 
+              variant="contained" 
+              color="primary"
+              onClick={handleSaveToAirtable}
+              disabled={isSaving || sections.length === 0}
+              startIcon={isSaving ? <SyncIcon className="spin" /> : <CloudUploadIcon />}
+              sx={{ 
+                borderRadius: 2,
+                textTransform: 'none',
+                fontSize: { xs: '0.7rem', sm: '0.8rem' }
+              }}
+            >
+              Synchroniser
+            </Button>
             {sections.length > 0 && (
               <Button 
                 variant="text" 
                 size="small"
                 color="error"
                 onClick={handleClearAll}
+                disabled={isSaving}
                 sx={{ 
                   borderRadius: 2,
                   textTransform: 'none',
@@ -305,6 +392,11 @@ export default function MailAutomationForm() {
                 color={getCompletionPercentage() === 100 ? 'success' : 'primary'}
                 icon={getCompletionPercentage() === 100 ? <CheckCircleIcon /> : undefined}
               />
+              <Typography variant="caption" color="text.disabled" sx={{
+                fontSize: { xs: '0.7rem', sm: '0.75rem' }
+              }}>
+                💾 Sauvegardé automatiquement
+              </Typography>
             </Stack>
             <LinearProgress 
               variant="determinate" 
@@ -323,7 +415,7 @@ export default function MailAutomationForm() {
       </Box>
 
       {/* Main Content - RESPONSIVE GRID */}
-      <Grid container spacing={{ xs: 2, sm: 3, md: 4 }}>
+      <Grid container spacing={{ xs: 1, sm: 2, md: 2 }}>
         {/* Left Sidebar - Categories List - RESPONSIVE */}
         <Grid item xs={12} lg={4}>
           <Card sx={{ 
@@ -351,7 +443,7 @@ export default function MailAutomationForm() {
               },
             },
           }}>
-            <CardContent sx={{ p: 0, minWidth: { xs: 'auto', lg: 460 } }}>
+            <CardContent sx={{ p: 0, minWidth: { xs: 'auto', lg: 360 } }}>
               {/* Sidebar Header - RESPONSIVE */}
               <Box sx={{ p: { xs: 2, sm: 3 }, pb: 2 }}>
                 <Stack 
@@ -378,6 +470,7 @@ export default function MailAutomationForm() {
                   variant="contained" 
                   startIcon={<AddIcon />}
                   fullWidth
+                  disabled={isSaving}
                   sx={{ 
                     mt: 2,
                     borderRadius: 2,
@@ -418,6 +511,7 @@ export default function MailAutomationForm() {
                       <ListItemButton
                         selected={selected?.parent === index && selected?.child === undefined}
                         onClick={() => setSelected({ parent: index })}
+                        disabled={isSaving}
                         sx={{ 
                           py: { xs: 1.5, sm: 2 },
                           px: { xs: 2, sm: 3 },
@@ -437,6 +531,14 @@ export default function MailAutomationForm() {
                               }}>
                                 {section.name || `Catégorie ${index + 1}`}
                               </Typography>
+                              {section.id && (
+                                <Chip 
+                                  label="Synced" 
+                                  size="small" 
+                                  color="success" 
+                                  sx={{ fontSize: '0.6rem', height: 16 }}
+                                />
+                              )}
                               {!isSectionComplete(section) && (
                                 <WarningIcon 
                                   sx={{ 
@@ -459,6 +561,7 @@ export default function MailAutomationForm() {
                             e.stopPropagation();
                             deleteSection(index);
                           }}
+                          disabled={isSaving}
                           sx={{ opacity: 0.7, '&:hover': { opacity: 1, color: 'error.main' } }}
                         >
                           <DeleteIcon fontSize="small" />
@@ -471,6 +574,7 @@ export default function MailAutomationForm() {
                           key={`sub-${index}-${subIndex}`}
                           selected={selected?.parent === index && selected?.child === subIndex}
                           onClick={() => setSelected({ parent: index, child: subIndex })}
+                          disabled={isSaving}
                           sx={{ 
                             pl: { xs: 4, sm: 5 },
                             py: { xs: 1, sm: 1.5 },
@@ -512,6 +616,14 @@ export default function MailAutomationForm() {
                                 >
                                   ↳ {sub.name || `Sous-catégorie ${subIndex + 1}`}
                                 </Typography>
+                                {sub.id && (
+                                  <Chip 
+                                    label="Synced" 
+                                    size="small" 
+                                    color="success" 
+                                    sx={{ fontSize: '0.5rem', height: 14 }}
+                                  />
+                                )}
                                 {!isSectionComplete(sub) && (
                                   <WarningIcon 
                                     sx={{ 
@@ -546,6 +658,7 @@ export default function MailAutomationForm() {
                               e.stopPropagation();
                               deleteSection(index, subIndex);
                             }}
+                            disabled={isSaving}
                             sx={{ opacity: 0.7, '&:hover': { opacity: 1, color: 'error.main' } }}
                           >
                             <DeleteIcon fontSize="small" />
@@ -609,6 +722,8 @@ export default function MailAutomationForm() {
                       • Les sous-catégories permettent une organisation plus fine
                       <br />
                       • Vos données sont sauvegardées automatiquement dans votre navigateur
+                      <br />
+                      • Cliquez sur "Synchroniser" pour sauvegarder dans Airtable
                     </Typography>
                   </Box>
                 </Stack>
@@ -671,12 +786,22 @@ export default function MailAutomationForm() {
                     <Stack direction="row" alignItems="center" spacing={2}>
                       <CategoryIcon color="primary" />
                       <Box>
-                        <Typography variant="h6" sx={{ 
-                          fontWeight: 600,
-                          fontSize: { xs: '1.1rem', sm: '1.25rem' }
-                        }}>
-                          {getCurrentSection()?.name || 'Nouvelle catégorie'}
-                        </Typography>
+                        <Stack direction="row" alignItems="center" spacing={1}>
+                          <Typography variant="h6" sx={{ 
+                            fontWeight: 600,
+                            fontSize: { xs: '1.1rem', sm: '1.25rem' }
+                          }}>
+                            {getCurrentSection()?.name || 'Nouvelle catégorie'}
+                          </Typography>
+                          {getCurrentSection()?.id && (
+                            <Chip 
+                              label="Synchronisé" 
+                              size="small" 
+                              color="success" 
+                              sx={{ fontSize: '0.7rem' }}
+                            />
+                          )}
+                        </Stack>
                         <Typography variant="caption" color="text.secondary">
                           {selected?.child !== undefined ? 'Sous-catégorie' : 'Catégorie principale'}
                         </Typography>
@@ -739,7 +864,7 @@ export default function MailAutomationForm() {
                   <Typography variant="body2" color="text.secondary" sx={{
                     fontSize: { xs: '0.8rem', sm: '0.875rem' }
                   }}>
-                    {getCompletionPercentage()}% complété
+                    {getCompletionPercentage()}% complété • 💾 Sauvegardé automatiquement
                   </Typography>
                 </Box>
               </Stack>
@@ -752,6 +877,7 @@ export default function MailAutomationForm() {
                   variant="outlined" 
                   color="primary"
                   onClick={handleSaveConfiguration}
+                  disabled={isSaving}
                   sx={{ 
                     flex: { xs: 1, sm: 'none' },
                     fontSize: { xs: '0.8rem', sm: '0.875rem' }
@@ -824,6 +950,7 @@ export default function MailAutomationForm() {
                   variant="outlined" 
                   color="primary"
                   onClick={handleSaveConfiguration}
+                  disabled={isSaving}
                   sx={{ 
                     flex: { xs: 1, sm: 'none' },
                     fontSize: { xs: '0.8rem', sm: '0.875rem' }
@@ -834,7 +961,9 @@ export default function MailAutomationForm() {
                 <Button 
                   variant="contained" 
                   color="success"
-                  startIcon={<CheckCircleIcon />}
+                  startIcon={<CloudUploadIcon />}
+                  onClick={handleSaveToAirtable}
+                  disabled={isSaving}
                   sx={{ 
                     px: { xs: 2, sm: 3 },
                     borderRadius: 2,
@@ -843,7 +972,7 @@ export default function MailAutomationForm() {
                     fontSize: { xs: '0.8rem', sm: '0.875rem' }
                   }}
                 >
-                  Activer
+                  Synchroniser
                 </Button>
               </Stack>
             </Stack>
@@ -853,6 +982,19 @@ export default function MailAutomationForm() {
 
       {/* Add spacing below the sticky card */}
       <Box sx={{ height: 20 }} />
+      
+      {/* CSS for spinning animation */}
+      <style>
+        {`
+          @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+          }
+          .spin {
+            animation: spin 1s linear infinite;
+          }
+        `}
+      </style>
     </Container>
   );
 }
