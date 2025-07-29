@@ -305,11 +305,6 @@ export default function MailAutomationForm() {
                 color={getCompletionPercentage() === 100 ? 'success' : 'primary'}
                 icon={getCompletionPercentage() === 100 ? <CheckCircleIcon /> : undefined}
               />
-              <Typography variant="caption" color="text.disabled" sx={{
-                fontSize: { xs: '0.7rem', sm: '0.75rem' }
-              }}>
-                💾 Sauvegardé automatiquement
-              </Typography>
             </Stack>
             <LinearProgress 
               variant="determinate" 
@@ -744,7 +739,7 @@ export default function MailAutomationForm() {
                   <Typography variant="body2" color="text.secondary" sx={{
                     fontSize: { xs: '0.8rem', sm: '0.875rem' }
                   }}>
-                    {getCompletionPercentage()}% complété • 💾 Sauvegardé automatiquement
+                    {getCompletionPercentage()}% complété
                   </Typography>
                 </Box>
               </Stack>
