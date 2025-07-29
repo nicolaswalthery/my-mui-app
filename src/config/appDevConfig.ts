@@ -8,8 +8,7 @@ export const appDevelopementConfig = {
   starcmdAirtableEmailExempleTableName: import.meta.env.VITE_STARCMD_AIRTABLE_EMAIL_EXAMPLE_TABLE_NAME,
   starcmdAirtableClientTableId: import.meta.env.VITE_STARCMD_AIRTABLE_CLIENT_TABLE_ID,
   starcmdAirtableCategoriesTableId: import.meta.env.VITE_STARCMD_AIRTABLE_CATEGORIES_TABLE_ID,
-  starcmdAirtableEmailExempleTableId: import.meta.env.VITE_STARCMD_AIRTABLE_EMAIL_EXAMPLE_TABLE_ID,
-  sendGridDevApiKey: import.meta.env.VITE_SENDGRID_API_KEY,
+  starcmdAirtableEmailExempleTableId: import.meta.env.VITE_STARCMD_AIRTABLE_EMAIL_EXAMPLE_TABLE_ID
 }
 
 export type AppDevConfig = typeof appDevelopementConfig;
