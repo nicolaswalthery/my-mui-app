@@ -17,6 +17,7 @@ const translations: Record<SupportedLangEnum, Record<TranslationKeyEnum, string>
     [TranslationKeyEnum.Loading]: 'Loading...',
     [TranslationKeyEnum.Error]: 'Error',
     [TranslationKeyEnum.Success]: 'Success',
+    [TranslationKeyEnum.Menu]: 'Menu',
     
     // Navigation
     [TranslationKeyEnum.Home]: 'Home',
@@ -176,6 +177,7 @@ const translations: Record<SupportedLangEnum, Record<TranslationKeyEnum, string>
     [TranslationKeyEnum.Loading]: 'Chargement...',
     [TranslationKeyEnum.Error]: 'Erreur',
     [TranslationKeyEnum.Success]: 'Succès',
+    [TranslationKeyEnum.Menu]: 'Menu',
     
     // Navigation
     [TranslationKeyEnum.Home]: 'Accueil',
@@ -335,6 +337,7 @@ const translations: Record<SupportedLangEnum, Record<TranslationKeyEnum, string>
     [TranslationKeyEnum.Loading]: 'Cargando...',
     [TranslationKeyEnum.Error]: 'Error',
     [TranslationKeyEnum.Success]: 'Éxito',
+    [TranslationKeyEnum.Menu]: 'Menú',
     
     // Navigation
     [TranslationKeyEnum.Home]: 'Inicio',
@@ -494,7 +497,8 @@ const translations: Record<SupportedLangEnum, Record<TranslationKeyEnum, string>
     [TranslationKeyEnum.Loading]: 'Lädt...',
     [TranslationKeyEnum.Error]: 'Fehler',
     [TranslationKeyEnum.Success]: 'Erfolg',
-    
+    [TranslationKeyEnum.Menu]: 'Menü',
+
     // Navigation
     [TranslationKeyEnum.Home]: 'Startseite',
     [TranslationKeyEnum.Dashboard]: 'Dashboard',
