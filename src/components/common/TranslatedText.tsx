@@ -1,6 +1,7 @@
 // src/components/common/TranslatedText.tsx - Component for simple translations
 import React from 'react';
-import { Typography, TypographyProps } from '@mui/material';
+import { Typography } from '@mui/material';
+import type { TypographyProps } from '@mui/material';
 import { TranslationKeyEnum } from '../../enums/TranslationKeyEnum';
 import { useTranslation } from '../../hooks/useTranslation';
 
@@ -56,7 +57,7 @@ export const i18nHelpers = {
 
 // Example usage component showing various features
 const I18nExampleUsage: React.FC = () => {
-  const { t, tp, formatDate, formatNumber, formatCurrency, isRTL } = useTranslation();
+  const { t, formatDate, formatNumber, formatCurrency, isRTL } = useTranslation();
 
   const exampleDate = new Date();
   const exampleNumber = 1234.56;

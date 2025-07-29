@@ -8,7 +8,6 @@ import {
   ListItemButton,
   ListItemIcon,
   ListItemText,
-  Typography,
   Tooltip,
   IconButton,
 } from '@mui/material';
@@ -36,7 +35,7 @@ interface SidebarProps {
   onItemClick?: (path: string) => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ menuItems, appTitle, onItemClick }) => {
+const Sidebar: React.FC<SidebarProps> = ({ onItemClick }) => {
   const { t } = useI18n();
   const { setThemeMode } = useThemeMode();
   const theme = useTheme();

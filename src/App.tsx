@@ -16,7 +16,6 @@ import {
 
 import Sidebar from './components/Sidebar';
 import CustomAppBar from './components/CustomAppBar';
-import FooterProps from './components/Footer';
 
 const drawerWidth = 240;
 
