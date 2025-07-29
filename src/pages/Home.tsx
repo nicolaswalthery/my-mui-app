@@ -128,7 +128,7 @@ const Home: React.FC = () => {
 
       <Grid container spacing={4}>
         {features.map((feature, index) => (
-          <Grid item xs={12} md={4} key={index}>
+          <Grid key={index}>
             <Card 
               sx={{ 
                 height: '100%',

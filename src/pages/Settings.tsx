@@ -50,7 +50,7 @@ const Settings: React.FC = () => {
       )}
 
       <Grid container spacing={3}>
-        <Grid item xs={12} md={6}>
+        <Grid>
           <Card>
             <CardContent>
               <Typography variant="h6" gutterBottom>
@@ -81,7 +81,7 @@ const Settings: React.FC = () => {
           </Card>
         </Grid>
 
-        <Grid item xs={12} md={6}>
+        <Grid>
           <Card>
             <CardContent>
               <Typography variant="h6" gutterBottom>

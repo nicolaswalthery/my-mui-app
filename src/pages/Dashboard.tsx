@@ -77,7 +77,7 @@ const Dashboard: React.FC = () => {
 
       <Grid container spacing={3}>
         {stats.map((stat, index) => (
-          <Grid item xs={12} sm={6} md={3} key={index}>
+          <Grid key={index}>
             <Card>
               <CardContent>
                 <Stack direction="row" alignItems="center" spacing={2}>
