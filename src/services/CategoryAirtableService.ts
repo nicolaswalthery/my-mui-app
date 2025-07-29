@@ -1,9 +1,10 @@
 // src/services/CategoryAirtableService.ts - Service for categories with recursive relationships
-import axiosInstance from '../services/starcmdAirtableAxiosInstance';
+import axiosInstance from './StarcmdAirtableAxiosInstance';
 import { configManager } from '../config/configManager';
 import { ApiErrorEnum } from '../enums/ApiErrorEnum';
 import { ApiErrorHandler } from '../helpers/ApiErrorHandler';
 import { EmailExampleAirtableService } from './EmailExampleAirtableService';
+import { ClientAirtableService } from './ClientAirtableService'
 import type { 
   CategorySection,
   AirtableCategoryFields,
@@ -462,7 +463,8 @@ export class CategoryAirtableService {
       // First, get the user's client ID (you'll need to implement this based on your user system)
       // For now, we'll use email as a simple identifier
       const clientId = await this.getOrCreateClientId(userEmail);
-      
+      console.log("Client Id : " + clientId);
+
       // Delete existing categories for this client
       const existingCategories = await this.getCategoriesByClient(clientId);
       for (const category of existingCategories) {
@@ -481,15 +483,5 @@ export class CategoryAirtableService {
       }
       throw ApiErrorHandler.createFromHttpError(error);
     }
-  }
-
-  /**
-   * Get or create client ID for a user
-   * This is a placeholder - implement based on your user management system
-   */
-  private async getOrCreateClientId(userEmail: string): Promise<string> {
-    // This should integrate with your ClientAirtableService
-    // For now, return a placeholder
-    return "placeholder_client_id";
   }
 }
