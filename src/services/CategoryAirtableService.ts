@@ -1,5 +1,5 @@
 // src/services/CategoryAirtableService.ts - Service for categories with recursive relationships
-import axiosInstance from './StarcmdAirtableAxiosInstance';
+import axiosInstance from './starcmdAirtableAxiosInstance';
 import { configManager } from '../config/configManager';
 import { ApiErrorEnum } from '../enums/ApiErrorEnum';
 import { ApiErrorHandler } from '../helpers/ApiErrorHandler';
@@ -282,13 +282,14 @@ public async getCategoriesByClient(clientId: string): Promise<CategorySection[]>
         const category = this.mapAirtableFieldsToCategory(record.fields, record);
         
         // Load email examples if they exist
-        if (record.fields["Exemples d'e-mails"]?.length > 0) {
-          try {
-            category.examples = await this.emailExampleService.getEmailExamplesByCategory(record.id!);
-          } catch {
-            category.examples = [];
-          }
+      if (record.fields["Exemples d'e-mails"]?.length) {
+        try {
+          category.examples = await this.emailExampleService.getEmailExamplesByCategory(record.id!);
+        } catch (error) {
+          console.error("Error loading email examples:", error);
+          category.examples = []; // Ensure fallback value
         }
+      }
         
         categories.push(category);
       }

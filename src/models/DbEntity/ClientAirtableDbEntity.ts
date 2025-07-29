@@ -1,5 +1,5 @@
 // src/entities/ClientAirtableDbEntity.ts - Secure version without storing record IDs client-side
-import axiosInstance from '../../services/StarcmdAirtableAxiosInstance';
+import axiosInstance from '../../services/starcmdAirtableAxiosInstance';
 import { configManager } from '../../config/configManager';
 import { ApiErrorEnum } from '../../enums/ApiErrorEnum';
 import { ApiErrorHandler } from '../../helpers/ApiErrorHandler';

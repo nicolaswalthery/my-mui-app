@@ -1,5 +1,5 @@
 import React from 'react';
-import FakeClientsDataTableModel from '../mocks/FakeClientData.ts';
+import FakeClientsDataTableModel from '../Mocks/FakeClientData.ts';
 import { TranslationKeyEnum } from '../enums/TranslationKeyEnum';
 import { useTranslation } from '../hooks/useTranslation';
 import {
