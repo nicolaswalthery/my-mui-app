@@ -260,4 +260,23 @@ export class ClientAirtableService {
       throw ApiErrorHandler.createFromHttpError(error);
     }
   }
+
+    /**
+   * Get a client's Airtable record ID by email
+   * @param email - The email address to search for
+   * @returns The Airtable record ID if found, null otherwise
+   */
+  public async getClientIdByEmail(email: string): Promise<string | null> {
+    try {
+      const record = await this.findRecordByEmail(email);
+      
+      if (record && record.id) {
+        return record.id;
+      }
+      return null;
+    } catch (error: any) {
+      console.error('Error getting client ID by email:', error);
+      throw ApiErrorHandler.createFromHttpError(error);
+    }
+  }
 }

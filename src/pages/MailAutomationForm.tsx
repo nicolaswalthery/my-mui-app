@@ -39,6 +39,7 @@ import CategoryEditor from '../components/CategoryEditor';
 import type { CategorySection } from '../models/CategoryData';
 import { UserStorageManager } from '../helpers/userStorageManager';
 import { CategoryAirtableService } from '../services/CategoryAirtableService';
+import { ClientAirtableService } from '../services/ClientAirtableService';
 
 export default function MailAutomationForm() {
   const [sections, setSections] = useState<CategorySection[]>([]);
@@ -49,7 +50,8 @@ export default function MailAutomationForm() {
   const [saveMessage, setSaveMessage] = useState<{type: 'success' | 'error', message: string} | null>(null);
   
   // Airtable service
-  const categoryService = CategoryAirtableService.getInstance();
+  const categoryServices = CategoryAirtableService.getInstance();
+  const clientServices = ClientAirtableService.getInstance();
 
   // Initialize component with data from session storage
   useEffect(() => {
@@ -218,10 +220,12 @@ export default function MailAutomationForm() {
       
       // Get current user email from session or context
       const currentUser = UserStorageManager.getUser();
-      const userEmail = currentUser?.email || 'user@example.com'; // Fallback for demo
+      const userEmail = currentUser!.email;
       
+      const clientId = await clientServices.getClientIdByEmail(userEmail!);
+      console.log("client id : "+clientId);
       // Save to Airtable
-      const savedCategories = await categoryService.saveUserCategories(sections, userEmail);
+      const savedCategories = await categoryServices.saveUserCategories(sections, clientId!);
       
       // Update local storage with the returned data (including IDs)
       setSections(savedCategories);

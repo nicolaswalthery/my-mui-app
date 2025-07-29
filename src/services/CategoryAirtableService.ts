@@ -4,7 +4,6 @@ import { configManager } from '../config/configManager';
 import { ApiErrorEnum } from '../enums/ApiErrorEnum';
 import { ApiErrorHandler } from '../helpers/ApiErrorHandler';
 import { EmailExampleAirtableService } from './EmailExampleAirtableService';
-import { ClientAirtableService } from './ClientAirtableService'
 import type { 
   CategorySection,
   AirtableCategoryFields,
@@ -92,7 +91,7 @@ export class CategoryAirtableService {
       // First create email examples
       let emailExampleIds: string[] = [];
       if (category.examples && category.examples.length > 0) {
-        emailExampleIds = await this.emailExampleService.createEmailExamples(category.examples);
+        emailExampleIds = await this.emailExampleService.createEmailExamples(category.examples, category.id!);
       }
 
       // Create the category record
@@ -172,6 +171,7 @@ export class CategoryAirtableService {
    */
   public async createCategoriesWithHierarchy(categories: CategorySection[], clientId?: string): Promise<CategorySection[]> {
     try {
+      console.log("createCategoriesWithHierarchy");
       const createdCategories: { [tempId: string]: string } = {}; // Map temp IDs to real IDs
       const categoryMap: { [realId: string]: CategorySection } = {};
       const results: CategorySection[] = [];
@@ -455,26 +455,22 @@ export class CategoryAirtableService {
   /**
    * Save all categories for a user (creates or updates based on existing data)
    */
-  public async saveUserCategories(categories: CategorySection[], userEmail: string): Promise<CategorySection[]> {
+  public async saveUserCategories(categories: CategorySection[], userId: string): Promise<CategorySection[]> {
     try {
-      // For simplicity, we'll delete existing categories and create new ones
-      // In a production system, you might want more sophisticated merging logic
-      
-      // First, get the user's client ID (you'll need to implement this based on your user system)
-      // For now, we'll use email as a simple identifier
-      const clientId = await this.getOrCreateClientId(userEmail);
-      console.log("Client Id : " + clientId);
-
       // Delete existing categories for this client
-      const existingCategories = await this.getCategoriesByClient(clientId);
+      const existingCategories = await this.getCategoriesByClient(userId);
+      
+      for(const test of existingCategories)
+        console.log("existing cat : "+test);
       for (const category of existingCategories) {
         if (category.id) {
+          console.log("delete : "+category.id);
           await this.deleteCategory(category.id);
         }
       }
       
       // Create new categories
-      return await this.createCategoriesWithHierarchy(categories, clientId);
+      return await this.createCategoriesWithHierarchy(categories, userId);
     } catch (error: any) {
       console.error('Error saving user categories:', error);
       
