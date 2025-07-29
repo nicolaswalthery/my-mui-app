@@ -79,67 +79,84 @@ export class CategoryAirtableService {
     };
   }
 
-  /**
-   * Create a single category without subcategories
-   */
-  private async createSingleCategory(
-    category: CategorySection, 
-    parentCategoryId?: string,
-    clientId?: string
-  ): Promise<string> {
-    try {
-      // First create email examples
-      let emailExampleIds: string[] = [];
+/**
+ * Create a single category without subcategories
+ */
+private async createSingleCategory(
+  category: CategorySection, 
+  parentCategoryId?: string,
+  clientId?: string
+): Promise<string> {
+  try {
+    console.log("// First create the category record");
+    
+    // Create the category record WITHOUT email examples first
+    const airtableFields = this.mapCategoryToAirtableFields(
+      category, 
+      undefined, // No email examples yet
+      parentCategoryId,
+      undefined, // subcategoryIds will be set later
+      clientId
+    );
+
+    const requestData: AirtableCreateRequest<AirtableCategoryFields> = {
+      records: [{ fields: airtableFields }]
+    };
+
+    console.log("axiosInstance.post<AirtableResponse<AirtableCategoryFields>>");
+    const response = await axiosInstance.post<AirtableResponse<AirtableCategoryFields>>(
+      `/${this.tableName}`,
+      requestData
+    );
+
+    if (response.data.records && response.data.records.length > 0) {
+      const categoryId = response.data.records[0].id!;
+      console.log("Category created with ID:", categoryId);
+      
+      // Now create email examples with the category ID
       if (category.examples && category.examples.length > 0) {
-        emailExampleIds = await this.emailExampleService.createEmailExamples(category.examples, category.id!);
-      }
-
-      // Create the category record
-      const airtableFields = this.mapCategoryToAirtableFields(
-        category, 
-        emailExampleIds, 
-        parentCategoryId,
-        undefined, // subcategoryIds will be set later
-        clientId
-      );
-
-      const requestData: AirtableCreateRequest<AirtableCategoryFields> = {
-        records: [{ fields: airtableFields }]
-      };
-
-      const response = await axiosInstance.post<AirtableResponse<AirtableCategoryFields>>(
-        `/${this.tableName}`,
-        requestData
-      );
-
-      if (response.data.records && response.data.records.length > 0) {
-        const categoryId = response.data.records[0].id!;
+        console.log("// Now create email examples linked to the category");
+        const emailExampleIds = await this.emailExampleService.createEmailExamples(
+          category.examples, 
+          categoryId // Use the actual category ID
+        );
         
-        // Update email examples to link back to category
+        // Update the category to include the email example IDs
         if (emailExampleIds.length > 0) {
-          await this.emailExampleService.updateEmailExamples(
-            emailExampleIds, 
-            category.examples, 
-            categoryId
+          console.log("// Update category to link to email examples");
+          const updateData: AirtableUpdateRequest<Partial<AirtableCategoryFields>> = {
+            records: [{
+              id: categoryId,
+              fields: {
+                "Exemples d'e-mails": emailExampleIds
+              }
+            }]
+          };
+          
+          await axiosInstance.patch<AirtableResponse<AirtableCategoryFields>>(
+            `/${this.tableName}`,
+            updateData
           );
         }
-
-        return categoryId;
-      } else {
-        throw ApiErrorHandler.createFromBusinessLogicError(
-          ApiErrorEnum.PROFILE_CREATE_FAILED,
-          "No category created"
-        );
       }
-    } catch (error: any) {
-      console.error('Error creating single category:', error);
       
-      if (error && typeof error === 'object' && 'code' in error && Object.values(ApiErrorEnum).includes(error.code as ApiErrorEnum)) {
-        throw error;
-      }
-      throw ApiErrorHandler.createFromHttpError(error);
+      console.log("return categoryId;");
+      return categoryId;
+    } else {
+      throw ApiErrorHandler.createFromBusinessLogicError(
+        ApiErrorEnum.PROFILE_CREATE_FAILED,
+        "No category created"
+      );
     }
+  } catch (error: any) {
+    console.error('Error creating single category:', error);
+    
+    if (error && typeof error === 'object' && 'code' in error && Object.values(ApiErrorEnum).includes(error.code as ApiErrorEnum)) {
+      throw error;
+    }
+    throw ApiErrorHandler.createFromHttpError(error);
   }
+}
 
   /**
    * Flatten category hierarchy for processing
