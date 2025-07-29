@@ -58,7 +58,7 @@ export const I18nProvider: React.FC<I18nProviderProps> = ({
   };
 
   // Check if current language is RTL (Right-to-Left)
-  const isRTL = currentLanguage === 'ar' || currentLanguage === 'he'; // Add RTL languages as needed
+  const isRTL = false; // currentLanguage === 'ar' || currentLanguage === 'he'; // Add RTL languages as needed
 
   const value: I18nContextType = {
     currentLanguage,

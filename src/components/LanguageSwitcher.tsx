@@ -9,7 +9,7 @@ import {
   Typography,
 } from '@mui/material';
 import { useI18n } from '../contexts/i18nContext';
-import { SupportedLangEnum, TranslationKeyEnum, LanguageDisplayNames } from '../enums/TranslationKeyEnum';
+import { SupportedLangEnum, TranslationKeyEnum } from '../enums/TranslationKeyEnum';
 import { getAvailableLanguages } from '../config/i18n';
 
 interface LanguageSwitcherProps {

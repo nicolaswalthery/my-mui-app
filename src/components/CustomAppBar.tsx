@@ -26,9 +26,9 @@ const CustomAppBar: React.FC<CustomAppBarProps> = ({
   
   // Get user initials for avatar
   const user = UserStorageManager.getUser();
-  const userInitials = user 
-    ? `${user.firstName.charAt(0)}${user.lastName.charAt(0)}` 
-    : 'U';
+  const userInitials = user?.firstName?.charAt(0) && user?.lastName?.charAt(0)
+  ? `${user.firstName.charAt(0)}${user.lastName.charAt(0)}`
+  : user?.firstName?.charAt(0) || user?.lastName?.charAt(0) || 'U';
 
   return (
     <AppBar

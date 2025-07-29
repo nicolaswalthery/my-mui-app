@@ -18,7 +18,6 @@ import HomePage from '../pages/Home';
 import SettingsPage from '../pages/Settings';
 import AuthPage from '../pages/Auth';
 import ProfilePage from '../pages/Profile';
-import KanbanBoard from '../pages/KanbanBoard';
 import EditProfile from '../pages/EditProfile';
 import MailAutomationForm from '../pages/MailAutomationForm';
 
