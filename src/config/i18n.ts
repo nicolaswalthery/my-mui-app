@@ -4,9 +4,12 @@ import { SupportedLangEnum, TranslationKeyEnum } from '../enums/TranslationKeyEn
 // Define the type for a complete translation object
 type TranslationObject = Record<TranslationKeyEnum, string>;
 
+// Type assertion to ensure all keys are present
+const createTranslation = (translation: TranslationObject): TranslationObject => translation;
+
 // Define the translations with explicit typing
 const translations: Record<SupportedLangEnum, TranslationObject> = {
-  [SupportedLangEnum.English]: {
+  [SupportedLangEnum.English]: createTranslation({
     // Common UI
     [TranslationKeyEnum.Welcome]: 'Welcome',
     [TranslationKeyEnum.Logout]: 'Log out',
@@ -161,12 +164,40 @@ const translations: Record<SupportedLangEnum, TranslationObject> = {
     
     // Mail Automation Service
     [TranslationKeyEnum.MailAutoForm]: 'Mail Automation Form',
+    
+    // Email Categorization Guide
+    [TranslationKeyEnum.EmailCategorizationGuide]: 'Email Categorization AI Guide',
+    [TranslationKeyEnum.HowToStructureCategories]: 'How to structure your categories for optimal AI processing',
+    [TranslationKeyEnum.GPTModelsCanRead]: 'GPT models can automatically read and categorize your emails. Success depends on clear instructions and precise category definitions.',
+    [TranslationKeyEnum.SixBestPractices]: 'The 6 Essential Best Practices',
+    [TranslationKeyEnum.ClearInstructions]: 'Provide clear instructions',
+    [TranslationKeyEnum.ClearInstructionsDesc]: 'Specify the task, category list, and require structured output from the start',
+    [TranslationKeyEnum.StrictOutputFormat]: 'Strict output format',
+    [TranslationKeyEnum.StrictOutputFormatDesc]: 'Use JSON for easy automated integration. OpenAI API allows enforcing JSON schema',
+    [TranslationKeyEnum.DefineWithPrecision]: 'Define with precision',
+    [TranslationKeyEnum.DefineWithPrecisionDesc]: 'Each category must have a clear description to avoid ambiguities',
+    [TranslationKeyEnum.LimitOutput]: 'Limit output',
+    [TranslationKeyEnum.LimitOutputDesc]: 'Avoid superfluous text. Request only the label and brief justification',
+    [TranslationKeyEnum.UseExamples]: 'Use examples',
+    [TranslationKeyEnum.UseExamplesDesc]: 'Examples (few-shot) improve accuracy, especially for rare categories',
+    [TranslationKeyEnum.MeasureAndTest]: 'Measure and test',
+    [TranslationKeyEnum.MeasureAndTestDesc]: 'Evaluate with metrics (accuracy, F1) on manually labeled test set',
+    [TranslationKeyEnum.WellDefinedCategoriesExample]: 'Example of Well-Defined Categories',
+    [TranslationKeyEnum.ThreePromptApproaches]: 'Three Recommended Prompt Approaches',
+    [TranslationKeyEnum.SimpleAndRobust]: 'Simple and robust',
+    [TranslationKeyEnum.ImprovedAccuracy]: 'Improved accuracy',
+    [TranslationKeyEnum.DeepAnalysis]: 'In-depth analysis',
+    [TranslationKeyEnum.ImplementationTips]: 'Implementation Tips',
+    [TranslationKeyEnum.ReadyToAutomate]: 'Ready to automate your email sorting?',
+    [TranslationKeyEnum.StartWithPrompt1]: 'Start with Prompt 1 for a simple and robust implementation',
+    [TranslationKeyEnum.ConfigureAutomation]: 'Configure Automation',
+    [TranslationKeyEnum.ViewDashboard]: 'View Dashboard',
 
     // Footer
     [TranslationKeyEnum.FooterText]: 'My MUI App',
-  },
+  }),
   
-  [SupportedLangEnum.French]: {
+  [SupportedLangEnum.French]: createTranslation({
     // Common UI
     [TranslationKeyEnum.Welcome]: 'Bienvenue',
     [TranslationKeyEnum.Logout]: 'Déconnexion',
@@ -321,12 +352,40 @@ const translations: Record<SupportedLangEnum, TranslationObject> = {
     
     // Mail Automation Service
     [TranslationKeyEnum.MailAutoForm]: 'Formulaire d\'automatisation des mails',
+    
+    // Email Categorization Guide
+    [TranslationKeyEnum.EmailCategorizationGuide]: 'Guide de Catégorisation d\'E-mails par IA',
+    [TranslationKeyEnum.HowToStructureCategories]: 'Comment structurer vos catégories pour un traitement optimal par l\'intelligence artificielle',
+    [TranslationKeyEnum.GPTModelsCanRead]: 'Les modèles GPT peuvent lire et catégoriser automatiquement vos e-mails. La clé du succès réside dans la clarté de vos instructions et la définition précise de vos catégories.',
+    [TranslationKeyEnum.SixBestPractices]: 'Les 6 Bonnes Pratiques Essentielles',
+    [TranslationKeyEnum.ClearInstructions]: 'Donner des instructions claires',
+    [TranslationKeyEnum.ClearInstructionsDesc]: 'Précisez la tâche, la liste des catégories et exigez un format de sortie structuré dès le début',
+    [TranslationKeyEnum.StrictOutputFormat]: 'Format de sortie strict',
+    [TranslationKeyEnum.StrictOutputFormatDesc]: 'Utilisez JSON pour faciliter l\'intégration automatisée. L\'API OpenAI permet d\'imposer un schéma JSON',
+    [TranslationKeyEnum.DefineWithPrecision]: 'Définir avec précision',
+    [TranslationKeyEnum.DefineWithPrecisionDesc]: 'Chaque catégorie doit avoir une description claire pour éviter les ambiguïtés',
+    [TranslationKeyEnum.LimitOutput]: 'Limiter la sortie',
+    [TranslationKeyEnum.LimitOutputDesc]: 'Évitez les textes superflus. Demandez uniquement l\'étiquette et une brève justification',
+    [TranslationKeyEnum.UseExamples]: 'Utiliser des exemples',
+    [TranslationKeyEnum.UseExamplesDesc]: 'Les exemples (few-shot) améliorent la précision, surtout pour les catégories rares',
+    [TranslationKeyEnum.MeasureAndTest]: 'Mesurer et tester',
+    [TranslationKeyEnum.MeasureAndTestDesc]: 'Évaluez avec des métriques (précision, F1) sur un jeu de test étiqueté manuellement',
+    [TranslationKeyEnum.WellDefinedCategoriesExample]: 'Exemple de Catégories Bien Définies',
+    [TranslationKeyEnum.ThreePromptApproaches]: 'Trois Approches de Prompts Recommandées',
+    [TranslationKeyEnum.SimpleAndRobust]: 'Simple et robuste',
+    [TranslationKeyEnum.ImprovedAccuracy]: 'Précision améliorée',
+    [TranslationKeyEnum.DeepAnalysis]: 'Analyse approfondie',
+    [TranslationKeyEnum.ImplementationTips]: 'Conseils d\'Implémentation',
+    [TranslationKeyEnum.ReadyToAutomate]: 'Prêt à automatiser votre tri d\'e-mails ?',
+    [TranslationKeyEnum.StartWithPrompt1]: 'Commencez avec le Prompt 1 pour une implémentation simple et robuste',
+    [TranslationKeyEnum.ConfigureAutomation]: 'Configurer l\'Automatisation',
+    [TranslationKeyEnum.ViewDashboard]: 'Voir le Dashboard',
 
     // Footer
     [TranslationKeyEnum.FooterText]: 'Mon App MUI',
-  },
+  }),
   
-  [SupportedLangEnum.Spanish]: {
+  [SupportedLangEnum.Spanish]: createTranslation({
     // Common UI
     [TranslationKeyEnum.Welcome]: 'Bienvenido',
     [TranslationKeyEnum.Logout]: 'Cerrar sesión',
@@ -481,12 +540,40 @@ const translations: Record<SupportedLangEnum, TranslationObject> = {
     
     // Mail Automation Service
     [TranslationKeyEnum.MailAutoForm]: 'Formulario de automatización de correos',
+    
+    // Email Categorization Guide
+    [TranslationKeyEnum.EmailCategorizationGuide]: 'Guía de Categorización de Correos por IA',
+    [TranslationKeyEnum.HowToStructureCategories]: 'Cómo estructurar tus categorías para un procesamiento óptimo por IA',
+    [TranslationKeyEnum.GPTModelsCanRead]: 'Los modelos GPT pueden leer y categorizar automáticamente tus correos. El éxito depende de instrucciones claras y definiciones precisas de categorías.',
+    [TranslationKeyEnum.SixBestPractices]: 'Las 6 Mejores Prácticas Esenciales',
+    [TranslationKeyEnum.ClearInstructions]: 'Proporcionar instrucciones claras',
+    [TranslationKeyEnum.ClearInstructionsDesc]: 'Especifica la tarea, lista de categorías y requiere salida estructurada desde el inicio',
+    [TranslationKeyEnum.StrictOutputFormat]: 'Formato de salida estricto',
+    [TranslationKeyEnum.StrictOutputFormatDesc]: 'Usa JSON para integración automatizada fácil. La API de OpenAI permite forzar esquema JSON',
+    [TranslationKeyEnum.DefineWithPrecision]: 'Definir con precisión',
+    [TranslationKeyEnum.DefineWithPrecisionDesc]: 'Cada categoría debe tener una descripción clara para evitar ambigüedades',
+    [TranslationKeyEnum.LimitOutput]: 'Limitar salida',
+    [TranslationKeyEnum.LimitOutputDesc]: 'Evita texto superfluo. Solicita solo la etiqueta y breve justificación',
+    [TranslationKeyEnum.UseExamples]: 'Usar ejemplos',
+    [TranslationKeyEnum.UseExamplesDesc]: 'Los ejemplos (few-shot) mejoran la precisión, especialmente para categorías raras',
+    [TranslationKeyEnum.MeasureAndTest]: 'Medir y probar',
+    [TranslationKeyEnum.MeasureAndTestDesc]: 'Evalúa con métricas (precisión, F1) en conjunto de prueba etiquetado manualmente',
+    [TranslationKeyEnum.WellDefinedCategoriesExample]: 'Ejemplo de Categorías Bien Definidas',
+    [TranslationKeyEnum.ThreePromptApproaches]: 'Tres Enfoques de Prompts Recomendados',
+    [TranslationKeyEnum.SimpleAndRobust]: 'Simple y robusto',
+    [TranslationKeyEnum.ImprovedAccuracy]: 'Precisión mejorada',
+    [TranslationKeyEnum.DeepAnalysis]: 'Análisis profundo',
+    [TranslationKeyEnum.ImplementationTips]: 'Consejos de Implementación',
+    [TranslationKeyEnum.ReadyToAutomate]: '¿Listo para automatizar tu clasificación de correos?',
+    [TranslationKeyEnum.StartWithPrompt1]: 'Comienza con el Prompt 1 para una implementación simple y robusta',
+    [TranslationKeyEnum.ConfigureAutomation]: 'Configurar Automatización',
+    [TranslationKeyEnum.ViewDashboard]: 'Ver Panel de Control',
 
     // Footer
     [TranslationKeyEnum.FooterText]: 'Mi App MUI',
-  },
+  }),
   
-  [SupportedLangEnum.German]: {
+  [SupportedLangEnum.German]: createTranslation({
     // Common UI
     [TranslationKeyEnum.Welcome]: 'Willkommen',
     [TranslationKeyEnum.Logout]: 'Abmelden',
@@ -641,10 +728,38 @@ const translations: Record<SupportedLangEnum, TranslationObject> = {
     
     // Mail Automation Service
     [TranslationKeyEnum.MailAutoForm]: 'Mail-Automatisierungsformular',
+    
+    // Email Categorization Guide
+    [TranslationKeyEnum.EmailCategorizationGuide]: 'E-Mail-Kategorisierung KI-Leitfaden',
+    [TranslationKeyEnum.HowToStructureCategories]: 'Wie Sie Ihre Kategorien für optimale KI-Verarbeitung strukturieren',
+    [TranslationKeyEnum.GPTModelsCanRead]: 'GPT-Modelle können Ihre E-Mails automatisch lesen und kategorisieren. Der Erfolg hängt von klaren Anweisungen und präzisen Kategoriedefinitionen ab.',
+    [TranslationKeyEnum.SixBestPractices]: 'Die 6 wesentlichen Best Practices',
+    [TranslationKeyEnum.ClearInstructions]: 'Klare Anweisungen geben',
+    [TranslationKeyEnum.ClearInstructionsDesc]: 'Spezifizieren Sie die Aufgabe, Kategorienliste und fordern Sie strukturierte Ausgabe von Anfang an',
+    [TranslationKeyEnum.StrictOutputFormat]: 'Striktes Ausgabeformat',
+    [TranslationKeyEnum.StrictOutputFormatDesc]: 'Verwenden Sie JSON für einfache automatisierte Integration. OpenAI API erlaubt JSON-Schema zu erzwingen',
+    [TranslationKeyEnum.DefineWithPrecision]: 'Mit Präzision definieren',
+    [TranslationKeyEnum.DefineWithPrecisionDesc]: 'Jede Kategorie muss eine klare Beschreibung haben, um Mehrdeutigkeiten zu vermeiden',
+    [TranslationKeyEnum.LimitOutput]: 'Ausgabe begrenzen',
+    [TranslationKeyEnum.LimitOutputDesc]: 'Vermeiden Sie überflüssigen Text. Fordern Sie nur das Etikett und kurze Begründung an',
+    [TranslationKeyEnum.UseExamples]: 'Beispiele verwenden',
+    [TranslationKeyEnum.UseExamplesDesc]: 'Beispiele (Few-Shot) verbessern die Genauigkeit, besonders für seltene Kategorien',
+    [TranslationKeyEnum.MeasureAndTest]: 'Messen und testen',
+    [TranslationKeyEnum.MeasureAndTestDesc]: 'Bewerten Sie mit Metriken (Genauigkeit, F1) auf manuell beschriftetem Testset',
+    [TranslationKeyEnum.WellDefinedCategoriesExample]: 'Beispiel gut definierter Kategorien',
+    [TranslationKeyEnum.ThreePromptApproaches]: 'Drei empfohlene Prompt-Ansätze',
+    [TranslationKeyEnum.SimpleAndRobust]: 'Einfach und robust',
+    [TranslationKeyEnum.ImprovedAccuracy]: 'Verbesserte Genauigkeit',
+    [TranslationKeyEnum.DeepAnalysis]: 'Tiefgehende Analyse',
+    [TranslationKeyEnum.ImplementationTips]: 'Implementierungstipps',
+    [TranslationKeyEnum.ReadyToAutomate]: 'Bereit, Ihre E-Mail-Sortierung zu automatisieren?',
+    [TranslationKeyEnum.StartWithPrompt1]: 'Beginnen Sie mit Prompt 1 für eine einfache und robuste Implementierung',
+    [TranslationKeyEnum.ConfigureAutomation]: 'Automatisierung konfigurieren',
+    [TranslationKeyEnum.ViewDashboard]: 'Dashboard anzeigen',
 
     // Footer
     [TranslationKeyEnum.FooterText]: 'Meine MUI App',
-  },
+  }),
 };
 
 export const getTranslations = (lang: SupportedLangEnum): TranslationObject => {

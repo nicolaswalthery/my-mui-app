@@ -2,6 +2,7 @@
 import React, { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
 import { SupportedLangEnum, TranslationKeyEnum } from '../enums/TranslationKeyEnum';
 import { getTranslations, getTranslation } from '../config/i18n';
+import { configManager } from '../config/configManager';
 
 interface I18nContextType {
   currentLanguage: SupportedLangEnum;
@@ -9,6 +10,7 @@ interface I18nContextType {
   t: (key: TranslationKeyEnum) => string;
   translations: Record<string, string>;
   isRTL: boolean;
+  language: SupportedLangEnum; // This is an alias for currentLanguage
 }
 
 const I18nContext = createContext<I18nContextType | undefined>(undefined);
@@ -22,7 +24,7 @@ const LANGUAGE_STORAGE_KEY = 'app-language';
 
 export const I18nProvider: React.FC<I18nProviderProps> = ({ 
   children, 
-  defaultLanguage = SupportedLangEnum.English 
+  defaultLanguage = configManager.getAppConfig().defaultLanguage == "fr" ? SupportedLangEnum.French : SupportedLangEnum.English 
 }) => {
   // Get saved language from localStorage or use default
   const [currentLanguage, setCurrentLanguage] = useState<SupportedLangEnum>(() => {
@@ -66,6 +68,7 @@ export const I18nProvider: React.FC<I18nProviderProps> = ({
     t,
     translations,
     isRTL,
+    language: currentLanguage, // Add this alias for compatibility
   };
 
   return (

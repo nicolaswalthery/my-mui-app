@@ -153,6 +153,34 @@ export const TranslationKeyEnum = {
   
   // Mail Automation Service
   MailAutoForm: 'mailAutoForm',
+  
+  // Email Categorization Guide
+  EmailCategorizationGuide: 'emailCategorizationGuide',
+  HowToStructureCategories: 'howToStructureCategories',
+  GPTModelsCanRead: 'gptModelsCanRead',
+  SixBestPractices: 'sixBestPractices',
+  ClearInstructions: 'clearInstructions',
+  ClearInstructionsDesc: 'clearInstructionsDesc',
+  StrictOutputFormat: 'strictOutputFormat',
+  StrictOutputFormatDesc: 'strictOutputFormatDesc',
+  DefineWithPrecision: 'defineWithPrecision',
+  DefineWithPrecisionDesc: 'defineWithPrecisionDesc',
+  LimitOutput: 'limitOutput',
+  LimitOutputDesc: 'limitOutputDesc',
+  UseExamples: 'useExamples',
+  UseExamplesDesc: 'useExamplesDesc',
+  MeasureAndTest: 'measureAndTest',
+  MeasureAndTestDesc: 'measureAndTestDesc',
+  WellDefinedCategoriesExample: 'wellDefinedCategoriesExample',
+  ThreePromptApproaches: 'threePromptApproaches',
+  SimpleAndRobust: 'simpleAndRobust',
+  ImprovedAccuracy: 'improvedAccuracy',
+  DeepAnalysis: 'deepAnalysis',
+  ImplementationTips: 'implementationTips',
+  ReadyToAutomate: 'readyToAutomate',
+  StartWithPrompt1: 'startWithPrompt1',
+  ConfigureAutomation: 'configureAutomation',
+  ViewDashboard: 'viewDashboard',
 
   // Footer
   FooterText: 'footerText',

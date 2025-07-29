@@ -1,198 +1,327 @@
-// src/pages/Home.tsx - Updated with i18n support
+// src/pages/Home.tsx - Email Categorization AI Guide
 import React from 'react';
 import {
   Box,
   Typography,
   Card,
   CardContent,
-  CardMedia,
   Grid,
   Button,
   Stack,
   Chip,
   Container,
+  Paper,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
+  Accordion,
+  AccordionSummary,
+  AccordionDetails,
+  Alert,
+  Divider,
+  FormControl,
+  Select,
+  MenuItem,
 } from '@mui/material';
-import { Launch, Star } from '@mui/icons-material';
+import {
+  Launch,
+  Star,
+  CheckCircle,
+  ExpandMore,
+  Category,
+  Description,
+  Psychology,
+  Code,
+  TipsAndUpdates,
+  Warning,
+  Email,
+  AutoAwesome,
+  Language as LanguageIcon,
+} from '@mui/icons-material';
 import { useI18n } from '../contexts/i18nContext';
-import { TranslationKeyEnum } from '../enums/TranslationKeyEnum';
+import { TranslationKeyEnum, SupportedLangEnum, LanguageDisplayNames } from '../enums/TranslationKeyEnum';
 import { useNavigate } from 'react-router-dom';
 import { AppRouteEnum } from '../enums/AppRouteEnum';
 
 const Home: React.FC = () => {
-  const { t } = useI18n();
+  const { t, language, setLanguage } = useI18n();
   const navigate = useNavigate();
-  // Define features with translation keys
-  const features = [
+
+  // Best practices for email categorization
+  const bestPractices = [
     {
-      titleKey: TranslationKeyEnum.ModernInterface,
-      descriptionKey: TranslationKeyEnum.ModernInterfaceDesc,
-      icon: '🎨',
-      color: '#2563eb',
+      titleKey: TranslationKeyEnum.ClearInstructions,
+      descriptionKey: TranslationKeyEnum.ClearInstructionsDesc,
+      icon: <TipsAndUpdates sx={{ color: '#2563eb' }} />,
+      example: "Tu es un assistant virtuel chargé de trier les e-mails d'une entreprise...",
     },
     {
-      titleKey: TranslationKeyEnum.ResponsiveDesign,
-      descriptionKey: TranslationKeyEnum.ResponsiveDesignDesc,
-      icon: '📱',
-      color: '#059669',
+      titleKey: TranslationKeyEnum.StrictOutputFormat,
+      descriptionKey: TranslationKeyEnum.StrictOutputFormatDesc,
+      icon: <Code sx={{ color: '#059669' }} />,
+      example: '{ "categorie": "SAV", "sous_categorie": "Retour", "resume": "...", "justification": "..." }',
     },
     {
-      titleKey: TranslationKeyEnum.OptimizedPerformance,
-      descriptionKey: TranslationKeyEnum.OptimizedPerformanceDesc,
-      icon: '⚡',
-      color: '#7c3aed',
+      titleKey: TranslationKeyEnum.DefineWithPrecision,
+      descriptionKey: TranslationKeyEnum.DefineWithPrecisionDesc,
+      icon: <Description sx={{ color: '#7c3aed' }} />,
+      example: "SAV – service après-vente (assistance technique, réclamation, demande de retour/échange)",
+    },
+    {
+      titleKey: TranslationKeyEnum.LimitOutput,
+      descriptionKey: TranslationKeyEnum.LimitOutputDesc,
+      icon: <CheckCircle sx={{ color: '#dc2626' }} />,
+      example: "Réponds exclusivement avec un objet JSON contenant les champs...",
+    },
+    {
+      titleKey: TranslationKeyEnum.UseExamples,
+      descriptionKey: TranslationKeyEnum.UseExamplesDesc,
+      icon: <Psychology sx={{ color: '#f59e0b' }} />,
+      example: "Objet: Demande de retour produit\nCorps: Mon ordinateur est défectueux...\nCatégorie: SAV",
+    },
+    {
+      titleKey: TranslationKeyEnum.MeasureAndTest,
+      descriptionKey: TranslationKeyEnum.MeasureAndTestDesc,
+      icon: <Star sx={{ color: '#8b5cf6' }} />,
+      example: "Constituez ~100 e-mails de test avec leurs catégories réelles",
     },
   ];
 
-  const handleGetStarted = () => {
-    navigate(AppRouteEnum.Dashboard);
-  };
+  // Example categories
+  const exampleCategories = [
+    { name: "SAV", color: "#ef4444", description: "Service après-vente, assistance technique, réclamations" },
+    { name: "Facture", color: "#3b82f6", description: "Factures à payer, confirmations, rappels de paiement" },
+    { name: "Urgence", color: "#f59e0b", description: "Incidents critiques nécessitant intervention immédiate" },
+    { name: "RH", color: "#10b981", description: "Candidatures, congés, questions ressources humaines" },
+    { name: "Commercial", color: "#8b5cf6", description: "Demandes de devis, offres commerciales" },
+    { name: "Marketing", color: "#ec4899", description: "Newsletters, offres promotionnelles" },
+    { name: "Divers", color: "#6b7280", description: "Aucune des catégories précédentes" },
+  ];
 
-  const handleLearnMore = () => {
-    navigate(AppRouteEnum.Settings);
-  };
+  // Three recommended prompts
+  const promptExamples = [
+    {
+      title: "Prompt 1: Classification zéro-shot avec JSON",
+      typeKey: TranslationKeyEnum.SimpleAndRobust,
+      color: "#2563eb",
+      advantages: ["Sortie structurée JSON", "Instructions claires", "Consommation tokens limitée"],
+      when: "Idéal pour une intégration simple avec des catégories bien définies",
+    },
+    {
+      title: "Prompt 2: Classification few-shot avec exemples",
+      typeKey: TranslationKeyEnum.ImprovedAccuracy,
+      color: "#059669",
+      advantages: ["Exemples pour guider", "Meilleure précision", "Format simple"],
+      when: "Recommandé quand certaines catégories sont ambiguës ou rares",
+    },
+    {
+      title: "Prompt 3: Avec justification et score de confiance",
+      typeKey: TranslationKeyEnum.DeepAnalysis,
+      color: "#7c3aed",
+      advantages: ["Raisonnement explicite", "Score de confiance", "Analyse détaillée"],
+      when: "Pour les cas nécessitant une compréhension du raisonnement de l'IA",
+    },
+  ];
 
   return (
     <Container maxWidth="lg">
-      {/* Header with language switcher */}
-      <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 4 }}>
-        <Box>
-          <Typography variant="h3" gutterBottom sx={{ fontWeight: 'bold', color: 'primary.main' }}>
-            {t(TranslationKeyEnum.Home)}
-          </Typography>
+      {/* Header */}
+      <Box sx={{ mb: 4 }}>
+        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
+          <Stack direction="row" spacing={2} alignItems="center">
+            <Email sx={{ fontSize: 48, color: 'primary.main' }} />
+            <Typography variant="h3" sx={{ fontWeight: 'bold', color: 'primary.main' }}>
+              {t(TranslationKeyEnum.EmailCategorizationGuide)}
+            </Typography>
+          </Stack>
+          
+          {/* Language Switcher */}
+          <FormControl size="small" sx={{ minWidth: 150 }}>
+            <Select
+              value={language}
+              onChange={(e) => setLanguage(e.target.value as SupportedLangEnum)}
+              startAdornment={<LanguageIcon sx={{ mr: 1, color: 'action.active' }} />}
+              sx={{
+                backgroundColor: 'background.paper',
+                '& .MuiSelect-select': {
+                  py: 1,
+                  display: 'flex',
+                  alignItems: 'center',
+                },
+              }}
+            >
+              {Object.entries(SupportedLangEnum).map(([_, value]) => (
+                <MenuItem key={value} value={value}>
+                  {LanguageDisplayNames[value]}
+                </MenuItem>
+              ))}
+            </Select>
+          </FormControl>
         </Box>
-      </Box>
-      
-      {/* Welcome Section */}
-      <Box sx={{ 
-        mb: 6, 
-        p: 4, 
-        borderRadius: 3, 
-        background: 'linear-gradient(135deg, rgba(25, 118, 210, 0.1) 0%, rgba(156, 39, 176, 0.1) 100%)',
-        border: 1,
-        borderColor: 'primary.light'
-      }}>
-        <Typography variant="h4" gutterBottom sx={{ fontWeight: 600 }}>
-          {t(TranslationKeyEnum.WelcomeToApp)}
+        
+        <Typography variant="h6" color="text.secondary">
+          {t(TranslationKeyEnum.HowToStructureCategories)}
         </Typography>
-        <Typography 
-          variant="body1" 
-          color="text.secondary" 
-          paragraph 
-          sx={{ fontSize: '1.1rem', lineHeight: 1.7, maxWidth: '80%' }}
-        >
-          {t(TranslationKeyEnum.DiscoverFeatures)}
+      </Box>
+
+      {/* Introduction Alert */}
+      <Alert 
+        severity="info" 
+        icon={<AutoAwesome />}
+        sx={{ mb: 4, borderRadius: 2 }}
+      >
+        <Typography variant="body1">
+          {t(TranslationKeyEnum.GPTModelsCanRead)}
+        </Typography>
+      </Alert>
+
+      {/* Best Practices Section */}
+      <Paper elevation={0} sx={{ p: 4, mb: 4, bgcolor: 'background.default', borderRadius: 3 }}>
+        <Typography variant="h4" gutterBottom sx={{ fontWeight: 600, mb: 3 }}>
+          📋 {t(TranslationKeyEnum.SixBestPractices)}
         </Typography>
         
-        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} sx={{ mt: 3 }}>
-          <Button 
-            variant="contained" 
-            startIcon={<Launch />}
-            onClick={handleGetStarted}
-            size="large"
-            sx={{ 
-              px: 4, 
-              py: 1.5,
-              borderRadius: 2,
-              textTransform: 'none',
-              fontSize: '1rem'
-            }}
-          >
-            {t(TranslationKeyEnum.GetStarted)}
-          </Button>
-          <Button 
-            variant="outlined" 
-            startIcon={<Star />}
-            onClick={handleLearnMore}
-            size="large"
-            sx={{ 
-              px: 4, 
-              py: 1.5,
-              borderRadius: 2,
-              textTransform: 'none',
-              fontSize: '1rem'
-            }}
-          >
-            {t(TranslationKeyEnum.LearnMore)}
-          </Button>
-        </Stack>
-      </Box>
+        <Grid container spacing={3}>
+          {bestPractices.map((practice, index) => (
+            <Grid key={index}>
+              <Card 
+                sx={{ 
+                  height: '100%',
+                  transition: 'all 0.3s',
+                  '&:hover': { 
+                    transform: 'translateY(-4px)',
+                    boxShadow: 3,
+                  }
+                }}
+              >
+                <CardContent>
+                  <Stack direction="row" spacing={2} alignItems="flex-start" sx={{ mb: 2 }}>
+                    {practice.icon}
+                    <Box sx={{ flex: 1 }}>
+                      <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
+                        {index + 1}. {t(practice.titleKey)}
+                      </Typography>
+                      <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                        {t(practice.descriptionKey)}
+                      </Typography>
+                      <Paper 
+                        sx={{ 
+                          p: 1.5, 
+                          bgcolor: 'grey.50', 
+                          borderRadius: 1,
+                          border: '1px solid',
+                          borderColor: 'grey.200'
+                        }}
+                      >
+                        <Typography 
+                          variant="caption" 
+                          sx={{ 
+                            fontFamily: 'monospace',
+                            fontSize: '0.75rem',
+                            color: 'text.secondary'
+                          }}
+                        >
+                          {practice.example}
+                        </Typography>
+                      </Paper>
+                    </Box>
+                  </Stack>
+                </CardContent>
+              </Card>
+            </Grid>
+          ))}
+        </Grid>
+      </Paper>
 
-      {/* Features Section */}
-      <Typography 
-        variant="h4" 
-        gutterBottom 
-        sx={{ mt: 6, mb: 4, fontWeight: 600, textAlign: 'center' }}
-      >
-        {t(TranslationKeyEnum.MainFeatures)}
+      {/* Categories Example */}
+      <Paper elevation={0} sx={{ p: 4, mb: 4, bgcolor: 'primary.main', color: 'white', borderRadius: 3 }}>
+        <Typography variant="h4" gutterBottom sx={{ fontWeight: 600, mb: 3 }}>
+          <Category sx={{ mr: 1, verticalAlign: 'middle' }} />
+          {t(TranslationKeyEnum.WellDefinedCategoriesExample)}
+        </Typography>
+        
+        <Grid container spacing={2}>
+          {exampleCategories.map((category, index) => (
+            <Grid key={index}>
+              <Paper 
+                sx={{ 
+                  p: 2, 
+                  bgcolor: 'white',
+                  color: 'text.primary',
+                  borderLeft: `4px solid ${category.color}`,
+                  height: '100%'
+                }}
+              >
+                <Typography 
+                  variant="subtitle1" 
+                  sx={{ 
+                    fontWeight: 700,
+                    color: category.color,
+                    mb: 0.5
+                  }}
+                >
+                  {category.name}
+                </Typography>
+                <Typography variant="caption" color="text.secondary">
+                  {category.description}
+                </Typography>
+              </Paper>
+            </Grid>
+          ))}
+        </Grid>
+      </Paper>
+
+      {/* Prompt Examples */}
+      <Typography variant="h4" gutterBottom sx={{ fontWeight: 600, mb: 3 }}>
+        🚀 {t(TranslationKeyEnum.ThreePromptApproaches)}
       </Typography>
 
-      <Grid container spacing={4}>
-        {features.map((feature, index) => (
+      <Grid container spacing={3} sx={{ mb: 4 }}>
+        {promptExamples.map((prompt, index) => (
           <Grid key={index}>
             <Card 
               sx={{ 
                 height: '100%',
-                borderRadius: 3,
-                transition: 'all 0.3s ease-in-out',
-                '&:hover': {
-                  transform: 'translateY(-8px)',
-                  boxShadow: 4,
-                },
-                border: 1,
-                borderColor: 'divider'
+                borderTop: `4px solid ${prompt.color}`,
               }}
             >
-              <CardMedia
-                component="div"
-                sx={{
-                  height: 200,
-                  background: `linear-gradient(135deg, ${feature.color}20 0%, ${feature.color}40 100%)`,
-                  display: 'flex',
-                  flexDirection: 'column',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  position: 'relative',
-                }}
-              >
-                <Typography 
-                  sx={{ 
-                    fontSize: '4rem', 
-                    mb: 1,
-                    filter: 'drop-shadow(0 2px 4px rgba(0,0,0,0.1))'
-                  }}
-                >
-                  {feature.icon}
+              <CardContent>
+                <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
+                  {prompt.title}
                 </Typography>
                 <Chip 
-                  label={`${t(TranslationKeyEnum.Image)} ${index + 1}`}
-                  size="small"
+                  label={t(prompt.typeKey)} 
+                  size="small" 
                   sx={{ 
-                    position: 'absolute',
-                    bottom: 16,
-                    right: 16,
-                    bgcolor: 'rgba(255,255,255,0.9)'
-                  }}
+                    mb: 2,
+                    bgcolor: `${prompt.color}20`,
+                    color: prompt.color,
+                    fontWeight: 600
+                  }} 
                 />
-              </CardMedia>
-              <CardContent sx={{ p: 3 }}>
-                <Typography 
-                  variant="h5" 
-                  component="h3" 
-                  gutterBottom 
-                  sx={{ 
-                    fontWeight: 600,
-                    color: feature.color,
-                    mb: 2
-                  }}
-                >
-                  {t(feature.titleKey)}
+                
+                <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+                  <strong>Avantages:</strong>
                 </Typography>
-                <Typography 
-                  variant="body1" 
-                  color="text.secondary"
-                  sx={{ lineHeight: 1.6 }}
-                >
-                  {t(feature.descriptionKey)}
+                <List dense sx={{ mb: 2 }}>
+                  {prompt.advantages.map((adv, i) => (
+                    <ListItem key={i} sx={{ pl: 0 }}>
+                      <ListItemIcon sx={{ minWidth: 28 }}>
+                        <CheckCircle sx={{ fontSize: 16, color: prompt.color }} />
+                      </ListItemIcon>
+                      <ListItemText 
+                        primary={adv} 
+                        primaryTypographyProps={{ variant: 'body2' }}
+                      />
+                    </ListItem>
+                  ))}
+                </List>
+                
+                <Divider sx={{ my: 2 }} />
+                
+                <Typography variant="caption" color="text.secondary">
+                  <strong>Quand l'utiliser:</strong> {prompt.when}
                 </Typography>
               </CardContent>
             </Card>
@@ -200,29 +329,94 @@ const Home: React.FC = () => {
         ))}
       </Grid>
 
-      {/* Call to Action Section */}
-      <Box sx={{ 
-        mt: 8, 
-        mb: 4, 
-        p: 4, 
-        textAlign: 'center',
-        borderRadius: 3,
-        bgcolor: 'background.paper',
-        border: 1,
-        borderColor: 'divider'
-      }}>
+      {/* Implementation Tips */}
+      <Accordion sx={{ mb: 4 }}>
+        <AccordionSummary expandIcon={<ExpandMore />}>
+          <Typography variant="h6" sx={{ fontWeight: 600 }}>
+            💡 {t(TranslationKeyEnum.ImplementationTips)}
+          </Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <List>
+            <ListItem>
+              <ListItemIcon>
+                <Warning sx={{ color: 'warning.main' }} />
+              </ListItemIcon>
+              <ListItemText 
+                primary="Gestion des cas ambigus"
+                secondary="Définissez une priorité claire (ex: 'Urgence' prime sur les autres catégories)"
+              />
+            </ListItem>
+            <ListItem>
+              <ListItemIcon>
+                <Psychology sx={{ color: 'info.main' }} />
+              </ListItemIcon>
+              <ListItemText 
+                primary="Utilisation de l'API OpenAI"
+                secondary="Utilisez response_format avec json_schema pour garantir un JSON valide"
+              />
+            </ListItem>
+            <ListItem>
+              <ListItemIcon>
+                <CheckCircle sx={{ color: 'success.main' }} />
+              </ListItemIcon>
+              <ListItemText 
+                primary="Validation continue"
+                secondary="Ajustez régulièrement les descriptions selon les cas réels rencontrés"
+              />
+            </ListItem>
+          </List>
+        </AccordionDetails>
+      </Accordion>
+
+      {/* Call to Action */}
+      <Box 
+        sx={{ 
+          textAlign: 'center', 
+          p: 4, 
+          bgcolor: 'background.paper',
+          borderRadius: 3,
+          border: 1,
+          borderColor: 'divider'
+        }}
+      >
         <Typography variant="h5" gutterBottom sx={{ fontWeight: 600 }}>
-          🌍 {t(TranslationKeyEnum.Language)} Support
+          {t(TranslationKeyEnum.ReadyToAutomate)}
         </Typography>
         <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
-          This application supports multiple languages. Try switching languages using the selector above!
+          {t(TranslationKeyEnum.StartWithPrompt1)}
         </Typography>
-        <Box sx={{ display: 'flex', justifyContent: 'center', gap: 1, flexWrap: 'wrap' }}>
-          <Chip label="🇺🇸 English" size="small" />
-          <Chip label="🇫🇷 Français" size="small" />
-          <Chip label="🇪🇸 Español" size="small" />
-          <Chip label="🇩🇪 Deutsch" size="small" />
+        
+        {/* Language Support Info */}
+        <Box sx={{ mb: 3 }}>
+          <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
+            🌍 {t(TranslationKeyEnum.Language)}: 
+          </Typography>
+          <Stack direction="row" spacing={1} justifyContent="center">
+            <Chip label="🇺🇸 English" size="small" variant={language === SupportedLangEnum.English ? "filled" : "outlined"} />
+            <Chip label="🇫🇷 Français" size="small" variant={language === SupportedLangEnum.French ? "filled" : "outlined"} />
+            <Chip label="🇪🇸 Español" size="small" variant={language === SupportedLangEnum.Spanish ? "filled" : "outlined"} />
+            <Chip label="🇩🇪 Deutsch" size="small" variant={language === SupportedLangEnum.German ? "filled" : "outlined"} />
+          </Stack>
         </Box>
+        
+        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} justifyContent="center">
+          <Button 
+            variant="contained" 
+            size="large"
+            startIcon={<Launch />}
+            onClick={() => navigate(AppRouteEnum.Dashboard)} // Navigate to Dashboard (change to MailAutoForm when available)
+          >
+            {t(TranslationKeyEnum.ConfigureAutomation)}
+          </Button>
+          <Button 
+            variant="outlined" 
+            size="large"
+            onClick={() => navigate(AppRouteEnum.Dashboard)}
+          >
+            {t(TranslationKeyEnum.ViewDashboard)}
+          </Button>
+        </Stack>
       </Box>
     </Container>
   );
