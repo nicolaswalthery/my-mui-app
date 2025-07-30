@@ -163,7 +163,7 @@ const translations: Record<SupportedLangEnum, TranslationObject> = {
     [TranslationKeyEnum.TechStackSelectionDesc]: 'Technical stack selection',
     
     // Mail Automation Service
-    [TranslationKeyEnum.MailAutoForm]: 'Mail Automation Form',
+    [TranslationKeyEnum.MailAutoForm]: 'Mail Automation Setup',
     
     // Email Categorization Guide
     [TranslationKeyEnum.EmailCategorizationGuide]: 'Email Categorization AI Guide',
@@ -351,7 +351,7 @@ const translations: Record<SupportedLangEnum, TranslationObject> = {
     [TranslationKeyEnum.TechStackSelectionDesc]: 'Sélection du stack technique',
     
     // Mail Automation Service
-    [TranslationKeyEnum.MailAutoForm]: 'Formulaire d\'automatisation des mails',
+    [TranslationKeyEnum.MailAutoForm]: 'Configuration de l’automatisation des mails',
     
     // Email Categorization Guide
     [TranslationKeyEnum.EmailCategorizationGuide]: 'Guide de Catégorisation d\'E-mails par IA',
@@ -539,7 +539,7 @@ const translations: Record<SupportedLangEnum, TranslationObject> = {
     [TranslationKeyEnum.TechStackSelectionDesc]: 'Selección del stack técnico',
     
     // Mail Automation Service
-    [TranslationKeyEnum.MailAutoForm]: 'Formulario de automatización de correos',
+    [TranslationKeyEnum.MailAutoForm]: 'Configuración de la automatización de correos',
     
     // Email Categorization Guide
     [TranslationKeyEnum.EmailCategorizationGuide]: 'Guía de Categorización de Correos por IA',
@@ -727,7 +727,7 @@ const translations: Record<SupportedLangEnum, TranslationObject> = {
     [TranslationKeyEnum.TechStackSelectionDesc]: 'Auswahl des technischen Stacks',
     
     // Mail Automation Service
-    [TranslationKeyEnum.MailAutoForm]: 'Mail-Automatisierungsformular',
+    [TranslationKeyEnum.MailAutoForm]: 'Einrichtung der Mail-Automatisierung',
     
     // Email Categorization Guide
     [TranslationKeyEnum.EmailCategorizationGuide]: 'E-Mail-Kategorisierung KI-Leitfaden',
