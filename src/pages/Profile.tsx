@@ -10,7 +10,7 @@ import {
   Button,
   Chip,
 } from '@mui/material';
-import { Edit, Person, Email, Badge } from '@mui/icons-material';
+import { Edit, Person, Email } from '@mui/icons-material';
 import { UserStorageManager } from '../helpers/userStorageManager';
 import { useNavigate } from 'react-router-dom';
 import { AppRouteEnum } from '../enums/AppRouteEnum';

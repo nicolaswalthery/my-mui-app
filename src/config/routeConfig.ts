@@ -13,7 +13,6 @@ import { useTranslation } from '../hooks/useTranslation';
 import { useLocation } from 'react-router-dom';
 
 // Pages
-import DashboardPage from '../pages/Dashboard';
 import HomePage from '../pages/Home';
 import SettingsPage from '../pages/Settings';
 import AuthPage from '../pages/Auth';
@@ -30,18 +29,6 @@ interface TranslatableRouteConfig extends Omit<RouteConfig, 'displayName' | 'des
 }
 
 export const routeConfig: TranslatableRouteConfig[] = [
-  {
-    path: '/dashboard',
-    displayNameKey: TranslationKeyEnum.Dashboard,
-    displayName: 'Dashboard', // Fallback
-    icon: Dashboard,
-    component: DashboardPage,
-    showInMenu: false,
-    requiresAuth: false,
-    descriptionKey: TranslationKeyEnum.WelcomeToDashboard,
-    description: 'Main dashboard with overview',
-    order: 2,
-  },
   {
     path: '/',
     displayNameKey: TranslationKeyEnum.Home,

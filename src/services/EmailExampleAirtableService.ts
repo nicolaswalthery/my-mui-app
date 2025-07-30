@@ -1,5 +1,5 @@
 // src/services/EmailExampleAirtableService.ts - Service for email examples
-import axiosInstance from './starcmdAirtableAxiosInstance';
+import axiosInstance from './StarcmdAirtableAxiosInstance';
 import { configManager } from '../config/configManager';
 import { ApiErrorEnum } from '../enums/ApiErrorEnum';
 import { ApiErrorHandler } from '../helpers/ApiErrorHandler';
