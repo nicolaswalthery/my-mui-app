@@ -1,425 +1,470 @@
-// src/pages/Home.tsx - Email Categorization AI Guide
-import React from 'react';
+import { useNavigate } from 'react-router-dom';
 import {
   Box,
+  Button,
   Typography,
+  Container,
   Card,
   CardContent,
-  Grid,
-  Button,
   Stack,
-  Chip,
-  Container,
-  Paper,
   List,
   ListItem,
-  ListItemIcon,
   ListItemText,
-  Accordion,
-  AccordionSummary,
-  AccordionDetails,
-  Alert,
-  Divider,
-  FormControl,
-  Select,
-  MenuItem,
+  ListItemIcon,
+  Chip,
+  Paper,
+  Grid
 } from '@mui/material';
 import {
-  Launch,
-  Star,
-  CheckCircle,
-  ExpandMore,
-  Category,
-  Description,
-  Psychology,
-  Code,
-  TipsAndUpdates,
-  Warning,
-  Email,
-  AutoAwesome,
-  Language as LanguageIcon,
+  Email as EmailIcon,
+  AutoAwesome as AutoAwesomeIcon,
+  TrendingUp as TrendingUpIcon,
+  CheckCircle as CheckCircleIcon,
+  Warning as WarningIcon,
+  School as SchoolIcon,
+  Settings as SettingsIcon,
+  ArrowForward as ArrowForwardIcon,
+  PlayArrow as PlayArrowIcon,
+  Psychology as PsychologyIcon,
+  Category as CategoryIcon,
+  Analytics as AnalyticsIcon
 } from '@mui/icons-material';
-import { useI18n } from '../contexts/i18nContext';
-import { TranslationKeyEnum, SupportedLangEnum, LanguageDisplayNames } from '../enums/TranslationKeyEnum';
-import { useNavigate } from 'react-router-dom';
-import { AppRouteEnum } from '../enums/AppRouteEnum';
 
-const Home: React.FC = () => {
-  const { t, language, setLanguage } = useI18n();
+export default function Home() {
   const navigate = useNavigate();
 
-  // Best practices for email categorization
+  const handleStartAutomation = () => {
+    navigate('/mail-auto-onboarding');
+  };
+
   const bestPractices = [
     {
-      titleKey: TranslationKeyEnum.ClearInstructions,
-      descriptionKey: TranslationKeyEnum.ClearInstructionsDesc,
-      icon: <TipsAndUpdates sx={{ color: '#2563eb' }} />,
-      example: "Tu es un assistant virtuel chargé de trier les e-mails d'une entreprise...",
+      icon: <CategoryIcon color="primary" />,
+      title: "Mutual Exclusivity",
+      description: "Each email should fit only one category (unless multi-label is intended)"
     },
     {
-      titleKey: TranslationKeyEnum.StrictOutputFormat,
-      descriptionKey: TranslationKeyEnum.StrictOutputFormatDesc,
-      icon: <Code sx={{ color: '#059669' }} />,
-      example: '{ "categorie": "SAV", "sous_categorie": "Retour", "resume": "...", "justification": "..." }',
+      icon: <CheckCircleIcon color="success" />,
+      title: "Positive Guidance", 
+      description: "Say what TO include, not what to avoid"
     },
     {
-      titleKey: TranslationKeyEnum.DefineWithPrecision,
-      descriptionKey: TranslationKeyEnum.DefineWithPrecisionDesc,
-      icon: <Description sx={{ color: '#7c3aed' }} />,
-      example: "SAV – service après-vente (assistance technique, réclamation, demande de retour/échange)",
+      icon: <WarningIcon color="warning" />,
+      title: "Include \"Other/Uncategorized\"",
+      description: "Catch-all for emails that don't fit defined categories"
     },
     {
-      titleKey: TranslationKeyEnum.LimitOutput,
-      descriptionKey: TranslationKeyEnum.LimitOutputDesc,
-      icon: <CheckCircle sx={{ color: '#dc2626' }} />,
-      example: "Réponds exclusivement avec un objet JSON contenant les champs...",
-    },
-    {
-      titleKey: TranslationKeyEnum.UseExamples,
-      descriptionKey: TranslationKeyEnum.UseExamplesDesc,
-      icon: <Psychology sx={{ color: '#f59e0b' }} />,
-      example: "Objet: Demande de retour produit\nCorps: Mon ordinateur est défectueux...\nCatégorie: SAV",
-    },
-    {
-      titleKey: TranslationKeyEnum.MeasureAndTest,
-      descriptionKey: TranslationKeyEnum.MeasureAndTestDesc,
-      icon: <Star sx={{ color: '#8b5cf6' }} />,
-      example: "Constituez ~100 e-mails de test avec leurs catégories réelles",
-    },
+      icon: <TrendingUpIcon color="info" />,
+      title: "Test and Iterate",
+      description: "Use pilot annotations to identify ambiguities and refine descriptions"
+    }
   ];
 
-  // Example categories
-  const exampleCategories = [
-    { name: "SAV", color: "#ef4444", description: "Service après-vente, assistance technique, réclamations" },
-    { name: "Facture", color: "#3b82f6", description: "Factures à payer, confirmations, rappels de paiement" },
-    { name: "Urgence", color: "#f59e0b", description: "Incidents critiques nécessitant intervention immédiate" },
-    { name: "RH", color: "#10b981", description: "Candidatures, congés, questions ressources humaines" },
-    { name: "Commercial", color: "#8b5cf6", description: "Demandes de devis, offres commerciales" },
-    { name: "Marketing", color: "#ec4899", description: "Newsletters, offres promotionnelles" },
-    { name: "Divers", color: "#6b7280", description: "Aucune des catégories précédentes" },
+  const keyComponents = [
+    "1-3 sentence definition + inclusion criteria + keywords + exclusions",
+    "Clear, neutral, jargon-free terms",
+    "Explicit inclusion/exclusion criteria to prevent overlap", 
+    "Representative phrases and keywords for few-shot learning"
   ];
 
-  // Three recommended prompts
-  const promptExamples = [
-    {
-      title: "Prompt 1: Classification zéro-shot avec JSON",
-      typeKey: TranslationKeyEnum.SimpleAndRobust,
-      color: "#2563eb",
-      advantages: ["Sortie structurée JSON", "Instructions claires", "Consommation tokens limitée"],
-      when: "Idéal pour une intégration simple avec des catégories bien définies",
-    },
-    {
-      title: "Prompt 2: Classification few-shot avec exemples",
-      typeKey: TranslationKeyEnum.ImprovedAccuracy,
-      color: "#059669",
-      advantages: ["Exemples pour guider", "Meilleure précision", "Format simple"],
-      when: "Recommandé quand certaines catégories sont ambiguës ou rares",
-    },
-    {
-      title: "Prompt 3: Avec justification et score de confiance",
-      typeKey: TranslationKeyEnum.DeepAnalysis,
-      color: "#7c3aed",
-      advantages: ["Raisonnement explicite", "Score de confiance", "Analyse détaillée"],
-      when: "Pour les cas nécessitant une compréhension du raisonnement de l'IA",
-    },
+  const commonPitfalls = [
+    "Overlapping categories causing confusion",
+    "Using internal jargon or clever naming",
+    "Ignoring multi-intent emails",
+    "Not updating categories as needs evolve"
   ];
 
   return (
-    <Container maxWidth="lg">
-      {/* Header */}
-      <Box sx={{ mb: 4 }}>
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', mb: 2 }}>
-          <Stack direction="row" spacing={2} alignItems="center">
-            <Email sx={{ fontSize: 48, color: 'primary.main' }} />
-            <Typography variant="h3" sx={{ fontWeight: 'bold', color: 'primary.main' }}>
-              {t(TranslationKeyEnum.EmailCategorizationGuide)}
-            </Typography>
-          </Stack>
+    <Container maxWidth="xl">
+      {/* Hero Section */}
+      <Box sx={{ 
+        mb: { xs: 4, sm: 6 }, 
+        p: { xs: 4, sm: 6 }, 
+        borderRadius: 3, 
+        background: 'linear-gradient(135deg, rgba(25, 118, 210, 0.1) 0%, rgba(156, 39, 176, 0.1) 100%)',
+        border: 1,
+        borderColor: 'primary.light',
+        textAlign: 'center'
+      }}>
+        <Stack alignItems="center" spacing={3}>
+          <PsychologyIcon sx={{ 
+            fontSize: { xs: 48, sm: 64 }, 
+            color: 'primary.main' 
+          }} />
           
-          {/* Language Switcher */}
-          <FormControl size="small" sx={{ minWidth: 150 }}>
-            <Select
-              value={language}
-              onChange={(e) => setLanguage(e.target.value as SupportedLangEnum)}
-              startAdornment={<LanguageIcon sx={{ mr: 1, color: 'action.active' }} />}
-              sx={{
-                backgroundColor: 'background.paper',
-                '& .MuiSelect-select': {
-                  py: 1,
-                  display: 'flex',
-                  alignItems: 'center',
-                },
-              }}
-            >
-              {Object.entries(SupportedLangEnum).map(([_, value]) => (
-                <MenuItem key={value} value={value}>
-                  {LanguageDisplayNames[value]}
-                </MenuItem>
-              ))}
-            </Select>
-          </FormControl>
-        </Box>
-        
-        <Typography variant="h6" color="text.secondary">
-          {t(TranslationKeyEnum.HowToStructureCategories)}
-        </Typography>
-      </Box>
-
-      {/* Introduction Alert */}
-      <Alert 
-        severity="info" 
-        icon={<AutoAwesome />}
-        sx={{ mb: 4, borderRadius: 2 }}
-      >
-        <Typography variant="body1">
-          {t(TranslationKeyEnum.GPTModelsCanRead)}
-        </Typography>
-      </Alert>
-
-      {/* Best Practices Section */}
-      <Paper elevation={0} sx={{ p: 4, mb: 4, bgcolor: 'background.default', borderRadius: 3 }}>
-        <Typography variant="h4" gutterBottom sx={{ fontWeight: 600, mb: 3 }}>
-          📋 {t(TranslationKeyEnum.SixBestPractices)}
-        </Typography>
-        
-        <Grid container spacing={3}>
-          {bestPractices.map((practice, index) => (
-            <Grid key={index}>
-              <Card 
-                sx={{ 
-                  height: '100%',
-                  transition: 'all 0.3s',
-                  '&:hover': { 
-                    transform: 'translateY(-4px)',
-                    boxShadow: 3,
-                  }
-                }}
-              >
-                <CardContent>
-                  <Stack direction="row" spacing={2} alignItems="flex-start" sx={{ mb: 2 }}>
-                    {practice.icon}
-                    <Box sx={{ flex: 1 }}>
-                      <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
-                        {index + 1}. {t(practice.titleKey)}
-                      </Typography>
-                      <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                        {t(practice.descriptionKey)}
-                      </Typography>
-                      <Paper 
-                        sx={{ 
-                          p: 1.5, 
-                          bgcolor: 'grey.50', 
-                          borderRadius: 1,
-                          border: '1px solid',
-                          borderColor: 'grey.200'
-                        }}
-                      >
-                        <Typography 
-                          variant="caption" 
-                          sx={{ 
-                            fontFamily: 'monospace',
-                            fontSize: '0.75rem',
-                            color: 'text.secondary'
-                          }}
-                        >
-                          {practice.example}
-                        </Typography>
-                      </Paper>
-                    </Box>
-                  </Stack>
-                </CardContent>
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-      </Paper>
-
-      {/* Categories Example */}
-      <Paper elevation={0} sx={{ p: 4, mb: 4, bgcolor: 'primary.main', color: 'white', borderRadius: 3 }}>
-        <Typography variant="h4" gutterBottom sx={{ fontWeight: 600, mb: 3 }}>
-          <Category sx={{ mr: 1, verticalAlign: 'middle' }} />
-          {t(TranslationKeyEnum.WellDefinedCategoriesExample)}
-        </Typography>
-        
-        <Grid container spacing={2}>
-          {exampleCategories.map((category, index) => (
-            <Grid key={index}>
-              <Paper 
-                sx={{ 
-                  p: 2, 
-                  bgcolor: 'white',
-                  color: 'text.primary',
-                  borderLeft: `4px solid ${category.color}`,
-                  height: '100%'
-                }}
-              >
-                <Typography 
-                  variant="subtitle1" 
-                  sx={{ 
-                    fontWeight: 700,
-                    color: category.color,
-                    mb: 0.5
-                  }}
-                >
-                  {category.name}
-                </Typography>
-                <Typography variant="caption" color="text.secondary">
-                  {category.description}
-                </Typography>
-              </Paper>
-            </Grid>
-          ))}
-        </Grid>
-      </Paper>
-
-      {/* Prompt Examples */}
-      <Typography variant="h4" gutterBottom sx={{ fontWeight: 600, mb: 3 }}>
-        🚀 {t(TranslationKeyEnum.ThreePromptApproaches)}
-      </Typography>
-
-      <Grid container spacing={3} sx={{ mb: 4 }}>
-        {promptExamples.map((prompt, index) => (
-          <Grid key={index}>
-            <Card 
-              sx={{ 
-                height: '100%',
-                borderTop: `4px solid ${prompt.color}`,
-              }}
-            >
-              <CardContent>
-                <Typography variant="h6" sx={{ fontWeight: 600, mb: 1 }}>
-                  {prompt.title}
-                </Typography>
-                <Chip 
-                  label={t(prompt.typeKey)} 
-                  size="small" 
-                  sx={{ 
-                    mb: 2,
-                    bgcolor: `${prompt.color}20`,
-                    color: prompt.color,
-                    fontWeight: 600
-                  }} 
-                />
-                
-                <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-                  <strong>Avantages:</strong>
-                </Typography>
-                <List dense sx={{ mb: 2 }}>
-                  {prompt.advantages.map((adv, i) => (
-                    <ListItem key={i} sx={{ pl: 0 }}>
-                      <ListItemIcon sx={{ minWidth: 28 }}>
-                        <CheckCircle sx={{ fontSize: 16, color: prompt.color }} />
-                      </ListItemIcon>
-                      <ListItemText 
-                        primary={adv} 
-                        primaryTypographyProps={{ variant: 'body2' }}
-                      />
-                    </ListItem>
-                  ))}
-                </List>
-                
-                <Divider sx={{ my: 2 }} />
-                
-                <Typography variant="caption" color="text.secondary">
-                  <strong>Quand l'utiliser:</strong> {prompt.when}
-                </Typography>
-              </CardContent>
-            </Card>
-          </Grid>
-        ))}
-      </Grid>
-
-      {/* Implementation Tips */}
-      <Accordion sx={{ mb: 4 }}>
-        <AccordionSummary expandIcon={<ExpandMore />}>
-          <Typography variant="h6" sx={{ fontWeight: 600 }}>
-            💡 {t(TranslationKeyEnum.ImplementationTips)}
-          </Typography>
-        </AccordionSummary>
-        <AccordionDetails>
-          <List>
-            <ListItem>
-              <ListItemIcon>
-                <Warning sx={{ color: 'warning.main' }} />
-              </ListItemIcon>
-              <ListItemText 
-                primary="Gestion des cas ambigus"
-                secondary="Définissez une priorité claire (ex: 'Urgence' prime sur les autres catégories)"
-              />
-            </ListItem>
-            <ListItem>
-              <ListItemIcon>
-                <Psychology sx={{ color: 'info.main' }} />
-              </ListItemIcon>
-              <ListItemText 
-                primary="Utilisation de l'API OpenAI"
-                secondary="Utilisez response_format avec json_schema pour garantir un JSON valide"
-              />
-            </ListItem>
-            <ListItem>
-              <ListItemIcon>
-                <CheckCircle sx={{ color: 'success.main' }} />
-              </ListItemIcon>
-              <ListItemText 
-                primary="Validation continue"
-                secondary="Ajustez régulièrement les descriptions selon les cas réels rencontrés"
-              />
-            </ListItem>
-          </List>
-        </AccordionDetails>
-      </Accordion>
-
-      {/* Call to Action */}
-      <Box 
-        sx={{ 
-          textAlign: 'center', 
-          p: 4, 
-          bgcolor: 'background.paper',
-          borderRadius: 3,
-          border: 1,
-          borderColor: 'divider'
-        }}
-      >
-        <Typography variant="h5" gutterBottom sx={{ fontWeight: 600 }}>
-          {t(TranslationKeyEnum.ReadyToAutomate)}
-        </Typography>
-        <Typography variant="body1" color="text.secondary" sx={{ mb: 3 }}>
-          {t(TranslationKeyEnum.StartWithPrompt1)}
-        </Typography>
-        
-        {/* Language Support Info */}
-        <Box sx={{ mb: 3 }}>
-          <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-            🌍 {t(TranslationKeyEnum.Language)}: 
-          </Typography>
-          <Stack direction="row" spacing={1} justifyContent="center">
-            <Chip label="🇺🇸 English" size="small" variant={language === SupportedLangEnum.English ? "filled" : "outlined"} />
-            <Chip label="🇫🇷 Français" size="small" variant={language === SupportedLangEnum.French ? "filled" : "outlined"} />
-            <Chip label="🇪🇸 Español" size="small" variant={language === SupportedLangEnum.Spanish ? "filled" : "outlined"} />
-            <Chip label="🇩🇪 Deutsch" size="small" variant={language === SupportedLangEnum.German ? "filled" : "outlined"} />
-          </Stack>
-        </Box>
-        
-        <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} justifyContent="center">
+          <Box>
+            <Typography variant="h2" sx={{ 
+              fontWeight: 700, 
+              color: 'primary.main',
+              fontSize: { xs: '1.8rem', sm: '2.5rem', md: '3rem' },
+              mb: 2
+            }}>
+              AI Email Classification Guide
+            </Typography>
+            <Typography variant="h5" color="text.secondary" sx={{
+              fontSize: { xs: '1rem', sm: '1.25rem' },
+              mb: 4,
+              maxWidth: '800px',
+              mx: 'auto'
+            }}>
+              Master the art of category descriptions for accurate AI email classification. 
+              Learn how to structure guidelines that enable both machines and humans to consistently categorize emails.
+            </Typography>
+          </Box>
+          
           <Button 
             variant="contained" 
             size="large"
-            startIcon={<Launch />}
-            onClick={() => navigate(AppRouteEnum.Dashboard)} // Navigate to Dashboard (change to MailAutoForm when available)
+            onClick={handleStartAutomation}
+            startIcon={<PlayArrowIcon />}
+            sx={{ 
+              py: { xs: 1.5, sm: 2 },
+              px: { xs: 3, sm: 4 },
+              borderRadius: 3,
+              textTransform: 'none',
+              fontSize: { xs: '1rem', sm: '1.125rem' },
+              boxShadow: '0 8px 32px rgba(25, 118, 210, 0.3)'
+            }}
           >
-            {t(TranslationKeyEnum.ConfigureAutomation)}
-          </Button>
-          <Button 
-            variant="outlined" 
-            size="large"
-            onClick={() => navigate(AppRouteEnum.Dashboard)}
-          >
-            {t(TranslationKeyEnum.ViewDashboard)}
+            Start Email Automation Setup
           </Button>
         </Stack>
       </Box>
+
+      {/* Core Purpose Section */}
+      <Card sx={{ 
+        mb: 4,
+        borderRadius: 3,
+        border: 1,
+        borderColor: 'divider'
+      }}>
+        <CardContent sx={{ p: { xs: 3, sm: 4 } }}>
+          <Stack direction="row" alignItems="center" spacing={2} sx={{ mb: 3 }}>
+            <EmailIcon color="primary" sx={{ fontSize: 32 }} />
+            <Typography variant="h4" sx={{ 
+              fontWeight: 600,
+              fontSize: { xs: '1.4rem', sm: '1.75rem' }
+            }}>
+              Core Purpose
+            </Typography>
+          </Stack>
+          
+          <Typography variant="body1" sx={{ 
+            fontSize: { xs: '1rem', sm: '1.125rem' },
+            lineHeight: 1.7,
+            color: 'text.primary'
+          }}>
+            Category descriptions act as <strong>labeling guidelines</strong> for AI models and human annotators 
+            in email triage systems. Clear descriptions directly impact classification accuracy and explainability.
+          </Typography>
+        </CardContent>
+      </Card>
+
+      {/* Key Components Section */}
+      <Card sx={{ 
+        mb: 4,
+        borderRadius: 3,
+        border: 1,
+        borderColor: 'divider'
+      }}>
+        <CardContent sx={{ p: { xs: 3, sm: 4 } }}>
+          <Stack direction="row" alignItems="center" spacing={2} sx={{ mb: 3 }}>
+            <SettingsIcon color="primary" sx={{ fontSize: 32 }} />
+            <Typography variant="h4" sx={{ 
+              fontWeight: 600,
+              fontSize: { xs: '1.4rem', sm: '1.75rem' }
+            }}>
+              Key Components of Effective Descriptions
+            </Typography>
+          </Stack>
+          
+          <Grid container spacing={3}>
+            {[
+              { title: "Structure", content: keyComponents[0], color: "primary" },
+              { title: "Language", content: keyComponents[1], color: "success" },
+              { title: "Boundaries", content: keyComponents[2], color: "warning" },
+              { title: "Examples", content: keyComponents[3], color: "info" }
+            ].map((item, index) => (
+              <Grid key={index}>
+                <Paper sx={{ 
+                  p: 3, 
+                  borderRadius: 2,
+                  border: 1,
+                  borderColor: `${item.color}.light`,
+                  bgcolor: `${item.color}.50`
+                }}>
+                  <Typography variant="h6" sx={{ 
+                    fontWeight: 600, 
+                    mb: 1,
+                    color: `${item.color}.main`
+                  }}>
+                    {item.title}
+                  </Typography>
+                  <Typography variant="body2" color="text.secondary">
+                    {item.content}
+                  </Typography>
+                </Paper>
+              </Grid>
+            ))}
+          </Grid>
+        </CardContent>
+      </Card>
+
+      {/* Best Practices Section */}
+      <Card sx={{ 
+        mb: 4,
+        borderRadius: 3,
+        border: 1,
+        borderColor: 'divider'
+      }}>
+        <CardContent sx={{ p: { xs: 3, sm: 4 } }}>
+          <Stack direction="row" alignItems="center" spacing={2} sx={{ mb: 3 }}>
+            <SchoolIcon color="primary" sx={{ fontSize: 32 }} />
+            <Typography variant="h4" sx={{ 
+              fontWeight: 600,
+              fontSize: { xs: '1.4rem', sm: '1.75rem' }
+            }}>
+              Critical Best Practices
+            </Typography>
+          </Stack>
+          
+          <Grid container spacing={3}>
+            {bestPractices.map((practice, index) => (
+              <Grid key={index}>
+                <Card sx={{ 
+                  height: '100%',
+                  borderRadius: 2,
+                  border: 1,
+                  borderColor: 'divider',
+                  '&:hover': {
+                    borderColor: 'primary.main',
+                    boxShadow: '0 4px 16px rgba(25, 118, 210, 0.1)'
+                  }
+                }}>
+                  <CardContent sx={{ p: 3 }}>
+                    <Stack direction="row" alignItems="flex-start" spacing={2}>
+                      {practice.icon}
+                      <Box>
+                        <Typography variant="h6" sx={{ 
+                          fontWeight: 600, 
+                          mb: 1,
+                          fontSize: { xs: '1rem', sm: '1.125rem' }
+                        }}>
+                          {practice.title}
+                        </Typography>
+                        <Typography variant="body2" color="text.secondary" sx={{
+                          lineHeight: 1.6
+                        }}>
+                          {practice.description}
+                        </Typography>
+                      </Box>
+                    </Stack>
+                  </CardContent>
+                </Card>
+              </Grid>
+            ))}
+          </Grid>
+        </CardContent>
+      </Card>
+
+      {/* Implementation Approach */}
+      <Card sx={{ 
+        mb: 4,
+        borderRadius: 3,
+        border: 1,
+        borderColor: 'divider'
+      }}>
+        <CardContent sx={{ p: { xs: 3, sm: 4 } }}>
+          <Stack direction="row" alignItems="center" spacing={2} sx={{ mb: 3 }}>
+            <AutoAwesomeIcon color="primary" sx={{ fontSize: 32 }} />
+            <Typography variant="h4" sx={{ 
+              fontWeight: 600,
+              fontSize: { xs: '1.4rem', sm: '1.75rem' }
+            }}>
+              Implementation Approach
+            </Typography>
+          </Stack>
+          
+          <List>
+            {[
+              "Start with zero-shot (category names only), improve with few-shot (add examples)",
+              "Use hierarchical grouping for complex taxonomies",
+              "Co-create annotation plans with domain experts",
+              "Measure inter-annotator agreement to ensure consistency"
+            ].map((item, index) => (
+              <ListItem key={index} sx={{ pl: 0 }}>
+                <ListItemIcon>
+                  <ArrowForwardIcon color="primary" />
+                </ListItemIcon>
+                <ListItemText 
+                  primary={item}
+                  primaryTypographyProps={{
+                    fontSize: { xs: '0.95rem', sm: '1rem' }
+                  }}
+                />
+              </ListItem>
+            ))}
+          </List>
+        </CardContent>
+      </Card>
+
+      {/* Common Pitfalls & Success Metrics */}
+      <Grid sx={{ mb: 4 }}>
+        <Grid sx={{ mb: 4 }}>
+          <Card sx={{ 
+            height: '100%',
+            borderRadius: 3,
+            border: 1,
+            borderColor: 'error.light',
+            bgcolor: 'error.50'
+          }}>
+            <CardContent sx={{ p: { xs: 3, sm: 4 } }}>
+              <Stack direction="row" alignItems="center" spacing={2} sx={{ mb: 3 }}>
+                <WarningIcon color="error" sx={{ fontSize: 28 }} />
+                <Typography variant="h5" sx={{ 
+                  fontWeight: 600,
+                  color: 'error.main',
+                  fontSize: { xs: '1.2rem', sm: '1.5rem' }
+                }}>
+                  Common Pitfalls
+                </Typography>
+              </Stack>
+              
+              <List dense>
+                {commonPitfalls.map((pitfall, index) => (
+                  <ListItem key={index} sx={{ pl: 0 }}>
+                    <ListItemIcon sx={{ minWidth: 32 }}>
+                      <Box sx={{ 
+                        width: 6, 
+                        height: 6, 
+                        borderRadius: '50%', 
+                        bgcolor: 'error.main' 
+                      }} />
+                    </ListItemIcon>
+                    <ListItemText 
+                      primary={pitfall}
+                      primaryTypographyProps={{
+                        fontSize: { xs: '0.9rem', sm: '1rem' }
+                      }}
+                    />
+                  </ListItem>
+                ))}
+              </List>
+            </CardContent>
+          </Card>
+        </Grid>
+        
+        <Grid>
+          <Card sx={{ 
+            height: '100%',
+            borderRadius: 3,
+            border: 1,
+            borderColor: 'success.light',
+            bgcolor: 'success.50'
+          }}>
+            <CardContent>
+              <Stack direction="row" alignItems="center" spacing={2} sx={{ mb: 3 }}>
+                <AnalyticsIcon color="success" sx={{ fontSize: 28 }} />
+                <Typography variant="h5" sx={{ 
+                  fontWeight: 600,
+                  color: 'success.main',
+                  fontSize: { xs: '1.2rem', sm: '1.5rem' }
+                }}>
+                  Success Metrics
+                </Typography>
+              </Stack>
+              
+              <Typography variant="body1" sx={{ 
+                lineHeight: 1.7,
+                fontSize: { xs: '0.95rem', sm: '1rem' }
+              }}>
+                <strong>F1-score</strong> (not just accuracy), <strong>human alignment</strong>, and 
+                <strong> regular evaluation</strong> against golden datasets ensure the system performs 
+                well in production.
+              </Typography>
+              
+              <Box sx={{ mt: 3 }}>
+                <Chip 
+                  label="F1-Score" 
+                  color="success" 
+                  size="small" 
+                  sx={{ mr: 1, mb: 1 }} 
+                />
+                <Chip 
+                  label="Human Alignment" 
+                  color="success" 
+                  size="small" 
+                  sx={{ mr: 1, mb: 1 }} 
+                />
+                <Chip 
+                  label="Golden Datasets" 
+                  color="success" 
+                  size="small" 
+                  sx={{ mr: 1, mb: 1 }} 
+                />
+              </Box>
+            </CardContent>
+          </Card>
+        </Grid>
+      </Grid>
+
+      {/* Call to Action Footer */}
+      <Card sx={{ 
+        borderRadius: 3,
+        border: 1,
+        borderColor: 'primary.light',
+        bgcolor: 'primary.50',
+        mb: 4
+      }}>
+        <CardContent sx={{ p: { xs: 4, sm: 6 }, textAlign: 'center' }}>
+          <Typography variant="h4" sx={{ 
+            fontWeight: 600,
+            color: 'primary.main',
+            mb: 2,
+            fontSize: { xs: '1.4rem', sm: '1.75rem' }
+          }}>
+            Ready to Implement AI Email Classification?
+          </Typography>
+          
+          <Typography variant="body1" color="text.secondary" sx={{ 
+            mb: 4,
+            fontSize: { xs: '1rem', sm: '1.125rem' },
+            maxWidth: '600px',
+            mx: 'auto'
+          }}>
+            Well-designed category descriptions are foundational to accurate AI email classification. 
+            Start building your email automation system with our guided setup process.
+          </Typography>
+          
+          <Stack 
+            direction={{ xs: 'column', sm: 'row' }} 
+            spacing={2} 
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Button 
+              variant="contained" 
+              size="large"
+              onClick={handleStartAutomation}
+              startIcon={<SettingsIcon />}
+              sx={{ 
+                py: { xs: 1.5, sm: 2 },
+                px: { xs: 3, sm: 4 },
+                borderRadius: 3,
+                textTransform: 'none',
+                fontSize: { xs: '1rem', sm: '1.125rem' },
+                minWidth: { xs: '100%', sm: 'auto' }
+              }}
+            >
+              Configure Email Automation
+            </Button>
+            
+            
+          </Stack>
+        </CardContent>
+      </Card>
+      {/* Bottom spacing */}
+      <Box sx={{ height: 40 }} />
     </Container>
   );
-};
-
-export default Home;
+}
