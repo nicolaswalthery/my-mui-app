@@ -188,7 +188,7 @@ export default function Home() {
           
           <Grid container spacing={3}>
             {keyComponents.map((item, index) => (
-              <Grid item xs={12} sm={6} md={3} key={index}>
+              <Grid key={index}>
                 <Paper sx={{ 
                   p: 3, 
                   borderRadius: 2,
@@ -233,7 +233,7 @@ export default function Home() {
           
           <Grid container spacing={3}>
             {bestPractices.map((practice, index) => (
-              <Grid item xs={12} sm={6} md={6} lg={6} key={index}>
+              <Grid key={index}>
                 <Card sx={{ 
                   height: '100%',
                   borderRadius: 2,
@@ -307,8 +307,8 @@ export default function Home() {
       </Card>
 
       {/* Common Pitfalls & Success Metrics */}
-      <Grid container spacing={4} sx={{ mb: 4 }}>
-        <Grid item xs={12} md={6}>
+      <Grid spacing={4} >
+        <Grid sx={{ mb: 4 }}>
           <Card sx={{ 
             height: '100%',
             borderRadius: 3,
@@ -352,7 +352,7 @@ export default function Home() {
           </Card>
         </Grid>
         
-        <Grid item xs={12} md={6}>
+        <Grid sx={{ mb: 4 }}>
           <Card sx={{ 
             height: '100%',
             borderRadius: 3,

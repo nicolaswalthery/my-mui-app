@@ -736,7 +736,7 @@ export default function MailAutomationForm() {
         </Grid>
 
         {/* Right Content - Editor - RESPONSIVE */}
-        <Grid item xs={12} lg={8}>
+        <Grid>
           {!selected || !getCurrentSection() ? (
             <Card sx={{ 
               borderRadius: 3,
