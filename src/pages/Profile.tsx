@@ -97,15 +97,6 @@ const getInitials = () => {
                   {userEmail}
                 </Typography>
               </Box>
-              
-              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                <Badge fontSize="small" color="action" />
-                <Chip 
-                  variant="outlined" 
-                  size="small"
-                  color="primary"
-                />
-              </Box>
             </Stack>
           </Box>
 

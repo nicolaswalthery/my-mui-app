@@ -40,7 +40,7 @@ const Auth: React.FC = () => {
     
     // Call to backend to verify code
     const isCodeValid = code == "1234"; // Simulate code verification
-
+    
     if (isCodeValid) {
       var clientData = await clientServices.findClientByEmail(email);
       if(clientData == null){ 
