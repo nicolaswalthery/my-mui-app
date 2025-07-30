@@ -1,4 +1,6 @@
 import { useState, useEffect } from 'react';
+import { useI18n } from '../contexts/i18nContext';
+import { TranslationKeyEnum } from '../enums/TranslationKeyEnum';
 import {
   Box,
   Button,
@@ -39,6 +41,7 @@ import { CategoryAirtableService } from '../services/CategoryAirtableService';
 import { ClientAirtableService } from '../services/ClientAirtableService';
 
 export default function MailAutomationForm() {
+  const { t } = useI18n();
   const [sections, setSections] = useState<CategorySection[]>([]);
   const [selected, setSelected] = useState<{ parent: number; child?: number } | null>(null);
   const [showHelpCard, setShowHelpCard] = useState(true);
@@ -202,10 +205,10 @@ export default function MailAutomationForm() {
       
       console.log('Configuration saved to session storage');
       
-      setSaveMessage({ type: 'success', message: 'Configuration sauvegardée localement avec succès !' });
+      setSaveMessage({ type: 'success', message: t(TranslationKeyEnum.SavedToLocalStorage) });
     } catch (error) {
       console.error('Error saving configuration:', error);
-      setSaveMessage({ type: 'error', message: 'Erreur lors de la sauvegarde locale' });
+      setSaveMessage({ type: 'error', message: t(TranslationKeyEnum.ErrorSavingLocal) });
     } finally {
       setIsSaving(false);
     }
@@ -229,13 +232,13 @@ export default function MailAutomationForm() {
       
       setSaveMessage({ 
         type: 'success', 
-        message: `Configuration sauvegardée dans Airtable avec succès ! ${savedCategories.length} catégorie(s) créée(s).` 
+        message: `${t(TranslationKeyEnum.SavedToAirtable)} ${savedCategories.length} ${t(TranslationKeyEnum.CategoriesConfigured)}.` 
       });
     } catch (error) {
       console.error('Error saving to Airtable:', error);
       setSaveMessage({ 
         type: 'error', 
-        message: 'Erreur lors de la sauvegarde dans Airtable. Vérifiez votre connexion.' 
+        message: t(TranslationKeyEnum.ErrorSavingAirtable)
       });
     } finally {
       setIsSaving(false);
@@ -243,7 +246,7 @@ export default function MailAutomationForm() {
   };
 
   const handleClearAll = () => {
-    if (window.confirm('Êtes-vous sûr de vouloir supprimer toutes les catégories ? Cette action ne peut pas être annulée.')) {
+    if (window.confirm(t(TranslationKeyEnum.AreYouSureClearAll))) {
       setSections([]);
       setSelected(null);
       UserStorageManager.clearMailCategories();
@@ -263,7 +266,7 @@ export default function MailAutomationForm() {
           <Stack alignItems="center" spacing={2}>
             <LinearProgress sx={{ width: 300 }} />
             <Typography variant="body2" color="text.secondary">
-              Chargement de votre configuration...
+              {t(TranslationKeyEnum.LoadingConfiguration)}
             </Typography>
           </Stack>
         </Box>
@@ -314,12 +317,12 @@ export default function MailAutomationForm() {
               color: 'primary.main',
               fontSize: { xs: '1.5rem', sm: '2rem', md: '2.125rem' }
             }}>
-              Configuration de l'Automatisation de vos e-mails
+              {t(TranslationKeyEnum.EmailAutomationConfig)}
             </Typography>
             <Typography variant="subtitle1" color="text.secondary" sx={{
               fontSize: { xs: '0.9rem', sm: '1rem' }
             }}>
-              Créez et gérez vos catégories de classification automatique de vos emails
+              {t(TranslationKeyEnum.CreateManageCategories)}
             </Typography>
           </Box>
           
@@ -337,7 +340,7 @@ export default function MailAutomationForm() {
               }}
             >
               {isSaving ? <SyncIcon className="spin" /> : null}
-              Sauvegarder
+              {t(TranslationKeyEnum.SaveLocally)}
             </Button>
             <Button 
               variant="contained" 
@@ -351,7 +354,7 @@ export default function MailAutomationForm() {
                 fontSize: { xs: '0.7rem', sm: '0.8rem' }
               }}
             >
-              Synchroniser
+              {t(TranslationKeyEnum.Synchronize)}
             </Button>
             {sections.length > 0 && (
               <Button 
@@ -366,7 +369,7 @@ export default function MailAutomationForm() {
                   fontSize: { xs: '0.7rem', sm: '0.8rem' }
                 }}
               >
-                Tout effacer
+                {t(TranslationKeyEnum.ClearAll)}
               </Button>
             )}
           </Stack>
@@ -384,10 +387,10 @@ export default function MailAutomationForm() {
               <Typography variant="body2" color="text.secondary" sx={{
                 fontSize: { xs: '0.8rem', sm: '0.875rem' }
               }}>
-                Progression de la configuration
+                {t(TranslationKeyEnum.ConfigurationProgress)}
               </Typography>
               <Chip 
-                label={`${getCompletionPercentage()}% complété`}
+                label={`${getCompletionPercentage()}${t(TranslationKeyEnum.PercentCompleted)}`}
                 size="small"
                 color={getCompletionPercentage() === 100 ? 'success' : 'primary'}
                 icon={getCompletionPercentage() === 100 ? <CheckCircleIcon /> : undefined}
@@ -395,7 +398,7 @@ export default function MailAutomationForm() {
               <Typography variant="caption" color="text.disabled" sx={{
                 fontSize: { xs: '0.7rem', sm: '0.75rem' }
               }}>
-                💾 Sauvegardé automatiquement
+                💾 {t(TranslationKeyEnum.AutoSaved)}
               </Typography>
             </Stack>
             <LinearProgress 
@@ -417,7 +420,7 @@ export default function MailAutomationForm() {
       {/* Main Content - RESPONSIVE GRID */}
       <Grid container spacing={2}>
         {/* Left Sidebar - Categories List - RESPONSIVE */}
-        <Grid>
+        <Grid item xs={12} lg={4}>
           <Card sx={{ 
             borderRadius: 3,
             border: 1,
@@ -455,7 +458,7 @@ export default function MailAutomationForm() {
                   <Stack direction="row" alignItems="center" spacing={1}>
                     <CategoryIcon color="primary" />
                     <Typography variant="h6" sx={{ fontWeight: 600 }}>
-                      Catégories
+                      {t(TranslationKeyEnum.Categories)}
                     </Typography>
                     <Chip 
                       label={sections.length}
@@ -479,7 +482,7 @@ export default function MailAutomationForm() {
                     fontSize: { xs: '0.875rem', sm: '1rem' }
                   }}
                 >
-                  Nouvelle catégorie
+                  {t(TranslationKeyEnum.NewCategory)}
                 </Button>
               </Box>
 
@@ -496,12 +499,12 @@ export default function MailAutomationForm() {
                   <Typography variant="body2" color="text.secondary" sx={{
                     fontSize: { xs: '0.8rem', sm: '0.875rem' }
                   }}>
-                    Aucune catégorie créée
+                    {t(TranslationKeyEnum.NoCategories)}
                   </Typography>
                   <Typography variant="caption" color="text.disabled" sx={{
                     fontSize: { xs: '0.7rem', sm: '0.75rem' }
                   }}>
-                    Cliquez sur "Nouvelle catégorie" pour commencer
+                    {t(TranslationKeyEnum.ClickNewCategory)}
                   </Typography>
                 </Box>
               ) : (
@@ -529,11 +532,11 @@ export default function MailAutomationForm() {
                                 fontWeight: 500,
                                 fontSize: { xs: '0.9rem', sm: '1rem' }
                               }}>
-                                {section.name || `Catégorie ${index + 1}`}
+                                {section.name || `${t(TranslationKeyEnum.Category)} ${index + 1}`}
                               </Typography>
                               {section.id && (
                                 <Chip 
-                                  label="Synced" 
+                                  label={t(TranslationKeyEnum.Synced)} 
                                   size="small" 
                                   color="success" 
                                   sx={{ fontSize: '0.6rem', height: 16 }}
@@ -552,7 +555,7 @@ export default function MailAutomationForm() {
                           }
                           secondary={section.description ? 
                             section.description.substring(0, 50) + (section.description.length > 50 ? '...' : '') 
-                            : 'Aucune description'
+                            : t(TranslationKeyEnum.NoDescription)
                           }
                         />
                         <IconButton
@@ -614,11 +617,11 @@ export default function MailAutomationForm() {
                                     fontSize: { xs: '0.8rem', sm: '0.875rem' }
                                   }}
                                 >
-                                  ↳ {sub.name || `Sous-catégorie ${subIndex + 1}`}
+                                  ↳ {sub.name || `${t(TranslationKeyEnum.Subcategory)} ${subIndex + 1}`}
                                 </Typography>
                                 {sub.id && (
                                   <Chip 
-                                    label="Synced" 
+                                    label={t(TranslationKeyEnum.Synced)} 
                                     size="small" 
                                     color="success" 
                                     sx={{ fontSize: '0.5rem', height: 14 }}
@@ -647,7 +650,7 @@ export default function MailAutomationForm() {
                               >
                                 {sub.description ? 
                                   sub.description.substring(0, 40) + (sub.description.length > 40 ? '...' : '') 
-                                  : 'Aucune description'
+                                  : t(TranslationKeyEnum.NoDescription)
                                 }
                               </Typography>
                             }
@@ -711,19 +714,19 @@ export default function MailAutomationForm() {
                       mb: 1,
                       fontSize: { xs: '0.9rem', sm: '1rem' }
                     }}>
-                      💡 Conseils
+                      💡 {t(TranslationKeyEnum.Tips)}
                     </Typography>
                     <Typography variant="caption" color="text.secondary" sx={{ 
                       lineHeight: 1.4,
                       fontSize: { xs: '0.7rem', sm: '0.75rem' }
                     }}>
-                      • Utilisez des mots-clés spécifiques pour une meilleure classification
+                      • {t(TranslationKeyEnum.TipsContent1)}
                       <br />
-                      • Les sous-catégories permettent une organisation plus fine
+                      • {t(TranslationKeyEnum.TipsContent2)}
                       <br />
-                      • Vos données sont sauvegardées automatiquement dans votre navigateur
+                      • {t(TranslationKeyEnum.TipsContent3)}
                       <br />
-                      • Cliquez sur "Synchroniser" pour sauvegarder dans Airtable
+                      • {t(TranslationKeyEnum.TipsContent4)}
                     </Typography>
                   </Box>
                 </Stack>
@@ -733,7 +736,7 @@ export default function MailAutomationForm() {
         </Grid>
 
         {/* Right Content - Editor - RESPONSIVE */}
-        <Grid>
+        <Grid item xs={12} lg={8}>
           {!selected || !getCurrentSection() ? (
             <Card sx={{ 
               borderRadius: 3,
@@ -754,13 +757,13 @@ export default function MailAutomationForm() {
                   mb: 1,
                   fontSize: { xs: '1.1rem', sm: '1.25rem', md: '1.5rem' }
                 }}>
-                  Sélectionnez une catégorie
+                  {t(TranslationKeyEnum.SelectCategory)}
                 </Typography>
                 <Typography variant="body2" color="text.disabled" sx={{
                   fontSize: { xs: '0.8rem', sm: '0.875rem' },
                   px: { xs: 1, sm: 0 }
                 }}>
-                  Choisissez une catégorie dans la liste de gauche pour commencer la configuration
+                  {t(TranslationKeyEnum.SelectCategoryDesc)}
                 </Typography>
               </Box>
             </Card>
@@ -791,11 +794,11 @@ export default function MailAutomationForm() {
                             fontWeight: 600,
                             fontSize: { xs: '1.1rem', sm: '1.25rem' }
                           }}>
-                            {getCurrentSection()?.name || 'Nouvelle catégorie'}
+                            {getCurrentSection()?.name || t(TranslationKeyEnum.NewCategory)}
                           </Typography>
                           {getCurrentSection()?.id && (
                             <Chip 
-                              label="Synchronisé" 
+                              label={t(TranslationKeyEnum.Synchronized)} 
                               size="small" 
                               color="success" 
                               sx={{ fontSize: '0.7rem' }}
@@ -803,7 +806,7 @@ export default function MailAutomationForm() {
                           )}
                         </Stack>
                         <Typography variant="caption" color="text.secondary">
-                          {selected?.child !== undefined ? 'Sous-catégorie' : 'Catégorie principale'}
+                          {selected?.child !== undefined ? t(TranslationKeyEnum.Subcategory) : t(TranslationKeyEnum.MainCategory)}
                         </Typography>
                       </Box>
                     </Stack>
@@ -859,12 +862,12 @@ export default function MailAutomationForm() {
                     fontWeight: 600,
                     fontSize: { xs: '1rem', sm: '1.125rem' }
                   }}>
-                    Configuration incomplète
+                    {t(TranslationKeyEnum.IncompleteConfiguration)}
                   </Typography>
                   <Typography variant="body2" color="text.secondary" sx={{
                     fontSize: { xs: '0.8rem', sm: '0.875rem' }
                   }}>
-                    {getCompletionPercentage()}% complété • 💾 Sauvegardé automatiquement
+                    {getCompletionPercentage()}{t(TranslationKeyEnum.PercentCompleted)} • 💾 {t(TranslationKeyEnum.AutoSaved)}
                   </Typography>
                 </Box>
               </Stack>
@@ -883,7 +886,7 @@ export default function MailAutomationForm() {
                     fontSize: { xs: '0.8rem', sm: '0.875rem' }
                   }}
                 >
-                  Sauvegarder
+                  {t(TranslationKeyEnum.SaveLocally)}
                 </Button>
                 <Button 
                   variant="contained" 
@@ -897,7 +900,7 @@ export default function MailAutomationForm() {
                     fontSize: { xs: '0.8rem', sm: '0.875rem' }
                   }}
                 >
-                  Compléter la configuration
+                  {t(TranslationKeyEnum.CompleteConfiguration)}
                 </Button>
               </Stack>
             </Stack>
@@ -932,12 +935,12 @@ export default function MailAutomationForm() {
                     fontWeight: 600,
                     fontSize: { xs: '1rem', sm: '1.125rem' }
                   }}>
-                    Configuration prête
+                    {t(TranslationKeyEnum.ConfigurationReady)}
                   </Typography>
                   <Typography variant="body2" color="text.secondary" sx={{
                     fontSize: { xs: '0.8rem', sm: '0.875rem' }
                   }}>
-                    {sections.length} catégorie(s) configurée(s) • {getCompletionPercentage()}% complété • 💾 Sauvegardé
+                    {sections.length} {t(TranslationKeyEnum.CategoriesConfigured)} • {getCompletionPercentage()}{t(TranslationKeyEnum.PercentCompleted)} • 💾 {t(TranslationKeyEnum.AutoSaved)}
                   </Typography>
                 </Box>
               </Stack>
@@ -956,7 +959,7 @@ export default function MailAutomationForm() {
                     fontSize: { xs: '0.8rem', sm: '0.875rem' }
                   }}
                 >
-                  Sauvegarder
+                  {t(TranslationKeyEnum.SaveLocally)}
                 </Button>
                 <Button 
                   variant="contained" 
@@ -972,7 +975,7 @@ export default function MailAutomationForm() {
                     fontSize: { xs: '0.8rem', sm: '0.875rem' }
                   }}
                 >
-                  Synchroniser
+                  {t(TranslationKeyEnum.Synchronize)}
                 </Button>
               </Stack>
             </Stack>

@@ -1,4 +1,6 @@
 import { useNavigate } from 'react-router-dom';
+import { useI18n } from '../contexts/i18nContext';
+import { TranslationKeyEnum } from '../enums/TranslationKeyEnum';
 import {
   Box,
   Button,
@@ -32,6 +34,7 @@ import {
 
 export default function Home() {
   const navigate = useNavigate();
+  const { t } = useI18n();
 
   const handleStartAutomation = () => {
     navigate('/mail-auto-onboarding');
@@ -40,38 +43,45 @@ export default function Home() {
   const bestPractices = [
     {
       icon: <CategoryIcon color="primary" />,
-      title: "Mutual Exclusivity",
-      description: "Each email should fit only one category (unless multi-label is intended)"
+      titleKey: TranslationKeyEnum.MutualExclusivity,
+      descriptionKey: TranslationKeyEnum.MutualExclusivityDesc
     },
     {
       icon: <CheckCircleIcon color="success" />,
-      title: "Positive Guidance", 
-      description: "Say what TO include, not what to avoid"
+      titleKey: TranslationKeyEnum.PositiveGuidance,
+      descriptionKey: TranslationKeyEnum.PositiveGuidanceDesc
     },
     {
       icon: <WarningIcon color="warning" />,
-      title: "Include \"Other/Uncategorized\"",
-      description: "Catch-all for emails that don't fit defined categories"
+      titleKey: TranslationKeyEnum.IncludeOtherUncategorized,
+      descriptionKey: TranslationKeyEnum.IncludeOtherUncategorizedDesc
     },
     {
       icon: <TrendingUpIcon color="info" />,
-      title: "Test and Iterate",
-      description: "Use pilot annotations to identify ambiguities and refine descriptions"
+      titleKey: TranslationKeyEnum.TestAndIterate,
+      descriptionKey: TranslationKeyEnum.TestAndIterateDesc
     }
   ];
 
   const keyComponents = [
-    "1-3 sentence definition + inclusion criteria + keywords + exclusions",
-    "Clear, neutral, jargon-free terms",
-    "Explicit inclusion/exclusion criteria to prevent overlap", 
-    "Representative phrases and keywords for few-shot learning"
+    { title: t(TranslationKeyEnum.Structure), content: t(TranslationKeyEnum.StructureDesc), color: "primary" },
+    { title: t(TranslationKeyEnum.LanguageComponent), content: t(TranslationKeyEnum.LanguageComponentDesc), color: "success" },
+    { title: t(TranslationKeyEnum.Boundaries), content: t(TranslationKeyEnum.BoundariesDesc), color: "warning" },
+    { title: t(TranslationKeyEnum.Examples), content: t(TranslationKeyEnum.ExamplesDesc), color: "info" }
   ];
 
-  const commonPitfalls = [
-    "Overlapping categories causing confusion",
-    "Using internal jargon or clever naming",
-    "Ignoring multi-intent emails",
-    "Not updating categories as needs evolve"
+  const commonPitfallsKeys = [
+    TranslationKeyEnum.OverlappingCategories,
+    TranslationKeyEnum.UsingInternalJargon,
+    TranslationKeyEnum.IgnoringMultiIntent,
+    TranslationKeyEnum.NotUpdatingCategories
+  ];
+
+  const implementationApproachKeys = [
+    TranslationKeyEnum.StartWithZeroShot,
+    TranslationKeyEnum.UseHierarchicalGrouping,
+    TranslationKeyEnum.CoCreateAnnotation,
+    TranslationKeyEnum.MeasureInterAnnotator
   ];
 
   return (
@@ -99,7 +109,7 @@ export default function Home() {
               fontSize: { xs: '1.8rem', sm: '2.5rem', md: '3rem' },
               mb: 2
             }}>
-              AI Email Classification Guide
+              {t(TranslationKeyEnum.AIEmailClassificationGuide)}
             </Typography>
             <Typography variant="h5" color="text.secondary" sx={{
               fontSize: { xs: '1rem', sm: '1.25rem' },
@@ -107,8 +117,7 @@ export default function Home() {
               maxWidth: '800px',
               mx: 'auto'
             }}>
-              Master the art of category descriptions for accurate AI email classification. 
-              Learn how to structure guidelines that enable both machines and humans to consistently categorize emails.
+              {t(TranslationKeyEnum.MasterTheArt)}
             </Typography>
           </Box>
           
@@ -126,7 +135,7 @@ export default function Home() {
               boxShadow: '0 8px 32px rgba(25, 118, 210, 0.3)'
             }}
           >
-            Start Email Automation Setup
+            {t(TranslationKeyEnum.StartEmailAutomationSetup)}
           </Button>
         </Stack>
       </Box>
@@ -145,7 +154,7 @@ export default function Home() {
               fontWeight: 600,
               fontSize: { xs: '1.4rem', sm: '1.75rem' }
             }}>
-              Core Purpose
+              {t(TranslationKeyEnum.CorePurpose)}
             </Typography>
           </Stack>
           
@@ -154,8 +163,7 @@ export default function Home() {
             lineHeight: 1.7,
             color: 'text.primary'
           }}>
-            Category descriptions act as <strong>labeling guidelines</strong> for AI models and human annotators 
-            in email triage systems. Clear descriptions directly impact classification accuracy and explainability.
+            {t(TranslationKeyEnum.CategoryDescriptionsAct)}
           </Typography>
         </CardContent>
       </Card>
@@ -174,18 +182,13 @@ export default function Home() {
               fontWeight: 600,
               fontSize: { xs: '1.4rem', sm: '1.75rem' }
             }}>
-              Key Components of Effective Descriptions
+              {t(TranslationKeyEnum.KeyComponentsOfEffective)}
             </Typography>
           </Stack>
           
           <Grid container spacing={3}>
-            {[
-              { title: "Structure", content: keyComponents[0], color: "primary" },
-              { title: "Language", content: keyComponents[1], color: "success" },
-              { title: "Boundaries", content: keyComponents[2], color: "warning" },
-              { title: "Examples", content: keyComponents[3], color: "info" }
-            ].map((item, index) => (
-              <Grid key={index}>
+            {keyComponents.map((item, index) => (
+              <Grid item xs={12} sm={6} md={3} key={index}>
                 <Paper sx={{ 
                   p: 3, 
                   borderRadius: 2,
@@ -224,13 +227,13 @@ export default function Home() {
               fontWeight: 600,
               fontSize: { xs: '1.4rem', sm: '1.75rem' }
             }}>
-              Critical Best Practices
+              {t(TranslationKeyEnum.CriticalBestPractices)}
             </Typography>
           </Stack>
           
           <Grid container spacing={3}>
             {bestPractices.map((practice, index) => (
-              <Grid key={index}>
+              <Grid item xs={12} sm={6} md={6} lg={6} key={index}>
                 <Card sx={{ 
                   height: '100%',
                   borderRadius: 2,
@@ -250,12 +253,12 @@ export default function Home() {
                           mb: 1,
                           fontSize: { xs: '1rem', sm: '1.125rem' }
                         }}>
-                          {practice.title}
+                          {t(practice.titleKey)}
                         </Typography>
                         <Typography variant="body2" color="text.secondary" sx={{
                           lineHeight: 1.6
                         }}>
-                          {practice.description}
+                          {t(practice.descriptionKey)}
                         </Typography>
                       </Box>
                     </Stack>
@@ -281,23 +284,18 @@ export default function Home() {
               fontWeight: 600,
               fontSize: { xs: '1.4rem', sm: '1.75rem' }
             }}>
-              Implementation Approach
+              {t(TranslationKeyEnum.ImplementationApproach)}
             </Typography>
           </Stack>
           
           <List>
-            {[
-              "Start with zero-shot (category names only), improve with few-shot (add examples)",
-              "Use hierarchical grouping for complex taxonomies",
-              "Co-create annotation plans with domain experts",
-              "Measure inter-annotator agreement to ensure consistency"
-            ].map((item, index) => (
+            {implementationApproachKeys.map((key, index) => (
               <ListItem key={index} sx={{ pl: 0 }}>
                 <ListItemIcon>
                   <ArrowForwardIcon color="primary" />
                 </ListItemIcon>
                 <ListItemText 
-                  primary={item}
+                  primary={t(key)}
                   primaryTypographyProps={{
                     fontSize: { xs: '0.95rem', sm: '1rem' }
                   }}
@@ -309,8 +307,8 @@ export default function Home() {
       </Card>
 
       {/* Common Pitfalls & Success Metrics */}
-      <Grid sx={{ mb: 4 }}>
-        <Grid sx={{ mb: 4 }}>
+      <Grid container spacing={4} sx={{ mb: 4 }}>
+        <Grid item xs={12} md={6}>
           <Card sx={{ 
             height: '100%',
             borderRadius: 3,
@@ -326,12 +324,12 @@ export default function Home() {
                   color: 'error.main',
                   fontSize: { xs: '1.2rem', sm: '1.5rem' }
                 }}>
-                  Common Pitfalls
+                  {t(TranslationKeyEnum.CommonPitfalls)}
                 </Typography>
               </Stack>
               
               <List dense>
-                {commonPitfalls.map((pitfall, index) => (
+                {commonPitfallsKeys.map((key, index) => (
                   <ListItem key={index} sx={{ pl: 0 }}>
                     <ListItemIcon sx={{ minWidth: 32 }}>
                       <Box sx={{ 
@@ -342,7 +340,7 @@ export default function Home() {
                       }} />
                     </ListItemIcon>
                     <ListItemText 
-                      primary={pitfall}
+                      primary={t(key)}
                       primaryTypographyProps={{
                         fontSize: { xs: '0.9rem', sm: '1rem' }
                       }}
@@ -354,7 +352,7 @@ export default function Home() {
           </Card>
         </Grid>
         
-        <Grid>
+        <Grid item xs={12} md={6}>
           <Card sx={{ 
             height: '100%',
             borderRadius: 3,
@@ -370,7 +368,7 @@ export default function Home() {
                   color: 'success.main',
                   fontSize: { xs: '1.2rem', sm: '1.5rem' }
                 }}>
-                  Success Metrics
+                  {t(TranslationKeyEnum.SuccessMetrics)}
                 </Typography>
               </Stack>
               
@@ -378,26 +376,24 @@ export default function Home() {
                 lineHeight: 1.7,
                 fontSize: { xs: '0.95rem', sm: '1rem' }
               }}>
-                <strong>F1-score</strong> (not just accuracy), <strong>human alignment</strong>, and 
-                <strong> regular evaluation</strong> against golden datasets ensure the system performs 
-                well in production.
+                {t(TranslationKeyEnum.F1ScoreNotJust)}
               </Typography>
               
               <Box sx={{ mt: 3 }}>
                 <Chip 
-                  label="F1-Score" 
+                  label={t(TranslationKeyEnum.F1Score)} 
                   color="success" 
                   size="small" 
                   sx={{ mr: 1, mb: 1 }} 
                 />
                 <Chip 
-                  label="Human Alignment" 
+                  label={t(TranslationKeyEnum.HumanAlignment)} 
                   color="success" 
                   size="small" 
                   sx={{ mr: 1, mb: 1 }} 
                 />
                 <Chip 
-                  label="Golden Datasets" 
+                  label={t(TranslationKeyEnum.GoldenDatasets)} 
                   color="success" 
                   size="small" 
                   sx={{ mr: 1, mb: 1 }} 
@@ -423,7 +419,7 @@ export default function Home() {
             mb: 2,
             fontSize: { xs: '1.4rem', sm: '1.75rem' }
           }}>
-            Ready to Implement AI Email Classification?
+            {t(TranslationKeyEnum.ReadyToImplement)}
           </Typography>
           
           <Typography variant="body1" color="text.secondary" sx={{ 
@@ -432,8 +428,7 @@ export default function Home() {
             maxWidth: '600px',
             mx: 'auto'
           }}>
-            Well-designed category descriptions are foundational to accurate AI email classification. 
-            Start building your email automation system with our guided setup process.
+            {t(TranslationKeyEnum.WellDesignedCategory)}
           </Typography>
           
           <Stack 
@@ -456,10 +451,8 @@ export default function Home() {
                 minWidth: { xs: '100%', sm: 'auto' }
               }}
             >
-              Configure Email Automation
+              {t(TranslationKeyEnum.ConfigureEmailAutomation)}
             </Button>
-            
-            
           </Stack>
         </CardContent>
       </Card>
