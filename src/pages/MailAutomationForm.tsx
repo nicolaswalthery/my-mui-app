@@ -420,7 +420,7 @@ export default function MailAutomationForm() {
       {/* Main Content - RESPONSIVE GRID */}
       <Grid container spacing={2}>
         {/* Left Sidebar - Categories List - RESPONSIVE */}
-        <Grid item xs={12} lg={4}>
+        <Grid>
           <Card sx={{ 
             borderRadius: 3,
             border: 1,
