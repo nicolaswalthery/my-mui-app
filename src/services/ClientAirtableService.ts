@@ -43,7 +43,7 @@ export class ClientAirtableService {
   /**
    * Convert Airtable fields to client data format
    */
-  private mapAirtableFieldsToClientData(fields: AirtableClientFields): ClientData {
+  public mapAirtableFieldsToClientData(fields: AirtableClientFields): ClientData {
     return {
       firstName: fields["Prénom"] || "",
       lastName: fields["Nom"] || "",
@@ -160,8 +160,8 @@ export class ClientAirtableService {
       }
       return null;
     } catch (error: any) {
-      console.error('Error finding client by email:', error);
-      throw ApiErrorHandler.createFromHttpError(error);
+        console.error('Error finding client by email:', error);
+        throw ApiErrorHandler.createFromHttpError(error);
     }
   }
 

@@ -9,6 +9,7 @@ import { useI18n } from '../contexts/i18nContext';
 import { ClientAirtableService } from '../services/ClientAirtableService';
 import { TranslationKeyEnum } from '../enums/TranslationKeyEnum';
 import { configManager } from '../config/configManager';
+import { DataServicesOrchestrator } from '../businessLayer/DataServicesOrchestrator';
 import {
   Box,
   Button,
@@ -28,9 +29,39 @@ const Auth: React.FC = () => {
 
   //Airtable Services
   const clientServices = ClientAirtableService.getInstance();
+  const dataServicesOrchestrator = DataServicesOrchestrator.getInstance();
 
-  const handleEmailLogin = (e: React.FormEvent) => {
+  const handleEmailLogin = async (e: React.FormEvent) => {
     e.preventDefault();
+
+      //Load data into session user
+      var clientData = await clientServices.findClientByEmail(email);
+      if(clientData == null){ 
+          const newClientData = {
+          email: email,
+          firstName: '',
+          lastName: '',  
+          sourceEnregistrement: configManager.getAppConfig().source
+        };
+        clientData = await clientServices.createClient(newClientData);
+          const userData: UserSessionModel = {
+          email: clientData!.email,
+          firstName: clientData?.firstName || "",
+          lastName: clientData?.lastName || ""
+        };
+        UserStorageManager.saveUser(userData);
+      }else{
+        console.log("GetAllClientData");
+        const fullClientData = await dataServicesOrchestrator.GetAllClientData(email);
+        const userData: UserSessionModel = {
+          email: email,
+          firstName: fullClientData.clientData.firstName || '',
+          lastName: fullClientData.clientData.lastName ||'',  
+          mailCategories: fullClientData.categorySection || ''
+        };
+        UserStorageManager.saveUser(userData);
+      }
+
       setStep(LoginStepEnum.Verify);
       setMessage('');
   };
@@ -42,24 +73,7 @@ const Auth: React.FC = () => {
     const isCodeValid = code == "1234"; // Simulate code verification
     
     if (isCodeValid) {
-      var clientData = await clientServices.findClientByEmail(email);
-      if(clientData == null){ 
-          const newClientData = {
-          email: email,
-          firstName: '',
-          lastName: '',  
-          sourceEnregistrement: configManager.getAppConfig().source
-        };
-        clientData = await clientServices.createClient(newClientData);
-      }
-
-      const userData: UserSessionModel = {
-        email: clientData!.email,
-        firstName: clientData?.firstName || "",
-        lastName: clientData?.lastName || ""
-      };
-
-      UserStorageManager.saveUser(userData);
+      
       navigate(AppRouteEnum.Home);
     } else {
       setMessage(t(TranslationKeyEnum.InvalidCode));

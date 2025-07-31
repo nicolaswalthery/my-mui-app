@@ -1,5 +1,5 @@
 // src/services/CategoryAirtableService.ts - Service for categories with recursive relationships
-import axiosInstance from './starcmdAirtableAxiosInstance';
+import axiosInstance from './StarcmdAirtableAxiosInstance';
 import { configManager } from '../config/configManager';
 import { ApiErrorEnum } from '../enums/ApiErrorEnum';
 import { ApiErrorHandler } from '../helpers/ApiErrorHandler';
@@ -232,7 +232,7 @@ private async createSingleCategory(
   /**
  * Get categories by client with examples (simplified version)
  */
-public async getCategoriesByClient(clientId: string): Promise<CategorySection[]> {
+public async getCategoriesByEmail(clientEmail: string): Promise<CategorySection[]> {
   try {
     // Get all categories
     const response = await axiosInstance.get<AirtableResponse<AirtableCategoryFields>>(
@@ -243,36 +243,108 @@ public async getCategoriesByClient(clientId: string): Promise<CategorySection[]>
       return [];
     }
 
-    // Filter and map categories
+    var clientId = response.data.records[0].fields["Client"]?.[0];
+
+    return await this.FilterClientCategoriesAndEmailExamples(clientId!, response.data.records);
+  } catch (error: any) {
+    console.error('Error getting categories by client:', error);
+    return [];
+  }
+}
+
+  /**
+ * Get categories by client
+ */
+public async getCategoriesByClient(clientId: string): Promise<CategorySection[]> {
+  try {
+    console.log("client id : "+ clientId);
+    const filterFormula = `{Client} = "${clientId}"`;
+    const categoryResponse = await axiosInstance.get<AirtableResponse<AirtableCategoryFields>>(
+      `/${this.tableName}?filterByFormula=${encodeURIComponent(filterFormula)}`
+    );
+
+    if (!categoryResponse.data.records || categoryResponse.data.records.length <= 0){
+      console.log("no data found");
+      return [];
+    }
+      
+
     const categories: CategorySection[] = [];
-    
-    for (const record of response.data.records) {
-      // Check if category belongs to client
-      const clientField = record.fields["Client"];
+    for (const categoryRecord of categoryResponse.data.records) {
+      const mappedCat = this.mapAirtableFieldsToCategory(categoryRecord.fields, categoryRecord);
+      categories.push(mappedCat);
+      console.log("   NO ???" + mappedCat.description);
+      // const clientField = categoryRecord.fields["Client"];
+      
+      // if (Array.isArray(clientField) && clientField.includes(clientId)) {
+      //   categories.push(this.mapAirtableFieldsToCategory(categoryRecord.fields, categoryRecord));
+      // }
+    }
+    console.log("categories == null ? "+categories == null);
+    return categories;
+
+  } catch (error: any) {
+      console.error('Error getting categories by client:', error);
+      return [];
+  }
+}
+
+public async getCategoriesByClientFullname(clienFullname: string): Promise<CategorySection[]> {
+  try {
+    const filterFormula = `{Client} = "${clienFullname}"`;
+    const categoryResponse = await axiosInstance.get<AirtableResponse<AirtableCategoryFields>>(
+      `/${this.tableName}?filterByFormula=${encodeURIComponent(filterFormula)}`
+    );
+
+    if (!categoryResponse.data.records || categoryResponse.data.records.length <= 0){
+      console.log("no data found");
+      return [];
+    }
+      
+
+    const categories: CategorySection[] = [];
+    for (const categoryRecord of categoryResponse.data.records) {
+      const mappedCat = this.mapAirtableFieldsToCategory(categoryRecord.fields, categoryRecord);
+      categories.push(mappedCat);
+      console.log("   NO ???" + mappedCat.description);
+      // const clientField = categoryRecord.fields["Client"];
+      
+      // if (Array.isArray(clientField) && clientField.includes(clientId)) {
+      //   categories.push(this.mapAirtableFieldsToCategory(categoryRecord.fields, categoryRecord));
+      // }
+    }
+    console.log("categories == null ? "+categories == null);
+    return categories;
+
+  } catch (error: any) {
+      console.error('Error getting categories by client:', error);
+      return [];
+  }
+}
+
+
+private async FilterClientCategoriesAndEmailExamples(clientId: string, categoryRecords: any): Promise<CategorySection[]> {
+    const categories: CategorySection[] = [];
+    for (const categoryRecord of categoryRecords) {
+      const clientField = categoryRecord.fields["Client"];
+      
       if (Array.isArray(clientField) && clientField.includes(clientId)) {
-        // Convert to CategorySection
-        const category = this.mapAirtableFieldsToCategory(record.fields, record);
-        
-        // Load email examples if they exist
-      if (record.fields["Exemples d'e-mails"]?.length) {
+        const category = this.mapAirtableFieldsToCategory(categoryRecord.fields, categoryRecord);
+
+
+      if (categoryRecord.fields["Exemples d'e-mails"]?.length) {
         try {
-          category.examples = await this.emailExampleService.getEmailExamplesByCategory(record.id!);
+          console.log("Exemples d'e-mails : "+categoryRecord.id!);
+          category.examples = await this.emailExampleService.getEmailExamplesByCategory(categoryRecord.id!);
         } catch (error) {
           console.error("Error loading email examples:", error);
           category.examples = []; // Ensure fallback value
         }
       }
-        
         categories.push(category);
       }
-    }
-
-    return categories;
-
-  } catch (error: any) {
-    console.error('Error getting categories by client:', error);
-    return [];
   }
+  return categories;
 }
 
   /**
